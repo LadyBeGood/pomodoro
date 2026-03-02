@@ -1,5 +1,11 @@
 <script lang="ts">
-    import Counter from "./lib/Counter.svelte";
+    import Footer from "./components/Footer.svelte";
+    import Header from "./components/Header.svelte";
+    import Timer from "./components/Timer.svelte";
+
+    
 </script>
 
-<Counter />
+<Header />
+<Timer />
+<Footer />
