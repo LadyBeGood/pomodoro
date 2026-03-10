@@ -3,7 +3,7 @@
 
 <div class="flex items-center flex-col gap-4">
     <div
-        class="text-luxury-white w-48 h-48 rounded-full p-2.5 relative font-[Manrope] tabular-nums"
+        class="text-luxury-white w-48 h-48 rounded-full p-2.5 relative tabular-nums"
         style="background: conic-gradient(var(--color-dravit-grey) 0% 60%, var(--color-luxury-white) 60% 100%);"
     >
         <!-- Small circle -->
