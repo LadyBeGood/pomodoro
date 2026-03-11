@@ -93,12 +93,13 @@
             {/each}
         </div>
 
-        <div class="grid grid-cols-7 gap-1 tabular-nums bg-blackout text-luxury-white text-sm rounded-b-2xl">
+        <div class="grid grid-cols-7 gap-1 tabular-nums bg-blackout text-luxury-white rounded-b-2xl">
             {#each allDays as { day, current }}
                 <div class="
-                    aspect-square grid place-items-center rounded-full transition-all cursor-pointer hover:bg-dravit-grey hover:text-luxury-white
+                    aspect-square text-sm rounded-full grid place-items-center transition-all cursor-pointer hover:bg-dravit-grey hover:text-luxury-white
                     {current && isToday(day) ? 'bg-luxury-white text-blackout!' : ''}
-                "> {day}
+                "> 
+                    {day}
                 </div>
             {/each}
         </div>
