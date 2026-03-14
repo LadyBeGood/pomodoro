@@ -10,9 +10,9 @@
 </script>
 
 <Header />
-<!-- <Timer /> -->
+<Timer />
 <!-- <TodoList /> -->
- <DashBoard />
+ <!-- <DashBoard /> -->
 <Footer />
 
-<Music />
+<!-- <Music /> -->
