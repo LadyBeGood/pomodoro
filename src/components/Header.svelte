@@ -1,5 +1,6 @@
 <script>
-    import { navigate } from "../router";
+    import { navigate, isActive } from "../router";
+
 
 </script>
 
@@ -11,7 +12,13 @@
     </button>
 
     <div class="text-l tracking-widest">
-        DASHBOARD
+        {#if isActive("/dashboard")}
+            DASHBOARD
+        {:else if isActive("/")}
+            TIMER
+        {:else if isActive("/schedule")}
+            SCHEDULE
+        {/if}
     </div>
 
     <button title="" onclick={() => navigate("/settings")} class="cursor-pointer p-2.5 border-2 rounded-full border-luxury-white/10 bg-blackout">

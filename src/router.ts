@@ -10,14 +10,25 @@ import Settings from './components/Settings.svelte';
 import Music from './components/Music.svelte';
 
 
+// export const { p, navigate, isActive, route } = createRouter({
+//     "/": {
+//         "/": Timer,
+//         "/dashboard": DashBoard,
+//         "/schedule": Schedule,
+//         layout: Layout
+//     },
+//     "/settings": Settings,
+//     "/music": Music
+// });
+
+
+
 export const { p, navigate, isActive, route } = createRouter({
-    "/": {
-        "/": Timer,
-        "/dashboard": DashBoard,
-        "/schedule": Schedule,
-        layout: Layout
-    },
-    "/settings": Settings,
-    "/music": Music
+    layout: Layout,
+    "/": Timer,
+    "/dashboard": DashBoard,
+    "/schedule": Schedule,
+    "/(settings)": Settings,
+    "/(music)": Music
 });
 

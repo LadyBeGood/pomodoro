@@ -69,27 +69,21 @@
     </div> 
 </div>
 
+
 <!-- 
-<div bind:this={whiteNoiseTypesElement} class="pt-3 w-[90vw] absolute right-0  top-[10svh] origin-top-right flex justify-around">
-    {#each whiteNoiseTypes as whiteNoiseType}
-        <div class="cursor-pointer tracking-widest font-black">
+ - Apparently `justify-content: flex-end` does not let the element overflow properly. Read more here:
+ - https://github.com/philipwalton/flexbugs/issues/53
+ - Adding `margin-left: auto;` to the first element is a simple workaround, just like the good ol' CSS days :)
+ -->
+<div
+    bind:this={whiteNoiseTypesElement}
+    class="overflow-auto pt-4 w-[90vw] absolute right-0 top-[10svh] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
+>
+    {#each whiteNoiseTypes as whiteNoiseType, i}
+        <div style={i === 0 ? "margin-left: auto;" : ""} class="cursor-pointer font-semibold text-blackout/60 hover:text-blackout transition-colors">
             {whiteNoiseType.toUpperCase()}
         </div>
     {/each}
-</div> -->
-
-
-<div
-  bind:this={whiteNoiseTypesElement}
-  class="pt-4 w-[90vw] absolute right-0 top-[10svh] origin-top-right flex gap-10 justify-end pr-8 text-sm tracking-widest"
->
-  {#each whiteNoiseTypes as whiteNoiseType}
-    <div
-      class="cursor-pointer font-semibold text-blackout/60 hover:text-blackout transition-colors"
-    >
-      {whiteNoiseType.toUpperCase()}
-    </div>
-  {/each}
 </div>
 
 
@@ -104,9 +98,6 @@
     </div>
 
 
-
-    
-    
     
     <div class="self-end w-full p-6 ">
 

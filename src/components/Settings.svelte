@@ -1,5 +1,46 @@
-<script>
+<script lang="ts">
     import { navigate } from "../router";
+
+    const settingTypes = [
+        "General",
+        "Theme",
+        "Credits",
+    ]
+
+    let settingTypesElement: HTMLDivElement;
+    let settingsMainElement: HTMLDivElement;
+    
+    function getRotationAngle() {
+        const angleInRadians = Math.atan2(window.innerHeight * 0.1, window.innerWidth );
+        const angleInDegrees = angleInRadians * (180 / Math.PI);
+        return -angleInDegrees;
+    }
+
+    // function getRotationAngle2() {
+    //     const angleInRadians = Math.atan2(window.innerWidth * 0.1, window.innerHeight);
+    //     const angleInDegrees = angleInRadians * (180 / Math.PI);
+    //     return angleInDegrees;
+    // }
+
+    function updateLayout() {
+        // const angle2 = getRotationAngle2();
+        // settingsMainElement.style.transform = `rotate(${angle2}deg)`;
+        // for (const child of settingsMainElement.children) {
+        //     (child as HTMLElement).style.transform = `rotate(${-angle2}deg)`;
+        //     console.log(child)
+        // }
+        settingTypesElement.style.transform = `rotate(${getRotationAngle()}deg)`;
+    }
+
+    $effect(() => {
+        updateLayout();
+        window.addEventListener("resize", updateLayout);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener("resize", updateLayout);
+        };
+    })
 
 </script>
 
@@ -22,4 +63,27 @@
         style="clip-path: polygon(100% 0, 90% 100%, 0 100%, 0 10%);">
     </div> 
 </div>
+
+
+<!-- Setting types -->
+<div
+    bind:this={settingTypesElement}
+    class="overflow-auto pt-4 w-[90vw] absolute z-6 left-0 top-[10svh] origin-top-left flex gap-10 justify-start pl-8 text-sm tracking-widest"
+>
+    {#each settingTypes as settingType}
+        <div class="cursor-pointer font-semibold text-blackout/60 hover:text-blackout transition-colors">
+            {settingType.toUpperCase()}
+        </div>
+    {/each}
+</div>
+
+
+
+<div 
+    bind:this={settingsMainElement}
+    class=" z-5 absolute left-0 bottom-0 w-[90vw] bg-pink-800 h-[82svh] origin-bottom-right overflow-x-hidden"
+>
+    
+</div>
+
 
