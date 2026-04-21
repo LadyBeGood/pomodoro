@@ -2,33 +2,24 @@
 import { createRouter } from 'sv-router';
 
 // components
-import DashBoard from "./components/DashBoard.svelte";
+import Statistics from "./components/Statistics.svelte";
 import Timer from "./components/Timer.svelte";
-import Schedule from "./components/Schedule.svelte";
+import Tasks from "./components/Tasks.svelte";
 import Layout from "./components/Layout.svelte";
 import Settings from './components/Settings.svelte';
 import Music from './components/Music.svelte';
 
 
-// export const { p, navigate, isActive, route } = createRouter({
-//     "/": {
-//         "/": Timer,
-//         "/dashboard": DashBoard,
-//         "/schedule": Schedule,
-//         layout: Layout
-//     },
-//     "/settings": Settings,
-//     "/music": Music
-// });
-
-
-
 export const { p, navigate, isActive, route } = createRouter({
-    layout: Layout,
-    "/": Timer,
-    "/dashboard": DashBoard,
-    "/schedule": Schedule,
-    "/(settings)": Settings,
-    "/(music)": Music
+    "/": {
+        "/": Timer,
+        "/statistics": Statistics,
+        "/tasks": Tasks,
+        layout: Layout
+    },
+    "/settings": Settings,
+    "/music": Music
 });
+
+
 

@@ -12,12 +12,12 @@
     </button>
 
     <div class="text-l tracking-widest">
-        {#if isActive("/dashboard")}
-            DASHBOARD
+        {#if isActive("/statistics")}
+            STATISTICS
         {:else if isActive("/")}
             TIMER
-        {:else if isActive("/schedule")}
-            SCHEDULE
+        {:else if isActive("/tasks")}
+            TASKS
         {/if}
     </div>
 

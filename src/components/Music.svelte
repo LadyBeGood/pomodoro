@@ -25,7 +25,7 @@
 
     const whiteNoiseTypes = [
         "Nature", // includes rainfall
-        "Social", // includes diner, cafe, canteen noises
+        "Public", // includes diner, cafe, canteen noises
         "Indoor",   // 
     ]
 
