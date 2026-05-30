@@ -11,3 +11,23 @@
 html, body {
     overflow-y: hidden;
 }
+
+button {
+    cursor: pointer;
+}
+
+
+
+/* hide scrollbar */
+
+/* Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* IE and Edge */
+.no-scrollbar::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar-button {
+    display: none;
+}

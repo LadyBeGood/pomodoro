@@ -2,109 +2,191 @@
     type Todo = {
         index: number;
         task: string;
+        completed: boolean;
     };
 
     let todos: Todo[] = $state([
-        { index:  1, task: "Complete the project" },
-        { index:  2, task: "Get a job and escape unemployment" },
-        { index:  3, task: "Polish portfolio and GitHub README" },
-        { index:  4, task: "Network with 3 industry professionals" },
-        { index:  5, task: "Master Svelte 5 snippets and runes" },
-        { index:  6, task: "Take a break and touch some grass" },
-        { index:  7, task: "Refactor messy CSS into Tailwind or CSS Modules" },
-        { index:  8, task: "Update LinkedIn profile and 'Open to Work' status" },
-        { index:  9, task: "Apply to 5 high-quality job postings" },
-        { index: 10, task: "Prepare for behavioral interview questions" },
-        { index: 11, task: "Solve a LeetCode 'Medium' without crying" },
-        { index: 12, task: "Write a blog post about a technical challenge" },
-        { index: 13, task: "Review Svelte's $derived and $effect runes" },
-        { index: 14, task: "Clean up local repository branches" },
-        { index: 15, task: "Optimize project loading speed (Lighthouse score)" },
-        { index: 16, task: "Research salary benchmarks for target roles" },
-        { index: 17, task: "Build a small demo using a new API" },
-        { index: 18, task: "Drink 2 liters of water" },
-        { index: 19, task: "Set up a professional email signature" },
-        { index: 20, task: "Celebrate a small win (like finishing this list)" },
+        { index: 1, task: "Get a job and escape unemployment", completed: false },
+        { index: 2, task: "Master Svelte 5 snippets and runes", completed: false },
+        { index: 3, task: "Complete the project", completed: false },
+        { index: 4, task: "Polish portfolio and GitHub README", completed: true },
+        { index: 5, task: "Network with 3 industry professionals", completed: false },
+        // { index: 6, task: "Complete the project", completed: false },
+        // { index: 7, task: "Get a job and escape unemployment", completed: false },
+        // { index: 8, task: "Polish portfolio and GitHub README", completed: true },
+        // { index: 9, task: "Network with 3 industry professionals", completed: false },
+        // { index: 10, task: "Master Svelte 5 snippets and runes", completed: false },
+        // { index: 11, task: "Complete the project", completed: false },
+        // { index: 12, task: "Get a job and escape unemployment", completed: false },
+        // { index: 13, task: "Polish portfolio and GitHub README", completed: true },
+        // { index: 14, task: "Network with 3 industry professionals", completed: false },
+        // { index: 15, task: "Master Svelte 5 snippets and runes", completed: false },
     ]);
 
-    function insertTodo(todo: Todo) {
-        todos = [...todos, todo];
+    let newTodoTask = $state("");
+
+    function handleAddTodo(e: SubmitEvent) {
+        e.preventDefault();
+        if (!newTodoTask.trim()) return;
+
+        const nextIndex = todos.length > 0 ? Math.max(...todos.map(t => t.index)) + 1 : 1;
+        todos = [...todos, { index: nextIndex, task: newTodoTask.trim(), completed: false }];
+        newTodoTask = "";
+    }
+
+    function toggleTodo(index: number) {
+        const todo = todos.find(t => t.index === index);
+        if (todo) todo.completed = !todo.completed;
     }
 
     function removeTodo(index: number) {
-        todos = todos.filter((todo: Todo) => todo.index === index);
+        todos = todos.filter((todo: Todo) => todo.index !== index);
     }
 </script>
 
-<div class="h-full w-full overflow-auto">
+<div class="bg-blackout text-luxury-white overflow-y-auto px-8 pt-24 pb-36 select-none scrollbar-none h-full grid place-items-center">
+    <div class="max-w-83.25 mx-auto flex flex-col relative">
+        {#each todos as todo (todo.index)}
+            <div class="w-full overflow-x-auto flex no-scrollbar snap-x snap-mandatory items-center">
+                <button
+                    onclick={() => toggleTodo(todo.index)}
+                    class="flex w-full shrink-0 gap-6 text-left items-start py-4 relative z-10 active:opacity-70 transition-opacity snap-start snap-always "
+                >
+                    <p class="text-lg font-medium leading-snug flex-1 transition-all
+                        {todo.completed ? 'line-through text-luxury-white/20' : 'text-luxury-white'}"
+                    >
+                        {todo.task}
+                    </p>
+                </button>
 
-    <div class="text-luxury-white pt-26 pb-56 p-6 max-w-md gap-6 flex flex-col">
-        <div class="flex gap-4">
-            <div class="w-2 h-32 bg-luxury-white rounded"></div>
-            <div>
-                <p class="text-sm text-luxury-white/50 tabular-nums">09:00 AM</p>
-                <p class="text-lg font-medium">Daily standup meeting</p>
+                <button 
+                    onclick={() => removeTodo(todo.index)}
+                    class="snap-end px-8 h-full flex items-center justify-center text-xs font-bold tracking-widest text-red-400 uppercase cursor-pointer border-none shrink-0 active:text-red-500"
+                >
+                    Clear
+                </button>
             </div>
-        </div>
+        {/each}
 
-        <div class="flex gap-4">
-            <div class="w-2 bg-luxury-white/40 rounded"></div>
-            <div>
-                <p class="text-sm text-luxury-white/50 tabular-nums">11:00 AM</p>
-                <p class="text-lg font-medium">Review Svelte's $derived and $effect runes</p>
-            </div>
-        </div>
+        <form onsubmit={handleAddTodo} class="flex gap-6 items-start py-4 relative z-10">
+            <input 
+                type="text" 
+                bind:value={newTodoTask}
+                placeholder="Write target..."
+                class="w-full bg-transparent border-none text-luxury-white placeholder:text-luxury-white/10 outline-none text-lg font-medium tracking-wide p-0"
+            />
+            <span class="w-8 text-lg font-medium shrink-0 text-luxury-white/20 text-center bg-blackout">
+                +
+            </span>
+        </form>
 
-        <div class="flex gap-4">
-            <div class="w-2 h-24 bg-luxury-white rounded"></div>
-            <div>
-                <p class="text-sm text-luxury-white/50 tabular-nums">11:30 AM</p>
-                <p class="text-lg font-medium">Work on dashboard UI</p>
-            </div>
-        </div>
-
-        <div class="flex gap-4">
-            <div class="w-2 h-42 bg-luxury-white/40 rounded"></div>
-            <div>
-                <p class="text-sm text-luxury-white/50 tabular-nums">11:00 AM</p>
-                <p class="text-lg font-medium">Design review</p>
-            </div>
-        </div>
-
-
-
-            
-        <div class="flex gap-4">
-            <div class="w-2 h-32 bg-luxury-white rounded"></div>
-            <div>
-                <p class="text-sm text-luxury-white/50 tabular-nums">09:00 AM</p>
-                <p class="text-lg font-medium">Daily standup meeting</p>
-            </div>
-        </div>
-
-        <div class="flex gap-4">
-            <div class="w-2 bg-luxury-white/40 rounded"></div>
-            <div>
-                <p class="text-sm text-luxury-white/50 tabular-nums">11:00 AM</p>
-                <p class="text-lg font-medium">Review Svelte's $derived and $effect runes</p>
-            </div>
-        </div>
-    </div>
-
-
-
-    <div
-        class="cursor-pointer fixed left-1/2 -translate-1/2 bottom-24 bg-luxury-white text-blackout rounded-full w-12 h-12 grid place-items-center"
-    >
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="currentColor"
-            ><path
-                d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"
-            /></svg
-        >
     </div>
 </div>
+
+
+
+
+<!-- 
+<script lang="ts">
+    type Todo = {
+        index: number;
+        task: string;
+        completed: boolean;
+    };
+
+    let todos: Todo[] = $state([
+        { index: 1, task: "Complete the project", completed: false },
+        { index: 2, task: "Get a job and escape unemployment", completed: false },
+        { index: 3, task: "Polish portfolio and GitHub README", completed: true },
+        { index: 4, task: "Network with 3 industry professionals", completed: false },
+        { index: 5, task: "Master Svelte 5 snippets and runes", completed: false }
+    ]);
+
+    let newTodoTask = $state("");
+
+    function handleAddTodo(e: SubmitEvent) {
+        e.preventDefault();
+        if (!newTodoTask.trim()) return;
+
+        const nextIndex = todos.length > 0 ? Math.max(...todos.map(t => t.index)) + 1 : 1;
+        todos = [...todos, { index: nextIndex, task: newTodoTask.trim(), completed: false }];
+        newTodoTask = "";
+    }
+
+    function toggleTodo(index: number) {
+        const todo = todos.find(t => t.index === index);
+        if (todo) todo.completed = !todo.completed;
+    }
+
+    function removeTodo(index: number) {
+        todos = todos.filter((todo: Todo) => todo.index !== index);
+    }
+</script>
+
+<div class="fixed inset-0 bg-blackout text-luxury-white overflow-y-auto pt-32 pb-40 select-none scrollbar-none">
+    <div class="max-w-md mx-auto flex flex-col relative">
+        
+        <div class="absolute left-4 top-3 bottom-3 w-[1px] bg-luxury-white/10 z-0"></div>
+
+        {#each todos as todo (todo.index)}
+            <div class="w-full overflow-x-auto flex scrollbar-none snap-x snap-mandatory hidden-scrollbar">
+                
+                <div 
+                    onclick={() => toggleTodo(todo.index)}
+                    class="w-full shrink-0 flex gap-6 items-start py-4 pr-6 relative z-10 active:opacity-70 transition-opacity snap-start snap-always bg-blackout"
+                >
+                    <span class="w-8 text-xs font-medium tabular-nums tracking-wider pt-1.5 shrink-0 bg-blackout text-center
+                        {todo.completed ? 'text-luxury-white/20' : 'text-luxury-white/60'}"
+                    >
+                        {String(todo.index).padStart(2, '0')}
+                    </span>
+
+                    <p class="text-lg font-medium leading-snug flex-1 transition-all
+                        {todo.completed ? 'line-through text-luxury-white/20' : 'text-luxury-white'}"
+                    >
+                        {todo.task}
+                    </p>
+
+                    <span class="text-[10px] text-luxury-white/10 pt-2 font-mono shrink-0 select-none">
+                        &larr;
+                    </span>
+                </div>
+
+                <button 
+                    onclick={() => removeTodo(todo.index)}
+                    class="snap-end bg-blackout px-8 h-full flex items-center justify-center text-xs font-bold tracking-widest text-red-400 uppercase cursor-pointer border-none shrink-0 active:text-red-500"
+                >
+                    Clear
+                </button>
+            </div>
+        {/each}
+
+        <form onsubmit={handleAddTodo} class="flex gap-6 items-start py-4 relative z-10 mt-2 pl-0 pr-6">
+            <span class="w-8 text-xs font-medium tabular-nums tracking-wider pt-1.5 shrink-0 text-luxury-white/20 text-center bg-blackout">
+                +
+            </span>
+            <input 
+                type="text" 
+                bind:value={newTodoTask}
+                placeholder="Write target..."
+                class="w-full bg-transparent border-none text-luxury-white placeholder:text-luxury-white/10 outline-none text-lg font-medium tracking-wide p-0"
+            />
+        </form>
+
+    </div>
+</div>
+
+<style>
+    /* Completely sterilize system scrollbars across mobile viewports */
+    .scrollbar-none::-webkit-scrollbar,
+    .hidden-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-none,
+    .hidden-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
+-->
