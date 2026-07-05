@@ -1,11 +1,12 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import { scrollIndex } from "./state.svelte";
 
-    function handleScroll(event: Event) {
-        const element = event.currentTarget as HTMLDivElement;
-        const currentScroll = element.scrollLeft;
+    let homeElement: HTMLDivElement;
+    function handleScroll() {
+        const currentScroll = homeElement.scrollLeft;
   
-        const maxScroll = element.scrollWidth - element.clientWidth;
+        const maxScroll = homeElement.scrollWidth - homeElement.clientWidth;
 
         // Check if at the leftmost edge
         if (currentScroll <= maxScroll / 2) {
@@ -17,9 +18,17 @@
             scrollIndex.value = 2;
         }
     }
+
+    onMount(() => {
+        if (scrollIndex.value === 1) {
+            homeElement.scrollTo(0, 0);
+        } else {
+            homeElement.scrollTo(homeElement.clientWidth, 0)
+        }
+    })
 </script>
 
-<div onscroll={handleScroll} class="flex overflow-auto w-svw no-scrollbar snap-x snap-mandatory">
+<div bind:this={homeElement} onscroll={handleScroll} class="flex overflow-auto w-svw no-scrollbar snap-x snap-mandatory">
     <div class="flex items-center justify-center shrink-0 flex-col gap-4 w-svw h-svh snap-start snap-always">
         <div
             class="text-luxury-white w-48 h-48 rounded-full p-2.5 relative tabular-nums"

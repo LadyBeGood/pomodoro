@@ -1,9 +1,13 @@
-<script>
+<script lang="ts">
     import { navigate, isActive } from "../router";
     import { scrollIndex } from "./state.svelte";
+    import { slide } from 'svelte/transition';
 </script>
 
 
+{#snippet slidingText(text: string)}
+    <span class="absolute top-1/2 left-1/2 -translate-1/2" transition:slide={{ duration: 250 }}>{text}</span>
+{/snippet}
 
 <div class="fixed left-0 right-0 top-0 flex justify-between mx-5 my-5 items-center text-luxury-white">
     <button title="" onclick={() => navigate("/music")} class="p-2.5 border-2 rounded-full border-luxury-white/10 bg-blackout">
@@ -12,11 +16,13 @@
 
     <div class="text-l tracking-widest">
         {#if isActive("/statistics")}
-            STATISTICS
-        {:else if isActive("/")}
-            POMODORO
+            {@render slidingText("STATISTICS")}
+        {:else if isActive("/") && scrollIndex.value === 1}
+            {@render slidingText("POMODORO")}
+        {:else if isActive("/") && scrollIndex.value === 2}
+            {@render slidingText("TIMER")}
         {:else if isActive("/tasks")}
-            TASKS
+            {@render slidingText("TASKS")}
         {/if}
     </div>
 
@@ -36,6 +42,8 @@
     @reference "../main.css";
 
     .scroll-indicator {
-        @apply h-1.5 w-1.5 rounded-full transition-all duration-250;
+        @apply h-1.5 w-1.5 rounded-full transition-colors duration-250;
     }
+
+
 </style>
