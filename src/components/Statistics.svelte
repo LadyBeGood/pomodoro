@@ -71,8 +71,8 @@
     });
 </script>
 
-<div class="w-full h-full pt-22 pb-28 overflow-y-auto flex flex-col gap-10 px-4">
-    <div>
+<div class="w-full h-full pt-22 pb-28 overflow-y-auto flex flex-col gap-10 px-4 items-center">
+    <div class="max-w-100 w-full">
         <div class="flex gap-2 mb-8 bg-luxury-white rounded-full px-3 py-1">
             <div class="flex text-blackout text-sm items-center gap-2 cursor-pointer">
                 <div>
@@ -96,3 +96,4 @@
         </div>
     </div>
 </div>
+
