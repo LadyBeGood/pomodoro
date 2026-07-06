@@ -97,17 +97,17 @@
         <!-- <div style="padding-right: calc(2 * 0.9vw);" class="">
             <div class="cursor-pointer">Pomodoro Length</div>
             <div class="text-blackout/70 cursor-pointer text-xs">25 minutes</div>
-            </div>
+        </div>
             
-            <div style="padding-right: calc(3 * 0.9vw);" class="">
-                <div class="cursor-pointer">Break Length</div>
-                <div class="text-blackout/70 cursor-pointer text-xs">5 minutes</div>
-                </div>
-                
-                <div style="padding-right: calc(4 * 0.9vw);" class="">
-                    <div class="cursor-pointer">Disable Breaks</div>
-                    <div class="text-blackout/70 cursor-pointer text-xs">off</div>
-                    </div> -->
+        <div style="padding-right: calc(3 * 0.9vw);" class="">
+            <div class="cursor-pointer">Break Length</div>
+            <div class="text-blackout/70 cursor-pointer text-xs">5 minutes</div>
+        </div>
+            
+        <div style="padding-right: calc(4 * 0.9vw);" class="">
+            <div class="cursor-pointer">Disable Breaks</div>
+            <div class="text-blackout/70 cursor-pointer text-xs">off</div>
+        </div> -->
                     
         <div style="padding-right: calc(1 * 0.9vw);" class="">
             <div class="cursor-pointer">Default home page</div>
