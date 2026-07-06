@@ -83,7 +83,7 @@
 
 <div 
     bind:this={settingsMainElement}
-     in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}
+    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}
     class="z-1 absolute left-0 bottom-0 w-[90vw] bg-pink-800 h-[82svh] origin-bottom-right overflow-x-hidden"
 >
     
