@@ -63,8 +63,11 @@
 </div>
 
 
-<div class="absolute right-0 bottom-0 z-1 w-[90vw] h-[82svh] grid" in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}>
-    <div class="flex flex-col gap-6 overflow-auto">
+<div 
+    class="absolute right-0 bottom-0 z-1 w-[90vw] h-[82svh] grid" 
+    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}
+>
+    <div class="flex flex-col gap-6 overflow-auto no-scrollbar">
         {#each whiteNoises as whiteNoise, i}
             <div style="padding-left: calc({i} * 0.9vw);">
                 <div data-id="{whiteNoise.id}"  class="cursor-pointer">{whiteNoise.name}</div>
