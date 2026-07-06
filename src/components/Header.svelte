@@ -1,7 +1,7 @@
 <script lang="ts">
     import { navigate, isActive } from "../router";
     import { scrollIndex } from "./state.svelte";
-    import { slide } from 'svelte/transition';
+    import { slide } from "svelte/transition";
 </script>
 
 

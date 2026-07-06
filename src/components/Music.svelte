@@ -1,33 +1,8 @@
 
 <script lang="ts">
+    import { fade, slide } from "svelte/transition";
+    import { whiteNoiseTypes, whiteNoises } from "../database/music";
     import { navigate } from "../router";
-
-    const whiteNoises = [
-        { id: 136403, name: "Stream Nov",        creator: "juskiddink",  src: "./white-noise/" },
-        { id: 167057, name: "School Canteen",    creator: "slag777",     src: "./white-noise/" },
-        { id: 827225, name: "Rain",              creator: "filmscore",   src: "./white-noise/" },
-        { id: 521772, name: "Rain on rooftop",   creator: "mrfossy",     src: "./white-noise/" },
-        { id: 733288, name: "Rain and thunder",  creator: "soundrack",   src: "./white-noise/" },
-        { id: 540299, name: "Coffee shop",       creator: "aidansamuel", src: "./white-noise/" },
-        { id: 627079, name: "Diner in Virginia", creator: "laggardson",  src: "./white-noise/" },
-
-        // { id: 901201, name: "Forest Birds",      creator: "naturewave",   src: "./white-noise/" },
-        // { id: 901202, name: "Night Crickets",    creator: "naturewave",   src: "./white-noise/" },
-        // { id: 901203, name: "Ocean Waves",       creator: "seasound",     src: "./white-noise/" },
-        // { id: 901204, name: "Wind in Trees",     creator: "ambientlab",   src: "./white-noise/" },
-        // { id: 901205, name: "Library Ambience",  creator: "quietspace",   src: "./white-noise/" },
-        // { id: 901206, name: "Keyboard Typing",   creator: "workroom",     src: "./white-noise/" },
-        // { id: 901207, name: "Fireplace",         creator: "fireside",     src: "./white-noise/" },
-        // { id: 901208, name: "Train Ride",        creator: "railambient",  src: "./white-noise/" },
-        // { id: 901209, name: "Airplane Cabin",    creator: "travelsound",  src: "./white-noise/" },
-        // { id: 901210, name: "City Night",        creator: "urbanloop",    src: "./white-noise/" }
-    ]
-
-    const whiteNoiseTypes = [
-        "Nature", // includes rainfall
-        "Public", // includes diner, cafe, canteen noises
-        "Indoor",   // 
-    ]
 
     let whiteNoiseTypesElement: HTMLDivElement;
     
@@ -55,15 +30,15 @@
 
 
 <!-- overlay -->
- <div class="fixed top-0 left-0 right-0 bottom-0 bg-blackout/95"></div>
+ <div class="fixed z-1 top-0 left-0 w-svw h-svh bg-blackout/95" out:slide={{ duration: 250, delay: 250 }}></div>
 
 <!-- close button -->
-<button title="Close Music Menu" onclick={() => navigate(-1)} class="absolute right-5 top-5 z-50">
+<button title="Close Music Menu" onclick={() => navigate(-1)} class="absolute right-5 top-5 z-50" transition:fade={{ duration: 250 }}>
     <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#fafafa"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
 </button>
 
 
-<div class="absolute top-0 left-0 w-full h-full">
+<div class="absolute top-0 left-0 w-full h-full z-1" in:slide={{ duration: 250 }} out:slide={{ duration: 250, delay: 250 }}>
     <div class="bg-luxury-white absolute w-full h-full" 
         style="clip-path: polygon(0 0, 100% 10%, 100% 100%, 10% 100%);">
     </div> 
@@ -77,7 +52,8 @@
  -->
 <div
     bind:this={whiteNoiseTypesElement}
-    class="overflow-auto pt-4 w-[90vw] absolute right-0 top-[10svh] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
+    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}
+    class="overflow-auto z-1 pt-4 w-[90vw] absolute right-0 top-[10svh] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
 >
     {#each whiteNoiseTypes as whiteNoiseType, i}
         <div style={i === 0 ? "margin-left: auto;" : ""} class="cursor-pointer font-semibold text-blackout/60 hover:text-blackout transition-colors">
@@ -87,7 +63,7 @@
 </div>
 
 
-<div class="absolute right-0 bottom-0 w-[90vw] h-[82svh] grid">
+<div class="absolute right-0 bottom-0 z-1 w-[90vw] h-[82svh] grid" in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}>
     <div class="flex flex-col gap-6 overflow-auto">
         {#each whiteNoises as whiteNoise, i}
             <div style="padding-left: calc({i} * 0.9vw);">
