@@ -76,7 +76,7 @@
             </div>
         </div>
 
-        <p class="text-luxury-white/50">
+        <p class="dark:text-luxury-white/40 text-luxury-white/60">
             Click anywhere to start
         </p>
     </div>

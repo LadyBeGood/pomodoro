@@ -33,8 +33,8 @@
  <div class="fixed z-1 top-0 left-0 w-svw h-svh bg-blackout/95" out:slide={{ duration: 250, delay: 250 }}></div>
 
 <!-- close button -->
-<button title="Close Music Menu" onclick={() => navigate(-1)} class="absolute right-5 top-5 z-50" transition:fade={{ duration: 250 }}>
-    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#fafafa"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
+<button title="Close Music Menu" onclick={() => navigate(-1)} class="absolute right-5 top-5 z-2 text-luxury-white" transition:fade={{ duration: 250 }}>
+    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="currentColor"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
 </button>
 
 

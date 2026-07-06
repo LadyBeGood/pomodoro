@@ -53,7 +53,7 @@
                     class="flex w-full shrink-0 gap-6 text-left items-start py-4 relative z-10 active:opacity-70 transition-opacity snap-start snap-always "
                 >
                     <p class="text-lg font-medium leading-snug flex-1 transition-all
-                        {todo.completed ? 'line-through text-luxury-white/20' : 'text-luxury-white'}"
+                        {todo.completed ? 'line-through text-dravit-grey' : 'text-luxury-white'}"
                     >
                         {todo.task}
                     </p>
@@ -73,9 +73,9 @@
                 type="text" 
                 bind:value={newTodoTask}
                 placeholder="Write target..."
-                class="w-full bg-transparent border-none text-luxury-white placeholder:text-luxury-white/10 outline-none text-lg font-medium tracking-wide p-0"
+                class="w-full bg-transparent border-none text-luxury-white placeholder:text-dravit-grey outline-none text-lg font-medium tracking-wide p-0"
             />
-            <span class="w-8 text-lg font-medium shrink-0 text-luxury-white/20 text-center bg-blackout">
+            <span class="w-8 text-lg font-medium shrink-0 text-dravit-grey text-center bg-blackout">
                 +
             </span>
         </form>

@@ -2,14 +2,29 @@
 
 
 @theme {
-    --color-blackout: #1F1F1F;
-    --color-luxury-white: #FAFAFA;
-    --color-dravit-grey: #5E5E5E;
+    --color-blackout: #FAFAFA;
+    --color-luxury-white: #1F1F1F;
+    --color-dravit-grey: hsl(0, 0%, 55%);
 }
 
+@media (prefers-color-scheme: dark) {
+    @theme {
+        --color-blackout: #1F1F1F;
+        --color-dravit-grey: #5E5E5E;
+        --color-luxury-white: #FAFAFA;
+    }
+
+    body {
+        color: var(--color-luxury-white);
+    }
+}
 
 html, body {
     overflow-y: hidden;
+}
+
+body {
+    color: var(--color-blackout)
 }
 
 button {
