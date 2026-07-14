@@ -70,7 +70,7 @@
 <!-- Setting types -->
 <div
     bind:this={settingTypesElement}
-    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}
+    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
     class="z-1 overflow-auto py-4 w-[90vw] absolute left-0 top-[10svh] origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
 >
     {#each settingTypes as settingType}
@@ -84,7 +84,7 @@
 
 <div 
     bind:this={settingsMainElement}
-    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}
+    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
     class="z-1 absolute left-0 bottom-0 w-[90vw] h-[82svh] grid"
 >
     <div class="flex flex-col gap-10 overflow-auto  text-right">

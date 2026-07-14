@@ -52,7 +52,7 @@
  -->
 <div
     bind:this={whiteNoiseTypesElement}
-    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}
+    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
     class="overflow-auto z-1 pt-4 w-[90vw] absolute right-0 top-[10svh] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
 >
     {#each whiteNoiseTypes as whiteNoiseType, i}
@@ -65,7 +65,7 @@
 
 <div 
     class="absolute right-0 bottom-0 z-1 w-[90vw] h-[82svh] grid" 
-    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250}}
+    in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
 >
     <div class="flex flex-col gap-6 overflow-auto no-scrollbar">
         {#each whiteNoises as whiteNoise, i}
