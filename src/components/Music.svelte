@@ -1,11 +1,21 @@
 
 <script lang="ts">
+    /*==============================*/
+    /* Imports                      */
+    /*==============================*/
     import { fade, slide } from "svelte/transition";
     import { whiteNoiseTypes, whiteNoises } from "../database/music";
     import { navigate } from "../router";
+    import LightBeam from "./LightBeam.svelte";
 
+    /*==============================*/
+    /* Refs                         */
+    /*==============================*/
     let whiteNoiseTypesElement: HTMLDivElement;
-    
+
+    /*==============================*/
+    /* Handlers                     */
+    /*==============================*/
     function getRotationAngle() {
         const angleInRadians = Math.atan2(window.innerWidth, window.innerHeight * 0.1);
         const angleInDegrees = angleInRadians * (180 / Math.PI);
@@ -16,6 +26,9 @@
         whiteNoiseTypesElement.style.transform = `rotate(${getRotationAngle()}deg)`
     }
 
+    /*==============================*/
+    /* Effects                      */
+    /*==============================*/
     $effect(() => {
         updateLayout();
         window.addEventListener("resize", updateLayout);
@@ -25,12 +38,11 @@
             window.removeEventListener("resize", updateLayout);
         };
     })
-
 </script>
 
 
 <!-- overlay -->
- <div class="fixed z-1 top-0 left-0 w-svw h-svh bg-blackout/95" out:slide={{ duration: 250, delay: 250 }}></div>
+ <div class="fixed z-1 top-0 left-0 w-svw h-svh bg-blackout/95" out:fade={{ duration: 250, delay: 250 }}></div>
 
 <!-- close button -->
 <button title="Close Music Menu" onclick={() => navigate(-1)} class="absolute right-5 top-5 z-2 text-luxury-white" transition:fade={{ duration: 250 }}>
@@ -38,11 +50,9 @@
 </button>
 
 
-<div class="absolute top-0 left-0 w-full h-full z-1" in:slide={{ duration: 250 }} out:slide={{ duration: 250, delay: 250 }}>
-    <div class="bg-luxury-white absolute w-full h-full" 
-        style="clip-path: polygon(0 0, 100% 10%, 100% 100%, 10% 100%);">
-    </div> 
-</div>
+
+<!-- light beam -->
+<LightBeam origin="left" />
 
 
 <!-- 
