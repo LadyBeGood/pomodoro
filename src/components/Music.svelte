@@ -66,9 +66,9 @@
     class="overflow-auto z-1 pt-4 w-[90vw] absolute right-0 top-[10svh] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
 >
     {#each whiteNoiseTypes as whiteNoiseType, i}
-        <div style={i === 0 ? "margin-left: auto;" : ""} class="cursor-pointer font-semibold text-blackout/60 hover:text-blackout transition-colors">
+        <button style={i === 0 ? "margin-left: auto;" : ""} class="cursor-pointer font-semibold text-blackout/60 hover:text-blackout transition-colors">
             {whiteNoiseType.toUpperCase()}
-        </div>
+        </button>
     {/each}
 </div>
 
@@ -79,10 +79,10 @@
 >
     <div class="flex flex-col gap-6 overflow-auto no-scrollbar">
         {#each whiteNoises as whiteNoise, i}
-            <div style="padding-left: calc({i} * 0.9vw);">
+            <button style="padding-left: calc({i} * 0.9vw);">
                 <div data-id="{whiteNoise.id}"  class="cursor-pointer">{whiteNoise.name}</div>
                 <div class="text-blackout/70 cursor-pointer text-xs">{whiteNoise.creator}</div>
-            </div>
+            </button>
         {/each}
     </div>
 
@@ -99,17 +99,17 @@
 
             <div class="flex gap-4 items-center">
 
-                <div class="text-blackout/70 hover:text-white">
+                <button title="Previous" class="text-blackout/70 hover:text-blackout">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M220-280v-400q0-17 11.5-28.5T260-720q17 0 28.5 11.5T300-680v400q0 17-11.5 28.5T260-240q-17 0-28.5-11.5T220-280Zm458-1L430-447q-9-6-13.5-14.5T412-480q0-10 4.5-18.5T430-513l248-166q5-4 11-5t11-1q16 0 28 11t12 29v330q0 18-12 29t-28 11q-5 0-11-1t-11-5Z"/></svg>
-                </div>
+                </button>
 
-                <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blackout text-luxury-white font-bold shadow-lg">
+                <button title="Play" class="w-12 h-12 flex items-center justify-center rounded-full bg-blackout text-luxury-white font-bold shadow-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z"/></svg>
-                </div>
+                </button>
 
-                <div class="text-blackout/70 hover:text-white">
+                <button title="Next" class="text-blackout/70 hover:text-blackout">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M660-280v-400q0-17 11.5-28.5T700-720q17 0 28.5 11.5T740-680v400q0 17-11.5 28.5T700-240q-17 0-28.5-11.5T660-280Zm-440-35v-330q0-18 12-29t28-11q5 0 11 1t11 5l248 166q9 6 13.5 14.5T548-480q0 10-4.5 18.5T530-447L282-281q-5 4-11 5t-11 1q-16 0-28-11t-12-29Z"/></svg>
-                </div>
+                </button>
 
             </div>
 
