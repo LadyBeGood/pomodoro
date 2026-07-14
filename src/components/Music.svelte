@@ -88,7 +88,7 @@
 
 
     
-    <div class="self-end w-full p-6 ">
+    <div class="self-end w-full p-6">
 
         <div class="flex items-center justify-between">
 

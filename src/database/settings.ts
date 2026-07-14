@@ -1,16 +1,16 @@
 
 
-type SettingSection = "general" | "pomodoro" | "statistics";
+type SettingCategories = "general" | "pomodoro" | "statistics";
 type SettingOption = { value: string; selected: boolean };
 
-type SelectionSetting<T extends SettingSection> = {
+type SelectionSetting<T extends SettingCategories> = {
     id: `${T}-setting-${number}`,
     type: "choose" | "loop",
     name: string,
     options: SettingOption[],
 }
 
-type ActionSetting<T extends SettingSection> = {
+type ActionSetting<T extends SettingCategories> = {
     id: `${T}-setting-${number}`,
     type: "action",
     name: string,
@@ -18,7 +18,7 @@ type ActionSetting<T extends SettingSection> = {
     value: string
 }
 
-export type Setting<T extends SettingSection> =
+export type Setting<T extends SettingCategories> =
     | SelectionSetting<T>
     | ActionSetting<T>;
 

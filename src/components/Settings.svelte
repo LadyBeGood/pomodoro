@@ -1,6 +1,7 @@
 <script lang="ts">
     import { fade, slide } from "svelte/transition";
     import { navigate } from "../router";
+    import LightBeam from "./LightBeam.svelte";
 
     const settingTypes = [
         "General",
@@ -18,19 +19,7 @@
         return -angleInDegrees;
     }
 
-    // function getRotationAngle2() {
-    //     const angleInRadians = Math.atan2(window.innerWidth * 0.1, window.innerHeight);
-    //     const angleInDegrees = angleInRadians * (180 / Math.PI);
-    //     return angleInDegrees;
-    // }
-
     function updateLayout() {
-        // const angle2 = getRotationAngle2();
-        // settingsMainElement.style.transform = `rotate(${angle2}deg)`;
-        // for (const child of settingsMainElement.children) {
-        //     (child as HTMLElement).style.transform = `rotate(${-angle2}deg)`;
-        //     console.log(child)
-        // }
         settingTypesElement.style.transform = `rotate(${getRotationAngle()}deg)`;
     }
 
@@ -43,7 +32,6 @@
             window.removeEventListener("resize", updateLayout);
         };
     })
-
 </script>
 
 
@@ -59,15 +47,10 @@
     <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="currentColor"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
 </button> 
 
+<!-- light beam -->
+<LightBeam origin="right" />
 
-<div class="z-1 absolute top-0 left-0 w-full h-full" in:slide={{ duration: 250 }} out:slide={{ duration: 250, delay: 250 }}>
-    <div class="bg-luxury-white absolute w-full h-full" 
-        style="clip-path: polygon(100% 0, 90% 100%, 0 100%, 0 10%);">
-    </div> 
-</div>
-
-
-<!-- Setting types -->
+<!-- setting categories -->
 <div
     bind:this={settingTypesElement}
     in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
@@ -81,7 +64,7 @@
 </div>
 
 
-
+<!-- settings -->
 <div 
     bind:this={settingsMainElement}
     in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
@@ -92,22 +75,6 @@
             <div class="cursor-pointer">Theme</div>
             <div class="text-blackout/70 cursor-pointer text-xs">Dark</div>
         </div>
-
-        
-        <!-- <div style="padding-right: calc(2 * 0.9vw);" class="">
-            <div class="cursor-pointer">Pomodoro Length</div>
-            <div class="text-blackout/70 cursor-pointer text-xs">25 minutes</div>
-        </div>
-            
-        <div style="padding-right: calc(3 * 0.9vw);" class="">
-            <div class="cursor-pointer">Break Length</div>
-            <div class="text-blackout/70 cursor-pointer text-xs">5 minutes</div>
-        </div>
-            
-        <div style="padding-right: calc(4 * 0.9vw);" class="">
-            <div class="cursor-pointer">Disable Breaks</div>
-            <div class="text-blackout/70 cursor-pointer text-xs">off</div>
-        </div> -->
                     
         <div style="padding-right: calc(1 * 0.9vw);" class="">
             <div class="cursor-pointer">Default home page</div>
@@ -118,17 +85,6 @@
             <div class="cursor-pointer">Show notifications</div>
             <div class="text-blackout/70 cursor-pointer text-xs">Yes</div>
         </div>
-        
-
-        <!-- <div style="padding-right: calc(6 * 0.9vw);" class="">
-            <div class="cursor-pointer">Auto-start Pomodoro</div>
-            <div class="text-blackout/70 cursor-pointer text-xs">off</div>
-        </div>
-
-        <div style="padding-right: calc(6 * 0.9vw);" class="">
-            <div class="cursor-pointer">Auto-start Break</div>
-            <div class="text-blackout/70 cursor-pointer text-xs">off</div>
-        </div> -->
     </div>
 
 

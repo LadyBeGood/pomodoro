@@ -15,7 +15,9 @@
             css: (t: number) => {
                 const eased = linear(t); 
                 const size = eased * 150; 
-                return `mask-image: radial-gradient(circle at 0% 0%, white ${size}%, transparent 0);`
+                return origin === "left" 
+                    ? `mask-image: radial-gradient(circle at 0% 0%, white ${size}%, transparent 0);` 
+                    : `mask-image: radial-gradient(circle at 100% 0%, white ${size}%, transparent 0);`;
             }
         };
     }
