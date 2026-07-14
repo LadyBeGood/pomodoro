@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 @theme {
     --color-blackout: #FAFAFA;
     --color-luxury-white: #1F1F1F;
@@ -24,7 +23,7 @@ html, body {
 }
 
 body {
-    color: var(--color-blackout)
+    color: var(--color-blackout);
 }
 
 button {
