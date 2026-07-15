@@ -55,9 +55,9 @@
             "url": "/#/music",
             "icons": [
                 {
-                    "src": "./shortcuts/music-96x96.webp",
+                    "src": "./shortcuts/music-192x192.webp",
                     "type": "image/webp",
-                    "sizes": "96x96"
+                    "sizes": "192x192"
                 }
             ]
         },
@@ -66,9 +66,9 @@
             "url": "/#/settings",
             "icons": [
                 {
-                    "src": "./shortcuts/settings-96x96.webp",
+                    "src": "./shortcuts/settings-192x192.webp",
                     "type": "image/webp",
-                    "sizes": "96x96"
+                    "sizes": "192x192"
                 }
             ]
         },
@@ -77,9 +77,9 @@
             "url": "/#/tasks",
             "icons": [
                 {
-                    "src": "./shortcuts/tasks-96x96.webp",
+                    "src": "./shortcuts/tasks-192x192.webp",
                     "type": "image/webp",
-                    "sizes": "96x96"
+                    "sizes": "192x192"
                 }
             ]
         },
@@ -88,9 +88,9 @@
             "url": "/#/statistics",
             "icons": [
                 {
-                    "src": "./shortcuts/statistics-96x96.webp",
+                    "src": "./shortcuts/statistics-192x192.webp",
                     "type": "image/webp",
-                    "sizes": "96x96"
+                    "sizes": "192x192"
                 }
             ]
         }
