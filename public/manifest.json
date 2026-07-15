@@ -6,9 +6,21 @@
     "theme_color": "#1F1F1F",
     "icons": [
         {
-            "src": "./icon-256x256.png",
+            "src": "./icon-filled-256x256-2.png",
             "sizes": "256x256",
             "type": "image/png"
+        },
+        {
+            "src": "./icon-filled-256x256-2.png",
+            "sizes": "256x256",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "./icon-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png",
+            "purpose": "monochrome"
         }
     ],
     "screenshots": [
@@ -39,42 +51,46 @@
     ],
     "shortcuts": [
         {
-            "name": "Tasks",
-            "url": "/tasks",
-            "icons": [
-                {
-                    "src": "./shortcuts/tasks.png",
-                    "sizes": "192x192"
-                }
-            ]
-        },
-        {
-            "name": "Statistics",
-            "url": "/statistics",
-            "icons": [
-                {
-                    "src": "./shortcuts/statistics.png",
-                    "sizes": "192x192"
-                }
-            ]
-        },
-        {
             "name": "Music",
-            "url": "/music",
+            "url": "/#/music",
             "icons": [
                 {
-                    "src": "./shortcuts/music.png",
-                    "sizes": "192x192"
+                    "src": "./shortcuts/music-96x96.webp",
+                    "type": "image/webp",
+                    "sizes": "96x96"
                 }
             ]
         },
         {
             "name": "Settings",
-            "url": "/settings",
+            "url": "/#/settings",
             "icons": [
                 {
-                    "src": "./shortcuts/settings.png",
-                    "sizes": "192x192"
+                    "src": "./shortcuts/settings-96x96.webp",
+                    "type": "image/webp",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Tasks",
+            "url": "/#/tasks",
+            "icons": [
+                {
+                    "src": "./shortcuts/tasks-96x96.webp",
+                    "type": "image/webp",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Statistics",
+            "url": "/#/statistics",
+            "icons": [
+                {
+                    "src": "./shortcuts/statistics-96x96.webp",
+                    "type": "image/webp",
+                    "sizes": "96x96"
                 }
             ]
         }
