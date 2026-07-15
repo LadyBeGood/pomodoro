@@ -3,9 +3,12 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="./icon-256x256.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./favicons/icon-256x256.png" />
+
+    <!-- SEO -->
     <title>Pomodoro</title>
+    <meta name="description" content="Pomodoro is a productivity webapp designed for your work and study. Stay focused and finish tasks effectively. Take more time to your life.">
 
     <!-- Google font link for "Manrope" font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,8 +18,9 @@
     <!-- CSS link -->
     <link href="./style.css" rel="stylesheet">
 
-    <!-- Manifest -->
+    <!-- PWA -->
     <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#1F1F1F" />
 </head>
 
 <body tabindex="-1" class="bg-blackout h-svh select-none">
@@ -24,7 +28,7 @@
         <!-- STUFF GOES HERE -->
     </div>
     
-    <script type="module" src="/src/main.ts" defer></script>
+    <script type="module" src="./src/main.ts" defer></script>
 </body>
 
 </html>
