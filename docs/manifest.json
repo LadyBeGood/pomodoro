@@ -6,9 +6,93 @@
     "theme_color": "#1F1F1F",
     "icons": [
         {
-            "src": "./icons/icon.svg",
-            "sizes": "any",
-            "type": "image/svg"
+            "src": "./icon-filled-256x256-2.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "./icon-filled-256x256-2.png",
+            "sizes": "256x256",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "./icon-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png",
+            "purpose": "monochrome"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "./screenshots/pomodoro.png",
+            "sizes": "450x928",
+            "form_factor": "narrow",
+            "type": "image/png"
+        },
+        {
+            "src": "./screenshots/music.png",
+            "sizes": "450x928",
+            "form_factor": "narrow",
+            "type": "image/png"
+        },
+        {
+            "src": "./screenshots/timer.png",
+            "sizes": "450x928",
+            "form_factor": "narrow",
+            "type": "image/png"
+        },
+        {
+            "src": "./screenshots/tasks.png",
+            "sizes": "450x928",
+            "form_factor": "narrow",
+            "type": "image/png"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Music",
+            "url": "/#/music",
+            "icons": [
+                {
+                    "src": "./shortcuts/music-96x96.webp",
+                    "type": "image/webp",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Settings",
+            "url": "/#/settings",
+            "icons": [
+                {
+                    "src": "./shortcuts/settings-96x96.webp",
+                    "type": "image/webp",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Tasks",
+            "url": "/#/tasks",
+            "icons": [
+                {
+                    "src": "./shortcuts/tasks-96x96.webp",
+                    "type": "image/webp",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Statistics",
+            "url": "/#/statistics",
+            "icons": [
+                {
+                    "src": "./shortcuts/statistics-96x96.webp",
+                    "type": "image/webp",
+                    "sizes": "96x96"
+                }
+            ]
         }
     ]
 }
