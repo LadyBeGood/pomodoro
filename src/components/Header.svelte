@@ -47,7 +47,7 @@
 </div>
 
 <style>
-    @reference "../main.css";
+    @reference "../../style.css";
 
     .scroll-indicator {
         @apply h-1.5 w-1.5 rounded-full transition-colors duration-250;

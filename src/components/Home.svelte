@@ -9,7 +9,7 @@
     /* Constants                    */
     /*==============================*/
     const localStorageKey = "pomodoro_timer_data";
-    const focusDurationInSeconds = 1 * 10; // 25 minutes in seconds
+    const focusDurationInSeconds = 25 * 60; // 25 minutes in seconds
 
 
     /*==============================*/
