@@ -1,58 +1,94 @@
 {
     "name": "Pomodoro",
+    "short_name": "Pomodoro",
+    "description": "Pomodoro is a productivity webapp designed for your work and study. Stay focused and finish tasks effectively. Bring more balance to your life.",
+    "lang": "en",
     "start_url": "./",
+    "id": "./",
     "display": "standalone",
+    "orientation": "any",
     "background_color": "#1F1F1F",
     "theme_color": "#1F1F1F",
     "icons": [
         {
-            "src": "./favicons/icon-filled-256x256-3.png",
-            "sizes": "256x256",
+            "src": "./favicons/icon-192x192.png",
+            "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "./favicons/icon-filled-256x256-3.png",
-            "sizes": "256x256",
+            "src": "./favicons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "./favicons/icon-192x192-maskable.png",
+            "sizes": "192x192",
             "type": "image/png",
             "purpose": "maskable"
         },
         {
-            "src": "./favicons/icon-256x256.png",
-            "sizes": "256x256",
+            "src": "./favicons/icon-512x512-maskable.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "./favicons/icon-192x192-monochrome.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "monochrome"
+        },
+        {
+            "src": "./favicons/icon-512x512-monochrome.png",
+            "sizes": "512x512",
             "type": "image/png",
             "purpose": "monochrome"
         }
     ],
     "screenshots": [
         {
-            "src": "./screenshots/pomodoro.png",
+            "src": "./screenshots/pomodoro-450x928-narrow.png",
             "sizes": "450x928",
             "form_factor": "narrow",
             "type": "image/png"
         },
         {
-            "src": "./screenshots/music.png",
+            "src": "./screenshots/music-450x928-narrow.png",
             "sizes": "450x928",
             "form_factor": "narrow",
             "type": "image/png"
         },
         {
-            "src": "./screenshots/timer.png",
+            "src": "./screenshots/timer-450x928-narrow.png",
             "sizes": "450x928",
             "form_factor": "narrow",
             "type": "image/png"
         },
         {
-            "src": "./screenshots/tasks.png",
+            "src": "./screenshots/tasks-450x928-narrow.png",
             "sizes": "450x928",
             "form_factor": "narrow",
+            "type": "image/png"
+        },
+        {
+            "src": "./screenshots/pomodoro-1920x1080-wide.png",
+            "sizes": "1920x1080",
+            "form_factor": "wide",
+            "type": "image/png"
+        },
+        {
+            "src": "./screenshots/music-1920x1080-wide.png",
+            "sizes": "1920x1080",
+            "form_factor": "wide",
             "type": "image/png"
         }
     ],
     "shortcuts": [
         {
             "name": "Music",
-            "url": "/#/music",
+            "short_name": "Music",
+            "description": "Play ambient sounds and music for focusing.",
+            "url": "./#/music",
             "icons": [
                 {
                     "src": "./shortcuts/music-192x192.webp",
@@ -68,7 +104,9 @@
         },
         {
             "name": "Settings",
-            "url": "/#/settings",
+            "short_name": "Settings",
+            "description": "Adjust app preferences.",
+            "url": "./#/settings",
             "icons": [
                 {
                     "src": "./shortcuts/settings-192x192.webp",
@@ -84,7 +122,9 @@
         },
         {
             "name": "Tasks",
-            "url": "/#/tasks",
+            "short_name": "Tasks",
+            "description": "Manage your todos and checklist.",
+            "url": "./#/tasks",
             "icons": [
                 {
                     "src": "./shortcuts/tasks-192x192.webp",
@@ -100,7 +140,9 @@
         },
         {
             "name": "Statistics",
-            "url": "/#/statistics",
+            "short_name": "Statistics",
+            "description": "View completed sessions and focus history.",
+            "url": "./#/statistics",
             "icons": [
                 {
                     "src": "./shortcuts/statistics-192x192.webp",
