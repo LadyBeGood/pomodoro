@@ -4,9 +4,9 @@
     /* Imports                      */
     /*==============================*/
     import { fade, slide } from "svelte/transition";
-    import { whiteNoiseTypes, whiteNoises } from "../database/music";
+    import { whiteNoiseTypes, whiteNoises } from "../data/music";
     import { navigate } from "../router";
-    import LightBeam from "./LightBeam.svelte";
+    import LightBeam from "../components/LightBeam.svelte";
 
     /*==============================*/
     /* Refs                         */

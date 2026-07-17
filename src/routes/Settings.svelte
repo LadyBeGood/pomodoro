@@ -1,7 +1,7 @@
 <script lang="ts">
     import { fade, slide } from "svelte/transition";
     import { navigate } from "../router";
-    import LightBeam from "./LightBeam.svelte";
+    import LightBeam from "../components/LightBeam.svelte";
 
     const settingTypes = [
         "General",

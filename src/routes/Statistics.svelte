@@ -1,6 +1,6 @@
 <script lang="ts">
     import Chart from "chart.js/auto";
-    import Calender from "./Calender.svelte";
+    import Calender from "../components/Calender.svelte";
 
     let canvasElement: HTMLCanvasElement;
     let chart: Chart;
