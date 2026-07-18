@@ -174,7 +174,7 @@
             </div>
         </div>
         
-    <button onclick={toggleTimer} class="flex items-center justify-center shrink-0 flex-col gap-4 w-svw h-svh snap-start snap-always select-none">
+    <button title="Click to start or pause." onclick={toggleTimer} class="flex items-center justify-center shrink-0 flex-col gap-4 w-svw h-svh snap-start snap-always select-none">
         <div class="text-luxury-white rounded-full p-2.5 relative tabular-nums">
             <div class="h-full w-full rounded-full bg-blackout grid place-items-center text-9xl leading-none">
                 <p>{minutes}</p>

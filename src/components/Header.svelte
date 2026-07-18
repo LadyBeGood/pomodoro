@@ -9,7 +9,7 @@
     <span class="absolute top-1/2 left-1/2 -translate-1/2" transition:slide={{ duration: 250 }}>{text}</span>
 {/snippet}
 
-<div class="fixed left-0 right-0 top-0 flex justify-between mx-5 my-5 items-center text-luxury-white">
+<div class="fixed left-0 right-0 top-0 flex justify-between mx-5 my-5 items-center text-luxury-white z-1">
     <button 
         title="Music" 
         onclick={() => navigate("/music")} 

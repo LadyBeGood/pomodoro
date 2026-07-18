@@ -24,7 +24,7 @@
 </script>
 
 <div 
-    class="absolute top-0 left-0 w-full h-full z-1 overflow-hidden" 
+    class="absolute top-0 left-0 w-full h-full z-10 overflow-hidden" 
     in:lampExpand={{ duration: 350 }} 
     out:lampExpand={{ duration: 350, delay: 175 }}
 >

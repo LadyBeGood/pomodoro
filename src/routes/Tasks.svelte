@@ -72,13 +72,13 @@
     })
 </script>
 
-<div class="bg-blackout text-luxury-white overflow-y-auto px-8 pt-24 pb-36 select-none scrollbar-none h-full grid place-items-center">
+<div class="bg-blackout w-full text-luxury-white overflow-y-auto px-8 pt-24 pb-36 select-none light-scrollbar h-full grid place-items-center">
     <div class="max-w-83.25 mx-auto flex flex-col relative">
         {#each tasks as task (task.index)}
             <div class="w-full overflow-x-auto flex no-scrollbar snap-x snap-mandatory items-center">
                 <button
                     onclick={() => toggleTask(task.index)}
-                    class="flex w-full shrink-0 gap-6 text-left items-start py-4 relative z-10 active:opacity-70 transition-opacity snap-start snap-always "
+                    class="flex w-full shrink-0 gap-6 text-left items-start py-4 relative active:opacity-70 transition-opacity snap-start snap-always "
                 >
                     <p class="text-lg font-medium leading-snug flex-1 transition-all
                         {task.completed ? 'line-through text-dravit-grey' : 'text-luxury-white'}"
@@ -96,7 +96,7 @@
             </div>
         {/each}
 
-        <form onsubmit={addTask} class="flex gap-6 items-start py-4 relative z-10">
+        <form onsubmit={addTask} class="flex gap-6 items-start py-4 relative">
             <input 
                 type="text" 
                 bind:value={newTask}

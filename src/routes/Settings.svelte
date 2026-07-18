@@ -40,10 +40,10 @@
 
 
 <!-- overlay -->
- <div class="z-1 fixed top-0 left-0 right-0 bottom-0 bg-blackout/95" out:slide={{ duration: 250, delay: 250 }}></div>
+ <div class="z-10 fixed top-0 left-0 right-0 bottom-0 bg-blackout/95" out:slide={{ duration: 250, delay: 250 }}></div>
 
 <!-- close button -->
-<button title="Close Settings" onclick={() => navigate(-1)} class="absolute left-5 top-5 cursor-pointer z-2 text-luxury-white" transition:fade={{ duration: 250 }}>
+<button title="Close Settings" onclick={() => navigate(-1)} class="absolute left-5 top-5  z-20 text-luxury-white" transition:fade={{ duration: 250 }}>
     <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="currentColor"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
 </button> 
 
@@ -54,10 +54,10 @@
 <div
     bind:this={settingTypesElement}
     in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
-    class="z-1 overflow-auto py-4 w-[90vw] absolute left-0 top-[10svh] origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
+    class="z-10 overflow-auto py-4 w-[90vw] absolute left-0 top-[10svh] dark-scrollbar origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
 >
     {#each settingTypes as settingType}
-        <button class="cursor-pointer font-semibold text-blackout/60 hover:text-blackout transition-colors">
+        <button class=" font-semibold text-blackout/60 hover:text-blackout transition-colors">
             {settingType.toUpperCase()}
         </button>
     {/each}
@@ -68,22 +68,22 @@
 <div 
     bind:this={settingsMainElement}
     in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
-    class="z-1 absolute left-0 bottom-0 w-[90vw] h-[82svh] grid"
+    class="z-10 absolute left-0 bottom-0 w-[90vw] h-[82svh] grid"
 >
     <div class="flex flex-col gap-10 overflow-auto text-right">
         <button style="padding-right: calc(0 * 0.9vw);" class="">
-            <div class="cursor-pointer">Theme</div>
-            <div class="text-blackout/70 cursor-pointer text-xs">Dark</div>
+            <div class="font-medium">Theme</div>
+            <div class="text-blackout/70 text-xs">Dark</div>
         </button>
                     
         <button style="padding-right: calc(1 * 0.9vw);" class="">
-            <div class="cursor-pointer">Default home page</div>
-            <div class="text-blackout/70 cursor-pointer text-xs">Pomodoro</div>
+            <div class="font-medium">Default home page</div>
+            <div class="text-blackout/70 text-xs">Pomodoro</div>
         </button>
 
         <button style="padding-right: calc(2 * 0.9vw);" class="">
-            <div class="cursor-pointer">Show notifications</div>
-            <div class="text-blackout/70 cursor-pointer text-xs">Yes</div>
+            <div class="font-medium">Show notifications</div>
+            <div class="text-blackout/70 text-xs">Yes</div>
         </button>
     </div>
 

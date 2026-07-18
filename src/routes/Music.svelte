@@ -42,10 +42,10 @@
 
 
 <!-- overlay -->
- <div class="fixed z-1 top-0 left-0 w-svw h-svh bg-blackout/95" out:fade={{ duration: 250, delay: 250 }}></div>
+ <div class="fixed z-10 top-0 left-0 w-svw h-svh bg-blackout/95" out:fade={{ duration: 250, delay: 250 }}></div>
 
 <!-- close button -->
-<button title="Close Music Menu" onclick={() => navigate(-1)} class="absolute right-5 top-5 z-2 text-luxury-white" transition:fade={{ duration: 250 }}>
+<button title="Close Music Menu" onclick={() => navigate(-1)} class="absolute right-5 top-5 z-20 text-luxury-white" transition:fade={{ duration: 250 }}>
     <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="currentColor"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
 </button>
 
@@ -63,10 +63,10 @@
 <div
     bind:this={whiteNoiseTypesElement}
     in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
-    class="overflow-auto z-1 pt-4 w-[90vw] absolute right-0 top-[10svh] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
+    class="overflow-auto z-10 pt-4 w-[90vw] absolute right-0 top-[10svh] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
 >
     {#each whiteNoiseTypes as whiteNoiseType, i}
-        <button style={i === 0 ? "margin-left: auto;" : ""} class="cursor-pointer font-semibold text-blackout/60 hover:text-blackout transition-colors">
+        <button style={i === 0 ? "margin-left: auto;" : ""} class="font-semibold text-blackout/60 hover:text-blackout transition-colors">
             {whiteNoiseType.toUpperCase()}
         </button>
     {/each}
@@ -74,14 +74,14 @@
 
 
 <div 
-    class="absolute right-0 bottom-0 z-1 w-[90vw] h-[82svh] grid" 
+    class="absolute right-0 bottom-0 z-10 w-[90vw] h-[82svh] grid" 
     in:slide={{ duration: 250, delay: 250 }} out:slide={{ duration: 250 }}
 >
     <div class="flex flex-col gap-6 overflow-auto no-scrollbar">
         {#each whiteNoises as whiteNoise, i}
             <button style="padding-left: calc({i} * 0.9vw);">
-                <div data-id="{whiteNoise.id}"  class="cursor-pointer">{whiteNoise.name}</div>
-                <div class="text-blackout/70 cursor-pointer text-xs">{whiteNoise.creator}</div>
+                <div data-id="{whiteNoise.id}"  class="font-medium">{whiteNoise.name}</div>
+                <div class="text-blackout/70 text-xs">{whiteNoise.creator}</div>
             </button>
         {/each}
     </div>

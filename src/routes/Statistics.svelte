@@ -83,44 +83,44 @@
         { hour: 24, count: Math.floor(Math.random() * 9) },
     ];
 
-    $effect(() => {
-        chart = new Chart(canvasElement!, {
-            type: "line",
-            data: {
-                labels: data.map((row) => row.hour),
-                datasets: [
-                    {
-                        // label: "{display: false}",
-                        data: data.map((row) => row.count),
-                        backgroundColor: "#FAFAFA",
-                        borderColor: "#FAFAFA",
-                        tension: 0.4,
+    // $effect(() => {
+    //     chart = new Chart(canvasElement!, {
+    //         type: "line",
+    //         data: {
+    //             labels: data.map((row) => row.hour),
+    //             datasets: [
+    //                 {
+    //                     // label: "{display: false}",
+    //                     data: data.map((row) => row.count),
+    //                     backgroundColor: "#FAFAFA",
+    //                     borderColor: "#FAFAFA",
+    //                     tension: 0.4,
                         
-                        fill: {
-                            target: "origin",
-                            above: "#FAFAFA20",
-                        },
+    //                     fill: {
+    //                         target: "origin",
+    //                         above: "#FAFAFA20",
+    //                     },
                         
-                    },
-                ],
-            },
-            options: {
-                plugins: {
-                    legend: {display: false}
-                },
-                responsive: true, 
-                maintainAspectRatio: false,
-                scales: {
-                    x: {grid: {display: false}},
-                    y: {grid: {display: false}}
-                },
-            }
-        });
+    //                 },
+    //             ],
+    //         },
+    //         options: {
+    //             plugins: {
+    //                 legend: {display: false}
+    //             },
+    //             responsive: true, 
+    //             maintainAspectRatio: false,
+    //             scales: {
+    //                 x: {grid: {display: false}},
+    //                 y: {grid: {display: false}}
+    //             },
+    //         }
+    //     });
 
-        return () => {
-            chart.destroy();
-        };
-    });
+    //     return () => {
+    //         chart.destroy();
+    //     };
+    // });
     type Stat = {
         label: string;
         value: string;
