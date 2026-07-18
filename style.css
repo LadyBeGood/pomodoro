@@ -39,7 +39,9 @@ button {
 
 
 
-/* hide scrollbar */
+/*==============================*/
+/* Scrollbars                   */
+/*==============================*/
 
 /* Firefox */
 .no-scrollbar {
@@ -47,7 +49,7 @@ button {
     scrollbar-width: none;
 }
 
-/* IE and Edge */
+/* Edge */
 .no-scrollbar::-webkit-scrollbar,
 .no-scrollbar::-webkit-scrollbar-button {
     display: none;
@@ -55,15 +57,14 @@ button {
 
 
 
-
-
+/* Desktop only */
 @media (pointer: fine) {
-    .light-scrollbar::-webkit-scrollbar {
+    ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
     }
 
-    .light-scrollbar::-webkit-scrollbar-track {
+    ::-webkit-scrollbar-track {
         background: transparent;
     }
 
@@ -71,26 +72,7 @@ button {
         background: rgba(250, 250, 250, 0.15);
     }
 
-    /* Set explicitly for dark scrollbar */
-    .dark-scrollbar::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-
-    .dark-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
     .dark-scrollbar::-webkit-scrollbar-thumb {
         background: rgba(31, 31, 31, 0.25);
-        border-radius: 9999px;
-    }
-
-    /* 🔥 THE FIX: This will now execute perfectly in Chrome */
-    .light-scrollbar::-webkit-scrollbar-button,
-    .dark-scrollbar::-webkit-scrollbar-button {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
     }
 }
