@@ -23,20 +23,6 @@
     /*==============================*/
     /* States                       */
     /*==============================*/
-        
-
-        // { id: 901201, name: "Forest Birds",      creator: "naturewave",   src: "./white-noise/" },
-        // { id: 901202, name: "Night Crickets",    creator: "naturewave",   src: "./white-noise/" },
-        // { id: 901203, name: "Ocean Waves",       creator: "seasound",     src: "./white-noise/" },
-        // { id: 901204, name: "Wind in Trees",     creator: "ambientlab",   src: "./white-noise/" },
-        // { id: 901205, name: "Library Ambience",  creator: "quietspace",   src: "./white-noise/" },
-        // { id: 901206, name: "Keyboard Typing",   creator: "workroom",     src: "./white-noise/" },
-        // { id: 901207, name: "Fireplace",         creator: "fireside",     src: "./white-noise/" },
-        // { id: 901208, name: "Train Ride",        creator: "railambient",  src: "./white-noise/" },
-        // { id: 901209, name: "Airplane Cabin",    creator: "travelsound",  src: "./white-noise/" },
-        // { id: 901210, name: "City Night",        creator: "urbanloop",    src: "./white-noise/" }
-
-
     let whiteNoises = $state<WhiteNoise[]>([
         {
             type: "nature",
@@ -68,6 +54,7 @@
     ]);
 
     let activeWhiteNoises = $state(whiteNoises[0].data);
+    let activeWhiteNoise = $state(whiteNoises[0].data);
 
     /*==============================*/
     /* Refs                         */

@@ -22,7 +22,7 @@
 html, body {
     /*
      * This property hides the scrollbar at the 
-     * bottom of home route in android chrome. I
+     * bottom of home route in Chrome Android. I
      * dont know how.
      */
     overflow-x: hidden; 

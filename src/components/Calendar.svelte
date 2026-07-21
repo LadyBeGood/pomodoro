@@ -1,17 +1,7 @@
 <script lang="ts">
-    // 1. Core State using Svelte 5 $state rune
-    let currentDate = $state(new Date());
-    let currMonth = $state(currentDate.getMonth());
-    let currYear = $state(currentDate.getFullYear());
-
-    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    const opacities = ["10", "30", "70", "100"];
-
-    // Interface definition for calendar days
+    /*==============================*/
+    /* Types                        */
+    /*==============================*/
     type CalendarDay = {
         day: number | string,
         current: boolean,
@@ -19,11 +9,46 @@
         isFuture: boolean,
     }
 
-    // 2. Structural Dependencies computed via $derived rune
+    /*==============================*/
+    /* Constants                    */
+    /*==============================*/
+    const daysOfWeek = [
+        "Sun", 
+        "Mon", 
+        "Tue", 
+        "Wed", 
+        "Thu", 
+        "Fri", 
+        "Sat",
+    ];
+
+    const months = [
+        "January", 
+        "February", 
+        "March", 
+        "April", 
+        "May", 
+        "June", 
+        "July", 
+        "August", 
+        "September", 
+        "October", 
+        "November", 
+        "December",
+    ];
+
+    const opacities = ["10", "30", "70", "100"];
+
+
+    /*==============================*/
+    /* States                       */
+    /*==============================*/
+    let currentDate = $state(new Date());
+    let currMonth = $state(currentDate.getMonth());
+    let currYear = $state(currentDate.getFullYear());
+
     const daysInMonth = $derived(new Date(currYear, currMonth + 1, 0).getDate());
     const firstDayOfMonth = $derived(new Date(currYear, currMonth, 1).getDay());
-
-    // 3. Complete Grid array mapping automatically recalculating when structural bindings adjust
     const allDays = $derived.by<CalendarDay[]>(() => {
         const today = new Date();
         const targetToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -52,8 +77,10 @@
         return [...padding, ...active];
     });
 
-    // Control Handlers
-    function nextMonth(): void {
+    /*==============================*/
+    /* Handlers                     */
+    /*==============================*/
+    function nextMonth() {
         if (currMonth === 11) {
             currMonth = 0;
             currYear++;
@@ -62,7 +89,7 @@
         }
     }
 
-    function prevMonth(): void {
+    function prevMonth() {
         if (currMonth === 0) {
             currMonth = 11;
             currYear--;

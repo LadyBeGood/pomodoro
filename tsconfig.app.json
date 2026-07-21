@@ -7,6 +7,7 @@
         "module": "ESNext",
         "types": ["svelte", "vite/client"],
         "noEmit": true,
+        "strict": true,
         /**
          * Typecheck JS in `.svelte` and `.js` files by default.
          * Disable checkJs if you'd like to use dynamic types in JS.
@@ -14,8 +15,7 @@
          * of JS in `.svelte` files.
          */
         "allowJs": true,
-        "checkJs": true,
         "moduleDetection": "force"
     },
-    "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "src/state/homeTab.svelte.ts", "src/state/homeTab.svelte.ts"]
+    "include": ["src/**/*.ts", "src/**/*.svelte"],
 }
