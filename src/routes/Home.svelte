@@ -145,8 +145,12 @@
                      - This is a hack; `calt` font feature in Manrope font 
                      - is only triggered when `:` is immediately preceded 
                      - by a capital letter.
+                     - 
+                     - I am using `P` here because it leaves the most uniform
+                     - inline spacing among all other capital letter glyphs 
+                     - in Manrope.
                      -->
-                    {minutes}<span aria-hidden="true" class="text-transparent -ml-[1ch]">A</span>:{seconds}
+                    {minutes}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{seconds}
                 </p>
             </div>
         </div>

@@ -30,6 +30,7 @@ html, body {
 
 body {
     color: var(--color-blackout);
+    font-family: Manrope, sans-serif;
 }
 
 button {
