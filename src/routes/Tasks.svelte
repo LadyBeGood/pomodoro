@@ -14,11 +14,6 @@
     };
 
     /*==============================*/
-    /* Refs                       */
-    /*==============================*/
-    let submitButtonRef: HTMLButtonElement;
-
-    /*==============================*/
     /* States                       */
     /*==============================*/
     let tasks: Task[] = $state([
@@ -30,19 +25,21 @@
     ]);
 
     let newTask = $state("");
+    let isInputFocused = $state(false);
 
 
     /*==============================*/
     /* Handlers                     */
     /*==============================*/
-    function addTask(e: MouseEvent) {
-        e.preventDefault();
+    function addTask(event: Event) {
+        event.preventDefault();
         if (!newTask.trim()) return;
 
         const nextIndex = tasks.length > 0 ? Math.max(...tasks.map(task => task.index)) + 1 : 1;
         tasks = [...tasks, { index: nextIndex, task: newTask.trim(), completed: false }];
         newTask = "";
-        submitButtonRef?.classList.remove("active");
+
+        isInputFocused = false;
     }
 
     function toggleTask(index: number) {
@@ -104,15 +101,24 @@
   
         <div class="flex gap-6 items-start py-4 relative">
             <input
+                // On Chrome Android, this field will get a autofill "bar", I couldn't find any good solution
+                // to remove it.
+                //
+                // One solution was to use type="search" but that put a "search" icon in the user's keyboard 
+                // instead of "enter/next" icon.
+                // 
+                // Relevant discussion: https://stackoverflow.com/questions/15738259/disabling-chrome-autofill
                 bind:value={newTask}
-                onfocus={() => (console.log(submitButtonRef), submitButtonRef.classList.add("active"))}
-                placeholder="Write target..."
+                onfocus={() => isInputFocused = true}
+                onblur={(event) => {if (event.currentTarget.value.trim() === "") isInputFocused = false}}
+                onkeydown={(event) => {if (event.key === "Enter") addTask(event), event.currentTarget.blur()}}
+                placeholder="Write your task..."
                 class="w-full bg-transparent border-none text-luxury-white placeholder:text-dravit-grey outline-none text-lg font-medium tracking-wide p-0"
             />
 
             <button
-                bind:this={submitButtonRef}
-                title="Add todo" 
+                title="Add todo"
+                class:active={isInputFocused}
                 class="w-8 h-8 text-lg font-medium shrink-0 text-dravit-grey text-center bg-blackout rounded-full grid place-items-center"
                 onclick={(event) => addTask(event)}
             >
@@ -127,12 +133,14 @@
 
 <style>
     .styled-line-through {
-        background: repeating-linear-gradient(-45deg, green 0 5%, red 0 6%, blue 0) ;
+        /* Took me like 2 hours to experiment with this, never made it to production 😿😿😿 */
+        /* background: repeating-linear-gradient(-45deg, green 0 5%, red 0 6%, blue 0) ;
         background: repeating-linear-gradient(-45deg, transparent 0 8px, var(--color-dravit-grey) 0 11px, transparent 0) ;
-        background: repeating-linear-gradient(-30deg, red 0 8px, var(--color-dravit-grey) 0 16px, red 0) ;
+        background: repeating-linear-gradient(-30deg, red 0 8px, var(--color-dravit-grey) 0 16px, red 0) ; */
         /* background: repeating-linear-gradient(-45deg, #3f87a6, #ebf8e1 15%, #f69d3c 20%); */
         /* background: linear-gradient(-45deg, transparent 45%, var(--color-dravit-grey) 0 55%, transparent 0)  0 / 18px 18px; 
         background-repeat: repeat; */
+        text-decoration: line-through;
     }
 
     .active {
