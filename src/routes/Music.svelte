@@ -3,8 +3,7 @@
     /* Imports                      */
     /*==============================*/
     import { fade, slide } from "svelte/transition";
-    // import { whiteNoiseTabs, whiteNoises } from "../state/music.svelte";
-    import { isActive, navigate } from "../router";
+    import { navigate } from "../router";
     import LightBeam from "../components/LightBeam.svelte";
     
     /*==============================*/
@@ -68,18 +67,32 @@
     /*==============================*/
     /* Handlers                     */
     /*==============================*/
-    function getRotationAngle() {
-        const angleInRadians = Math.atan2(
-            window.innerWidth,
-            window.innerHeight * 0.1,
-        );
-        const angleInDegrees = angleInRadians * (180 / Math.PI);
-        return 90 - angleInDegrees;
-    }
-
     function updateLayout() {
+        function getRotationAngle() {
+            const angleInRadians = Math.atan2(
+                window.innerWidth,
+                window.innerHeight * 0.1,
+            );
+            const angleInDegrees = angleInRadians * (180 / Math.PI);
+            return 90 - angleInDegrees;
+        }
+
         whiteNoiseTypesElement.style.transform = `rotate(${getRotationAngle()}deg)`;
     }
+
+    function handlePlayPause() {
+        isPlaying = !isPlaying;
+    }
+
+    function handleWhiteNoiseTabChange(whiteNoises: WhiteNoise[], i: number) {
+        for (let j = 0; j < whiteNoises.length; j++) {
+            whiteNoises[j].isActive = false;
+        }
+        whiteNoises[i].isActive = true;
+        activeWhiteNoises = whiteNoises[i].data;
+    }
+
+    
 
     /*==============================*/
     /* Effects                      */
@@ -104,7 +117,7 @@
 
 <!-- close button -->
 <button
-    title="Close Music Menu"
+    title="Close music"
     onclick={() => navigate(-1)}
     class="absolute right-5 top-5 z-20 text-luxury-white"
     transition:fade={{ duration: 250 }}
@@ -129,14 +142,9 @@
     {#each whiteNoises as whiteNoise, i}
         <button
             style={i === 0 ? "margin-left: auto;" : ""}
-            class="font-bold text-blackout/70 hover:text-blackout transition-colors {whiteNoise.isActive ? "active" : ""}"
-            onclick={() => {
-                for (let j = 0; j < whiteNoises.length; j++) {
-                    whiteNoises[j].isActive = false;
-                }
-                whiteNoises[i].isActive = true;
-                activeWhiteNoises = whiteNoises[i].data;
-            }}
+            class="font-bold text-blackout/70 hover:text-blackout transition-colors"
+            class:active={whiteNoise.isActive}
+            onclick={() => handleWhiteNoiseTabChange(whiteNoises, i)}
         >
             {whiteNoise.type.toUpperCase()}
         </button>
@@ -174,7 +182,7 @@
                 <button 
                     title="Play" 
                     class="w-12 h-12 flex items-center justify-center rounded-full bg-blackout text-luxury-white font-bold shadow-lg"
-                    onclick={() => isPlaying = !isPlaying}
+                    onclick={handlePlayPause}
                 >
                     {#if isPlaying}
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M640-200q-33 0-56.5-23.5T560-280v-400q0-33 23.5-56.5T640-760q33 0 56.5 23.5T720-680v400q0 33-23.5 56.5T640-200Zm-320 0q-33 0-56.5-23.5T240-280v-400q0-33 23.5-56.5T320-760q33 0 56.5 23.5T400-680v400q0 33-23.5 56.5T320-200Z"/></svg>
@@ -194,6 +202,5 @@
 <style>
     .active {
         color: var(--color-blackout);
-        /* font-weight: 700; */
     }
 </style>
