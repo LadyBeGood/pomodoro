@@ -6,7 +6,7 @@
 
 
 {#snippet slidingText(text: string)}
-    <span class="absolute top-1/2 left-1/2 -translate-1/2" transition:slide={{ duration: 250 }}>{text}</span>
+    <span class="absolute top-1/2 left-1/2 -translate-1/2 text-l tracking-widest" in:slide={{ duration: 150, delay: 150 }} out:slide={{ duration: 150 }}>{text}</span>
 {/snippet}
 
 <div class="fixed left-0 right-0 top-0 flex justify-between mx-5 my-5 items-center text-luxury-white z-1">
@@ -18,17 +18,17 @@
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M127-167q-47-47-47-113t47-113q47-47 113-47 23 0 42.5 5.5T320-418v-308q0-15 9.5-26.5T353-766l400-66q18-3 32.5 8.5T800-793v433q0 66-47 113t-113 47q-66 0-113-47t-47-113q0-66 47-113t113-47q23 0 42.5 5.5T720-498v-165l-320 63v320q0 66-47 113t-113 47q-66 0-113-47Z"/></svg>
     </button>
 
-    <div class="text-l tracking-widest">
-        {#if isActive("/statistics")}
-            {@render slidingText("STATISTICS")}
-        {:else if isActive("/") && scrollIndex.value === 1}
-            {@render slidingText("POMODORO")}
-        {:else if isActive("/") && scrollIndex.value === 2}
-            {@render slidingText("TIMER")}
-        {:else if isActive("/tasks")}
-            {@render slidingText("TASKS")}
-        {/if}
-    </div>
+    <div class="header-bg"></div>
+    
+    {#if isActive("/statistics")}
+        {@render slidingText("STATISTICS")}
+    {:else if isActive("/") && scrollIndex.value === 1}
+        {@render slidingText("POMODORO")}
+    {:else if isActive("/") && scrollIndex.value === 2}
+        {@render slidingText("TIMER")}
+    {:else if isActive("/tasks")}
+        {@render slidingText("TASKS")}
+    {/if}
 
     <button 
         title="Settings" 
@@ -51,5 +51,19 @@
 
     .scroll-indicator {
         @apply h-1.5 w-1.5 rounded-full transition-colors duration-250;
+    }
+
+    .header-bg {
+        background-color: var(--color-blackout);
+        z-index: -1;
+        /* Calculated "height" of Header component that I found using devtools */
+        height: 87.2px; 
+        position: fixed !important;
+        pointer-events: none;
+        touch-action: none;
+        top: 0%;
+        left: 0%;
+        /* Space for scrollbars on desktop */
+        right: 6px; 
     }
 </style>
