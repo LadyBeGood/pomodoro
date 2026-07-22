@@ -17,10 +17,10 @@
     /* States                       */
     /*==============================*/
     let tasks: Task[] = $state([
-        { index: 1, task: "Get a job and escape unemployment", completed: false },
-        { index: 2, task: "Master Svelte 5 snippets and runes", completed: false },
-        { index: 3, task: "Complete the project", completed: false },
-        { index: 4, task: "Polish portfolio and GitHub README", completed: true },
+        { index: 1, task: "Get a job and escape unemployment",     completed: false },
+        { index: 2, task: "Master Svelte 5 snippets and runes",    completed: false },
+        { index: 3, task: "Complete the project",                  completed: false },
+        { index: 4, task: "Polish portfolio and GitHub README",    completed: true  },
         { index: 5, task: "Network with 3 industry professionals", completed: false },
     ]);
 
@@ -81,7 +81,7 @@
                     class="flex w-full shrink-0 gap-6 text-left items-start py-4 relative active:opacity-70 transition-opacity snap-start snap-always "
                 >
                     <p class="text-lg font-medium leading-snug flex-1 transition-all
-                        {task.completed ? 'line-through text-dravit-grey' : 'text-luxury-white'}"
+                        {task.completed ? "styled-line-through text-dravit-grey" : "text-luxury-white"}"
                     >
                         {task.task}
                     </p>
@@ -113,5 +113,13 @@
 
 
 
-
+<style>
+    .styled-line-through {
+        background: repeating-linear-gradient(-45deg, green 0 5%, red 0 6%, blue 0) ;
+        background: repeating-linear-gradient(-45deg, transparent 0 4%, var(--color-dravit-grey) 0 5.5%, transparent 0) ;
+        /* background: repeating-linear-gradient(-45deg, #3f87a6, #ebf8e1 15%, #f69d3c 20%); */
+        /* background: linear-gradient(-45deg, transparent 45%, var(--color-dravit-grey) 0 55%, transparent 0)  0 / 18px 18px; 
+        background-repeat: repeat; */
+    }
+</style>
 
