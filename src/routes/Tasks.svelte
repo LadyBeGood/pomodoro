@@ -14,6 +14,11 @@
     };
 
     /*==============================*/
+    /* Refs                       */
+    /*==============================*/
+    let submitButtonRef: HTMLButtonElement;
+
+    /*==============================*/
     /* States                       */
     /*==============================*/
     let tasks: Task[] = $state([
@@ -30,13 +35,14 @@
     /*==============================*/
     /* Handlers                     */
     /*==============================*/
-    function addTask(e: SubmitEvent) {
+    function addTask(e: MouseEvent) {
         e.preventDefault();
         if (!newTask.trim()) return;
 
-        const nextIndex = tasks.length > 0 ? Math.max(...tasks.map(t => t.index)) + 1 : 1;
+        const nextIndex = tasks.length > 0 ? Math.max(...tasks.map(task => task.index)) + 1 : 1;
         tasks = [...tasks, { index: nextIndex, task: newTask.trim(), completed: false }];
         newTask = "";
+        submitButtonRef?.classList.remove("active");
     }
 
     function toggleTask(index: number) {
@@ -95,18 +101,24 @@
                 </button>
             </div>
         {/each}
-
-        <form onsubmit={addTask} class="flex gap-6 items-start py-4 relative">
-            <input 
-                type="text" 
+  
+        <div class="flex gap-6 items-start py-4 relative">
+            <input
                 bind:value={newTask}
+                onfocus={() => (console.log(submitButtonRef), submitButtonRef.classList.add("active"))}
                 placeholder="Write target..."
                 class="w-full bg-transparent border-none text-luxury-white placeholder:text-dravit-grey outline-none text-lg font-medium tracking-wide p-0"
             />
-            <span class="w-8 text-lg font-medium shrink-0 text-dravit-grey text-center bg-blackout">
-                +
-            </span>
-        </form>
+
+            <button
+                bind:this={submitButtonRef}
+                title="Add todo" 
+                class="w-8 h-8 text-lg font-medium shrink-0 text-dravit-grey text-center bg-blackout rounded-full grid place-items-center"
+                onclick={(event) => addTask(event)}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="M427-428H221q-22 0-37.5-15.5T168-481q0-22 15.5-37.5T221-534h206v-206q0-22 15.5-37.5T480-793q22 0 37.5 15.5T533-740v206h206q22 0 37.5 15.5T792-481q0 22-15.5 37.5T739-428H533v206q0 22-15.5 37.5T480-169q-22 0-37.5-15.5T427-222v-206Z"/></svg>
+            </button>
+        </div>
 
     </div>
 </div>
@@ -116,10 +128,16 @@
 <style>
     .styled-line-through {
         background: repeating-linear-gradient(-45deg, green 0 5%, red 0 6%, blue 0) ;
-        background: repeating-linear-gradient(-45deg, transparent 0 4%, var(--color-dravit-grey) 0 5.5%, transparent 0) ;
+        background: repeating-linear-gradient(-45deg, transparent 0 8px, var(--color-dravit-grey) 0 11px, transparent 0) ;
+        background: repeating-linear-gradient(-30deg, red 0 8px, var(--color-dravit-grey) 0 16px, red 0) ;
         /* background: repeating-linear-gradient(-45deg, #3f87a6, #ebf8e1 15%, #f69d3c 20%); */
         /* background: linear-gradient(-45deg, transparent 45%, var(--color-dravit-grey) 0 55%, transparent 0)  0 / 18px 18px; 
         background-repeat: repeat; */
+    }
+
+    .active {
+        background: var(--color-luxury-white) !important;
+        color: var(--color-blackout) !important;
     }
 </style>
 
