@@ -1,24 +1,5 @@
 @import "tailwindcss";
 
-@theme {
-    --color-blackout: #FAFAFA;
-    --color-luxury-white: #1F1F1F;
-    --color-dravit-grey: hsl(0, 0%, 55%);
-}
-
-@media (prefers-color-scheme: dark) {
-    @theme {
-        --color-blackout: #1F1F1F;
-        --color-dravit-grey: #5E5E5E;
-        --color-luxury-white: #FAFAFA;
-    }
-
-    body {
-        color: var(--color-luxury-white);
-    }
-}
-
-
 html, body {
     /*
      * This property hides the scrollbar at the 
@@ -29,8 +10,9 @@ html, body {
 }
 
 body {
-    color: var(--color-blackout);
     font-family: Manrope, sans-serif;
+    color: var(--blackout, black);
+    background-color: var(--blackout, black);
 }
 
 button {
