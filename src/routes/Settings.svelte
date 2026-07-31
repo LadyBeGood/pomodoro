@@ -10,24 +10,19 @@
     /*==============================*/
     /* Types                        */
     /*==============================*/
-    type SettingType =
-        | "general"
-        | "session"
-        | "date & time";
-
     type SettingOption = { 
         value: string,
         selected: boolean 
     }
 
-    type SelectionSettingData<T extends SettingType> = {
+    type SelectionSettingData<T extends string> = {
         id: `${T}-setting-${number}`,
         type: "choose" | "loop",
         name: string,
         options: SettingOption[],
     }
 
-    type ActionSettingData<T extends SettingType> = {
+    type ActionSettingData<T extends string> = {
         id: `${T}-setting-${number}`,
         type: "action",
         name: string,
@@ -35,13 +30,13 @@
         value: string
     }
 
-    type SettingData<T extends SettingType> =
+    type SettingData<T extends string> =
         | SelectionSettingData<T>
         | ActionSettingData<T>;
 
 
     type Setting = {
-        type: SettingType,
+        type: string,
         isActive: boolean,
         data: SettingData<Setting["type"]>[]
     }
@@ -50,7 +45,7 @@
     /*==============================*/
     /* Constants                    */
     /*==============================*/
-    const settings: Setting[] = [
+    const settings = $state<Setting[]>([
         { 
             type: "general", 
             isActive: true,
@@ -156,7 +151,7 @@
             type: "date & time",
             isActive: false,
             data: [{
-                id: "date & time-setting-1",
+                id: "date-and-time-setting-1",
                 type: "choose",
                 name: "Start of the week",
                 options: [
@@ -191,14 +186,14 @@
                 ]
             },
             {
-                id: "date & time-setting-2",
+                id: "date-and-time-setting-2",
                 type: "action",
                 name: "Start of the day",
                 action: () => undefined,
                 value: "05:00 AM"
             },]
         }
-    ];
+    ]);
 
 
 
@@ -241,6 +236,19 @@
         settings[i].isActive = true;
         activeSettings = settings[i].data;
     }
+
+    function handleLoop(options: SettingOption[]) {
+        let nextSelectedIndex = -1;
+
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].selected) {
+                nextSelectedIndex = (i + 1) % options.length;
+            }
+            options[i].selected = false;
+        }
+
+        options[nextSelectedIndex].selected = true;
+    }
     /*==============================*/
     /* Effects                      */
     /*==============================*/
@@ -253,6 +261,10 @@
             window.removeEventListener("resize", updateLayout);
         };
     });
+
+    $effect(() => {
+        
+    })
 </script>
 
 <!-- overlay -->
@@ -282,9 +294,7 @@
     class="z-10 overflow-auto py-4 w-[90vw] absolute left-0 top-[10svh] dark-scrollbar origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
 >
     {#each settings as setting}
-        <button
-            class=" font-semibold text-(--blackout)/62 hover:text-(--blackout) transition-colors text-nowrap"
-        >
+        <button class=" font-semibold text-(--blackout)/62 hover:text-(--blackout) transition-colors text-nowrap">
             {setting.type.toUpperCase()}
         </button>
     {/each}
@@ -298,12 +308,18 @@
     class="z-10 absolute left-0 bottom-0 w-[90vw] h-[82svh] grid"
 >
     <div class="flex flex-col gap-10 overflow-auto text-right">
-        <button style="padding-right: calc(0 * 0.9vw);" class="">
-            <div class="font-medium">Theme</div>
-            <div class="text-(--blackout)/70 text-xs">Dark</div>
-        </button>
+        {#each activeSettings as activeSetting (activeSetting.id)}
+            {#if activeSetting.type === "loop"}
+                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => handleLoop(activeSetting.options)}>
+                    <div class="font-medium">{activeSetting.name}</div>
+                    <div class="text-(--blackout)/70 text-xs">{activeSetting.options.find(option => option.selected)?.value}</div>
+                </button>
+            <!-- {:else if } -->
+            {/if}
+        {/each}
+        
 
-        <button style="padding-right: calc(1 * 0.9vw);" class="">
+        <!-- <button style="padding-right: calc(1 * 0.9vw);" class="">
             <div class="font-medium">Default home page</div>
             <div class="text-(--blackout)/70 text-xs">Pomodoro</div>
         </button>
@@ -311,7 +327,7 @@
         <button style="padding-right: calc(2 * 0.9vw);" class="">
             <div class="font-medium">Show notifications</div>
             <div class="text-(--blackout)/70 text-xs">Yes</div>
-        </button>
+        </button> -->
     </div>
 
     <div class="self-end w-full p-6">

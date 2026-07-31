@@ -113,22 +113,10 @@
             title="previous month"
             class="hover:bg-(--blackout) hover:text-(--luxury-white) text-(--blackout) rounded-full p-1.5 transition-colors"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
         </button>
 
-        <div
-            class="flex text-(--blackout) text-sm items-center gap-2 font-medium ml-auto mr-auto"
-        >
+        <div class="flex text-(--blackout) text-sm items-center gap-2 font-medium ml-auto mr-auto">
             <div>{months[currMonth]}, {currYear}</div>
         </div>
 
@@ -137,17 +125,7 @@
             title="next month"
             class="bg-(--luxury-white) rounded-full p-1.5 hover:bg-(--blackout) hover:text-(--luxury-white) transition-colors"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
         </button>
     </div>
 
@@ -155,9 +133,7 @@
     <div>
         <div class="grid grid-cols-7 my-2">
             {#each daysOfWeek as day}
-                <div
-                    class="text-center text-xs font-semibold text-(--luxury-white) tracking-wider py-2"
-                >
+                <div class="text-center text-xs font-semibold text-(--luxury-white) tracking-wider py-2">
                     {day}
                 </div>
             {/each}
@@ -170,10 +146,10 @@
                 {@const randomId = Math.floor(Math.random() * opacities.length)}
 
                 <div
-                    class="overlay aspect-square font-medium text-sm grid place-items-center transition-all cursor-pointer relative
-                    {item.isToday
-                        ? 'rounded-full border-(--luxury-white)'
-                        : 'rounded-xs'}"
+                    class="
+                        overlay aspect-square font-medium text-sm grid place-items-center transition-all cursor-pointer relative
+                        {item.isToday ? 'rounded-full border-(--luxury-white)' : 'rounded-xs'}
+                    "
                     style="
                         background-color: {item.day === '' || item.isFuture
                         ? 'transparent'
