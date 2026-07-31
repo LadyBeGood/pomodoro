@@ -5,15 +5,212 @@
     import { fade, slide } from "svelte/transition";
     import { navigate } from "../router";
     import LightBeam from "../components/LightBeam.svelte";
-    import { settings } from "../state/settings.svelte";
+    import { settings as sharedSettings } from "../shared/settings.svelte";
 
+    /*==============================*/
+    /* Types                        */
+    /*==============================*/
+    type SettingType =
+        | "general"
+        | "session"
+        | "date & time";
+
+    type SettingOption = { 
+        value: string,
+        selected: boolean 
+    }
+
+    type SelectionSettingData<T extends SettingType> = {
+        id: `${T}-setting-${number}`,
+        type: "choose" | "loop",
+        name: string,
+        options: SettingOption[],
+    }
+
+    type ActionSettingData<T extends SettingType> = {
+        id: `${T}-setting-${number}`,
+        type: "action",
+        name: string,
+        action: () => void,
+        value: string
+    }
+
+    type SettingData<T extends SettingType> =
+        | SelectionSettingData<T>
+        | ActionSettingData<T>;
+
+
+    type Setting = {
+        type: SettingType,
+        isActive: boolean,
+        data: SettingData<Setting["type"]>[]
+    }
+
+            
     /*==============================*/
     /* Constants                    */
     /*==============================*/
-    const settingTypes = ["General", "Session", "Date", "Credits"];
+    const settings: Setting[] = [
+        { 
+            type: "general", 
+            isActive: true,
+            data: [
+                {
+                    id: "general-setting-1",
+                    type: "loop",
+                    name: "Theme",
+                    options: [
+                        {
+                            value: "Dark",
+                            selected: true
+                        },
+                        {
+                            value: "Light",
+                            selected: false
+                        }
+                    ]
+                },
+                {
+                    id: "general-setting-2",
+                    type: "loop",
+                    name: "Default home page",
+                    options: [
+                        {
+                            value: "Pomodoro",
+                            selected: true
+                        },
+                        {
+                            value: "Timer",
+                            selected: false
+                        }
+                    ]
+                },
+                {
+                    id: "general-setting-3",
+                    type: "loop",
+                    name: "Send notifications",
+                    options: [
+                        {
+                            value: "Yes",
+                            selected: true
+                        },
+                        {
+                            value: "No",
+                            selected: false
+                        }
+                    ]
+                },
+            ]
+        },
+        {
+            type: "session",
+            isActive: false,
+            data: [
+                {
+                    id: "session-setting-1",
+                    type: "action",
+                    name: "session length",
+                    action: () => undefined,
+                    value: "25 minutes"
+                },
+                {
+                    id: "session-setting-2",
+                    type: "action",
+                    name: "Break length",
+                    action: () => undefined,
+                    value: "5 minutes"
+                },
+                {
+                    id: "session-setting-3",
+                    type: "loop",
+                    name: "Auto start session",
+                    options: [
+                        {
+                            value: "Yes",
+                            selected: false,
+                        },
+                        {
+                            value: "No",
+                            selected: true,
+                        }
+                    ]
+                },
+                {
+                    id: "session-setting-4",
+                    type: "loop",
+                    name: "Auto start break",
+                    options: [
+                        {
+                            value: "Yes",
+                            selected: false,
+                        },
+                        {
+                            value: "No",
+                            selected: true,
+                        }
+                    ]
+                },
+            ]
+        },
+        {
+            type: "date & time",
+            isActive: false,
+            data: [{
+                id: "date & time-setting-1",
+                type: "choose",
+                name: "Start of the week",
+                options: [
+                    {
+                        value: "Sunday",
+                        selected: false
+                    },
+                    {
+                        value: "Monday",
+                        selected: true
+                    },
+                    {
+                        value: "Tuesday",
+                        selected: false
+                    },
+                    {
+                        value: "Wednesday",
+                        selected: false
+                    },
+                    {
+                        value: "Thursday",
+                        selected: false
+                    },
+                    {
+                        value: "Friday",
+                        selected: false
+                    },
+                    {
+                        value: "Saturday",
+                        selected: false
+                    },
+                ]
+            },
+            {
+                id: "date & time-setting-2",
+                type: "action",
+                name: "Start of the day",
+                action: () => undefined,
+                value: "05:00 AM"
+            },]
+        }
+    ];
+
+
+
+
 
     /*==============================*/
-    /* Refs                      */
+    /* State                        */
+    /*==============================*/
+    let activeSettings = $state(settings[0].data);
+
+    /*==============================*/
+    /* Refs                         */
     /*==============================*/
     let settingTypesElement: HTMLDivElement;
     let settingsMainElement: HTMLDivElement;
@@ -37,7 +234,13 @@
     /*==============================*/
     /* Handlers                     */
     /*==============================*/
-
+    function handleSettingsTabChange(settings: Setting[], i: number) {
+        for (let j = 0; j < settings.length; j++) {
+            settings[j].isActive = false;
+        }
+        settings[i].isActive = true;
+        activeSettings = settings[i].data;
+    }
     /*==============================*/
     /* Effects                      */
     /*==============================*/
@@ -60,7 +263,7 @@
 
 <!-- close button -->
 <button
-    title="Close Settings"
+    title="Close settings"
     onclick={() => navigate(-1)}
     class="absolute left-5 top-5 z-20 text-(--luxury-white)"
     transition:fade={{ duration: 250 }}
@@ -78,11 +281,11 @@
     out:slide={{ duration: 250 }}
     class="z-10 overflow-auto py-4 w-[90vw] absolute left-0 top-[10svh] dark-scrollbar origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
 >
-    {#each settingTypes as settingType}
+    {#each settings as setting}
         <button
-            class=" font-semibold text-(--blackout)/62 hover:text-(--blackout) transition-colors"
+            class=" font-semibold text-(--blackout)/62 hover:text-(--blackout) transition-colors text-nowrap"
         >
-            {settingType.toUpperCase()}
+            {setting.type.toUpperCase()}
         </button>
     {/each}
 </div>
@@ -118,7 +321,7 @@
                 <p
                     class="text-xs text-(--blackout)/70"
                 >
-                    with {settings.theme === 'dark' ? '🖤' : '🤍'}
+                    with {sharedSettings.theme === 'dark' ? '🖤' : '🤍'}
                 </p>
             </div>
 

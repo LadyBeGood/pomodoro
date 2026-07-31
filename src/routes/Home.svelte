@@ -3,7 +3,7 @@
     /* Imports                      */
     /*==============================*/
     import { onMount } from "svelte";
-    import { scrollIndex } from "../state/homeTab.svelte";
+    import { scrollIndex } from "../shared/homeTab.svelte";
 
     /*==============================*/
     /* Constants                    */
