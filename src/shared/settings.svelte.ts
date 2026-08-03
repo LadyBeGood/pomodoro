@@ -10,8 +10,21 @@ export const settings = $state({
     startOfWeek: localStorage.getItem("startOfWeek") ?? "Monday",
 });
 
+/**
+ * Fallback to a default in case user has a invalid / outdated setting value
+ */
+function fallback(key: keyof typeof settings, validValues: string[], defaultValue: string) {
+    if (!validValues.includes(settings[key])) {
+        settings[key] = defaultValue;
+        return true;
+    }
+
+    return false;
+}
 
 export function applyTheme() {
+    if (fallback("theme", ["Dark", "Light"], "Dark")) return;
+
     let themeStyleElement = document.querySelector("#theme-style");
 
     if (themeStyleElement === null) {
@@ -23,9 +36,6 @@ export function applyTheme() {
         themeStyleElement.innerHTML = dark
     } else if (settings.theme === "Light") {
         themeStyleElement.innerHTML = light
-    } else { // fallback in case user has a invalid / outdated theme value
-        settings.theme = "Dark"
-        return
     }
 
     localStorage.setItem("theme", settings.theme);
@@ -33,5 +43,19 @@ export function applyTheme() {
 }
 
 export function applyDefaultHomePage() {
-    
+    if (fallback("defaultHomePage", ["Pomodoro", "Timer"], "Pomodoro")) return;
+
+    localStorage.setItem("defaultHomePage", settings.defaultHomePage);
 }
+
+// export function apply() {
+//     if (fallback("defaultHomePage", ["Pomodoro", "Timer"], "Pomodoro")) return;
+// }
+
+// export function apply() {
+
+// }
+
+// export function apply() {
+
+// }

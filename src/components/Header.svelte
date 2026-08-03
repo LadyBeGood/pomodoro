@@ -2,6 +2,7 @@
     import { navigate, isActive } from "../router";
     import { scrollIndex } from "../shared/homeTab.svelte";
     import { slide } from "svelte/transition";
+    import { settings } from "../shared/settings.svelte";
 </script>
 
 {#snippet slidingText(text: string)}
@@ -25,10 +26,20 @@
 
     {#if isActive("/statistics")}
         {@render slidingText("STATISTICS")}
-    {:else if isActive("/") && scrollIndex.value === 1}
-        {@render slidingText("POMODORO")}
-    {:else if isActive("/") && scrollIndex.value === 2}
-        {@render slidingText("TIMER")}
+    {:else if isActive("/")}
+        {#if settings.defaultHomePage === "Pomodoro"}
+            {#if scrollIndex.value === 1 }
+                {@render slidingText("POMODORO")}
+            {:else if isActive("/") && scrollIndex.value === 2}
+                {@render slidingText("TIMER")}
+            {/if}
+        {:else}
+            {#if scrollIndex.value === 1 }
+                {@render slidingText("TIMER")}
+            {:else if isActive("/") && scrollIndex.value === 2}
+                {@render slidingText("POMODORO")}
+            {/if}
+        {/if}
     {:else if isActive("/tasks")}
         {@render slidingText("TASKS")}
     {/if}
@@ -43,25 +54,19 @@
 
     {#if isActive("/")}
         <div class="absolute top-full left-1/2 -translate-x-1/2 flex gap-1.5">
-            <div
-                class="scroll-indicator {scrollIndex.value === 1
-                    ? 'bg-(--luxury-white)'
-                    : 'bg-(--dravit-grey)'}"
-            ></div>
-            <div
-                class="scroll-indicator {scrollIndex.value === 2
-                    ? 'bg-(--luxury-white)'
-                    : 'bg-(--dravit-grey)'}"
-            ></div>
+            <div class="scroll-indicator" style="background-color: var(--{ scrollIndex.value === 1 ? "luxury-white" : "dravit-grey" })"></div>
+            <div class="scroll-indicator" style="background-color: var(--{ scrollIndex.value === 2 ? "luxury-white" : "dravit-grey" })"></div>
         </div>
     {/if}
 </div>
 
 <style>
-    @reference "../../style.css";
 
     .scroll-indicator {
-        @apply h-1.5 w-1.5 rounded-full transition-colors duration-250;
+        height: 6px;
+        width: 6px;
+        border-radius: 999px;
+        transition: background-color 500ms;
     }
 
     .header-bg {

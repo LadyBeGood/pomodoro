@@ -4,6 +4,7 @@
     /*==============================*/
     import { onMount } from "svelte";
     import { scrollIndex } from "../shared/homeTab.svelte";
+    import { settings } from "../shared/settings.svelte";
 
     /*==============================*/
     /* Constants                    */
@@ -122,11 +123,8 @@
     });
 </script>
 
-<div
-    bind:this={homeElement}
-    onscroll={handleScroll}
-    class="flex overflow-auto w-svw no-scrollbar snap-x snap-mandatory"
->
+
+{#snippet PomodoroTab()}
     <div class="flex items-center justify-center shrink-0 flex-col gap-4 w-svw h-svh snap-start snap-always">
         <div
             class="text-(--luxury-white) w-48 h-48 rounded-full p-2.5 relative uppercase"
@@ -183,7 +181,9 @@
             </button>
         </div>
     </div>
+{/snippet}
 
+{#snippet TimerTab()}
     <button
         title="Click to start or pause."
         onclick={toggleTimer}
@@ -196,6 +196,23 @@
             </div>
         </div>
     </button>
+{/snippet}
+
+
+<div
+    bind:this={homeElement}
+    onscroll={handleScroll}
+    class="flex overflow-auto w-svw no-scrollbar snap-x snap-mandatory"
+>
+
+    {#if settings.defaultHomePage === "Pomodoro"}
+        {@render PomodoroTab()}
+        {@render TimerTab()}
+    {:else}
+        {@render TimerTab()}
+        {@render PomodoroTab()}
+    {/if}
+
 </div>
 
 <style>
