@@ -163,7 +163,7 @@
 
             <button
                 onclick={toggleTimer}
-                title={isRunning ? "Pause" : "Play"}
+                title={isRunning ? "Pause" : "Resume"}
                 class="bg-(--luxury-white) text-(--blackout) rounded-full p-3 mt-8 transition-transform"
             >
                 {#if isRunning}
@@ -185,7 +185,7 @@
 
 {#snippet TimerTab()}
     <button
-        title="Click to start or pause."
+        aria-label="Click to start or pause."
         onclick={toggleTimer}
         class="flex items-center justify-center shrink-0 flex-col gap-4 w-svw h-svh snap-start snap-always select-none"
     >

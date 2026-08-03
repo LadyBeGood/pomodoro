@@ -261,7 +261,7 @@
 
 <!-- close button -->
 <button
-    title="Close settings"
+    aria-label="Close settings"
     onclick={() => navigate(-1)}
     class="absolute left-5 top-5 z-20 text-(--luxury-white)"
     transition:fade={{ duration: 250 }}

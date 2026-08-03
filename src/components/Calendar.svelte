@@ -110,7 +110,7 @@
     <div class="flex gap-2 bg-(--luxury-white) rounded-full px-1 py-1">
         <button
             onclick={prevMonth}
-            title="previous month"
+            title="Previous month"
             class="hover:bg-(--blackout) hover:text-(--luxury-white) text-(--blackout) rounded-full p-1.5 transition-colors"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
@@ -122,7 +122,7 @@
 
         <button
             onclick={nextMonth}
-            title="next month"
+            title="Next month"
             class="bg-(--luxury-white) rounded-full p-1.5 hover:bg-(--blackout) hover:text-(--luxury-white) transition-colors"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
@@ -139,25 +139,23 @@
             {/each}
         </div>
 
-        <div
-            class="grid grid-cols-7 gap-1 tabular-nums bg-(--blackout) text-(--luxury-white) rounded-b-2xl"
-        >
+        <div class="grid grid-cols-7 gap-1 tabular-nums bg-(--blackout) text-(--luxury-white) rounded-b-2xl">
             {#each allDays as item}
                 {@const randomId = Math.floor(Math.random() * opacities.length)}
 
                 <div
                     class="
                         overlay aspect-square font-medium text-sm grid place-items-center transition-all cursor-pointer relative
-                        {item.isToday ? 'rounded-full border-(--luxury-white)' : 'rounded-xs'}
+                        {item.isToday ? "rounded-full border-(--luxury-white)" : "rounded-xs"}
                     "
                     style="
-                        background-color: {item.day === '' || item.isFuture
-                        ? 'transparent'
+                        background-color: {item.day === "" || item.isFuture
+                        ? "transparent"
                         : `rgba(250, 250, 250, ${opacities[randomId]}%)`}; 
                         color: {randomId >= opacities.length / 2 &&
                     !item.isFuture
-                        ? 'var(--blackout)'
-                        : 'var(--luxury-white)'};
+                        ? "var(--blackout)"
+                        : "var(--luxury-white)"};
                     "
                 >
                     {item.day}

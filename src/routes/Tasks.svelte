@@ -150,7 +150,7 @@
             />
 
             <button
-                title="Add todo"
+                aria-label="Add todo"
                 class:active={isInputFocused}
                 class="w-8 h-8 text-lg font-medium shrink-0 text-(--dravit-grey) text-center bg-(--blackout) rounded-full grid place-items-center"
                 onclick={(event) => addTask(event)}

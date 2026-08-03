@@ -15,7 +15,7 @@
 
 <div class="fixed left-0 right-0 top-0 flex justify-between mx-5 my-5 items-center text-(--luxury-white) z-1">
     <button
-        title="Music"
+        aria-label="Music"
         onclick={() => navigate("/music")}
         class="p-2.5 border-2 rounded-full dark:border-(--dravit-grey)/35 border-(--dravit-grey)/60 bg-(--blackout)"
     >
@@ -45,7 +45,7 @@
     {/if}
 
     <button
-        title="Settings"
+        aria-label="Settings"
         onclick={() => navigate("/settings")}
         class="p-2.5 border-2 rounded-full dark:border-(--dravit-grey)/35 border-(--dravit-grey)/60 bg-(--blackout)"
     >
