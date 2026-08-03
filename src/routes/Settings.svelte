@@ -15,30 +15,31 @@
         selected: boolean 
     }
 
-    type SelectionSettingData<T extends string> = {
-        id: `${T}-setting-${number}`,
+    type SelectionSettingData = {
+        id: `${string}-setting-${number}`,
         type: "choose" | "loop",
         name: string,
+        key: keyof typeof sharedSettings,
         options: SettingOption[],
     }
 
-    type ActionSettingData<T extends string> = {
-        id: `${T}-setting-${number}`,
+    type ActionSettingData = {
+        id: `${string}-setting-${number}`,
         type: "action",
         name: string,
         action: () => void,
         value: string
     }
 
-    type SettingData<T extends string> =
-        | SelectionSettingData<T>
-        | ActionSettingData<T>;
+    type SettingData =
+        | SelectionSettingData
+        | ActionSettingData;
 
 
     type Setting = {
         type: string,
         isActive: boolean,
-        data: SettingData<Setting["type"]>[]
+        data: SettingData[]
     }
 
             
@@ -54,46 +55,50 @@
                     id: "general-setting-1",
                     type: "loop",
                     name: "Theme",
+                    key: "theme",
                     options: [
                         {
                             value: "Dark",
-                            selected: true
+                            selected: (console.log(sharedSettings.theme), sharedSettings.theme === "Dark")
                         },
                         {
                             value: "Light",
-                            selected: false
+                            selected: sharedSettings.theme === "Light"
                         }
-                    ]
+                    ],
                 },
                 {
                     id: "general-setting-2",
                     type: "loop",
                     name: "Default home page",
+                    key: "defaultHomePage",
                     options: [
                         {
                             value: "Pomodoro",
-                            selected: true
+                            selected: sharedSettings.defaultHomePage === "Pomodoro"
                         },
                         {
                             value: "Timer",
-                            selected: false
+                            selected: sharedSettings.defaultHomePage === "Timer"
                         }
-                    ]
+                    ],
                 },
                 {
                     id: "general-setting-3",
                     type: "loop",
                     name: "Send notifications",
+                    key: "sendNotifications",
                     options: [
                         {
                             value: "Yes",
-                            selected: true
+                            selected: sharedSettings.sendNotifications === "Yes"
                         },
                         {
                             value: "No",
-                            selected: false
+                            selected: sharedSettings.sendNotifications === "No"
                         }
-                    ]
+                    ],
+
                 },
             ]
         },
@@ -119,79 +124,58 @@
                     id: "session-setting-3",
                     type: "loop",
                     name: "Auto start session",
+                    key: "autoStartSession",
                     options: [
                         {
                             value: "Yes",
-                            selected: false,
+                            selected: sharedSettings.autoStartSession === "Yes",
                         },
                         {
                             value: "No",
-                            selected: true,
+                            selected: sharedSettings.autoStartSession === "No",
                         }
-                    ]
+                    ],
                 },
                 {
                     id: "session-setting-4",
                     type: "loop",
                     name: "Auto start break",
+                    key: "autoStartBreak",
                     options: [
                         {
                             value: "Yes",
-                            selected: false,
+                            selected: sharedSettings.autoStartBreak === "Yes",
                         },
                         {
                             value: "No",
-                            selected: true,
+                            selected: sharedSettings.autoStartBreak === "No",
                         }
-                    ]
+                    ],
                 },
             ]
         },
         {
             type: "date & time",
             isActive: false,
-            data: [{
-                id: "date-and-time-setting-1",
-                type: "choose",
-                name: "Start of the week",
-                options: [
-                    {
-                        value: "Sunday",
-                        selected: false
-                    },
-                    {
-                        value: "Monday",
-                        selected: true
-                    },
-                    {
-                        value: "Tuesday",
-                        selected: false
-                    },
-                    {
-                        value: "Wednesday",
-                        selected: false
-                    },
-                    {
-                        value: "Thursday",
-                        selected: false
-                    },
-                    {
-                        value: "Friday",
-                        selected: false
-                    },
-                    {
-                        value: "Saturday",
-                        selected: false
-                    },
-                ]
-            },
-            {
-                id: "date-and-time-setting-2",
-                type: "action",
-                name: "Start of the day",
-                action: () => undefined,
-                value: "05:00 AM"
-            },]
+            data: [
+                {
+                    id: "date-and-time-setting-1",
+                    type: "choose",
+                    name: "Start of the week",
+                    key: "startOfWeek",
+                    options: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map(
+                        value => ({ value, selected: value === sharedSettings.startOfWeek })
+                    ),
+
+                },
+                {
+                    id: "date-and-time-setting-2",
+                    type: "action",
+                    name: "Start of the day",
+                    action: () => undefined,
+                    value: "05:00 AM"
+                },
+            ]
         }
     ]);
 
@@ -237,7 +221,7 @@
         activeSettings = settings[i].data;
     }
 
-    function handleLoop(options: SettingOption[]) {
+    function handleLoop(options: SettingOption[], name: keyof typeof sharedSettings) {
         let nextSelectedIndex = -1;
 
         for (let i = 0; i < options.length; i++) {
@@ -248,7 +232,9 @@
         }
 
         options[nextSelectedIndex].selected = true;
+        sharedSettings[name] = options[nextSelectedIndex].value;
     }
+    
     /*==============================*/
     /* Effects                      */
     /*==============================*/
@@ -310,7 +296,7 @@
     <div class="flex flex-col gap-10 overflow-auto text-right">
         {#each activeSettings as activeSetting (activeSetting.id)}
             {#if activeSetting.type === "loop"}
-                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => handleLoop(activeSetting.options)}>
+                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => handleLoop(activeSetting.options, activeSetting.key)}>
                     <div class="font-medium">{activeSetting.name}</div>
                     <div class="text-(--blackout)/70 text-xs">{activeSetting.options.find(option => option.selected)?.value}</div>
                 </button>
@@ -337,7 +323,7 @@
                 <p
                     class="text-xs text-(--blackout)/70"
                 >
-                    with {sharedSettings.theme === 'dark' ? '🖤' : '🤍'}
+                    with {sharedSettings.theme === "Dark" ? "🖤" : "🤍"}
                 </p>
             </div>
 
