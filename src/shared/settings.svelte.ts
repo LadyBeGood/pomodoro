@@ -7,7 +7,10 @@ export const settings = $state({
     sendNotifications: localStorage.getItem("sendNotifications") ?? "Yes",
     autoStartSession: localStorage.getItem("autoStartSession") ?? "No",
     autoStartBreak: localStorage.getItem("autoStartBreak") ?? "No",
-    startOfWeek: localStorage.getItem("startOfWeek") ?? "Monday",
+    startOfTheWeek: localStorage.getItem("startOfTheWeek") ?? "Monday",
+    startOfTheDay: localStorage.getItem("startOfTheDay") ?? "5:00 AM",
+    sessionLength: localStorage.getItem("sessionLength") ?? "25 minutes",
+    breakLength: localStorage.getItem("breakLength") ?? "5 minutes"
 });
 
 /**
@@ -48,9 +51,11 @@ export function applyDefaultHomePage() {
     localStorage.setItem("defaultHomePage", settings.defaultHomePage);
 }
 
-// export function apply() {
-//     if (fallback("defaultHomePage", ["Pomodoro", "Timer"], "Pomodoro")) return;
-// }
+export function applyStartOfTheWeek() {
+    // if (fallback("defaultHomePage", ["Pomodoro", "Timer"], "Pomodoro")) return;
+
+    localStorage.setItem("startOfTheWeek", settings.startOfTheWeek);
+}
 
 // export function apply() {
 

@@ -2,10 +2,12 @@
     /*==============================*/
     /* Imports                      */
     /*==============================*/
+    import type { Snippet } from "svelte";
     import { fade, slide } from "svelte/transition";
     import { navigate } from "../router";
     import LightBeam from "../components/LightBeam.svelte";
     import { settings as sharedSettings } from "../shared/settings.svelte";
+    import Dialog from "../components/Dialog.svelte";
 
     /*==============================*/
     /* Types                        */
@@ -17,18 +19,19 @@
 
     type SelectionSettingData = {
         id: `${string}-setting-${number}`,
-        type: "choose" | "loop",
+        type: "loop",
         name: string,
         key: keyof typeof sharedSettings,
         options: SettingOption[],
     }
-
+    
     type ActionSettingData = {
         id: `${string}-setting-${number}`,
-        type: "action",
+        type: "dialog",
         name: string,
-        action: () => void,
-        value: string
+        key: keyof typeof sharedSettings,
+        snippet: Snippet,
+        value: string,
     }
 
     type SettingData =
@@ -46,7 +49,9 @@
     /*==============================*/
     /* Constants                    */
     /*==============================*/
-    const settings = $state<Setting[]>([
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    const settings = $state<Array<Setting>>([
         { 
             type: "general", 
             isActive: true,
@@ -59,7 +64,7 @@
                     options: [
                         {
                             value: "Dark",
-                            selected: (console.log(sharedSettings.theme), sharedSettings.theme === "Dark")
+                            selected: sharedSettings.theme === "Dark"
                         },
                         {
                             value: "Light",
@@ -108,17 +113,19 @@
             data: [
                 {
                     id: "session-setting-1",
-                    type: "action",
-                    name: "session length",
-                    action: () => undefined,
-                    value: "25 minutes"
+                    type: "dialog",
+                    name: "Session length",
+                    key: "sessionLength",
+                    snippet: sessionLengthSnippet,
+                    value: sharedSettings.sessionLength
                 },
                 {
                     id: "session-setting-2",
-                    type: "action",
+                    type: "dialog",
                     name: "Break length",
-                    action: () => undefined,
-                    value: "5 minutes"
+                    key: "breakLength",
+                    snippet: breakLengthSnippet,
+                    value: sharedSettings.breakLength
                 },
                 {
                     id: "session-setting-3",
@@ -155,28 +162,28 @@
             ]
         },
         {
-            type: "date & time",
+            type: "clock",
             isActive: false,
             data: [
                 {
                     id: "date-and-time-setting-1",
-                    type: "choose",
+                    type: "dialog",
                     name: "Start of the week",
-                    key: "startOfWeek",
-                    options: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map(
-                        value => ({ value, selected: value === sharedSettings.startOfWeek })
-                    ),
+                    key: "startOfTheWeek",
+                    value: sharedSettings.startOfTheWeek,
+                    snippet: startOfTheWeekSnippet,
 
                 },
                 {
                     id: "date-and-time-setting-2",
-                    type: "action",
+                    type: "dialog",
                     name: "Start of the day",
-                    action: () => undefined,
-                    value: "05:00 AM"
+                    key: "startOfTheDay",
+                    value: sharedSettings.startOfTheDay,
+                    snippet: startOfTheDaySnippet,
                 },
             ]
-        }
+        },
     ]);
 
 
@@ -187,6 +194,8 @@
     /* State                        */
     /*==============================*/
     let activeSettings = $state(settings[0].data);
+    let isDialogOpen = $state(false);
+    let dialogContents = $state<Snippet | null>(null);
 
     /*==============================*/
     /* Refs                         */
@@ -234,6 +243,11 @@
         options[nextSelectedIndex].selected = true;
         sharedSettings[name] = options[nextSelectedIndex].value;
     }
+
+    function openDialog(contents: Snippet) {
+        dialogContents = contents;
+        isDialogOpen = true;
+    }
     
     /*==============================*/
     /* Effects                      */
@@ -250,6 +264,7 @@
 
 
 </script>
+
 
 <!-- overlay -->
 <div
@@ -277,7 +292,7 @@
     bind:this={settingTypesElement}
     in:slide={{ duration: 250, delay: 250 }}
     out:slide={{ duration: 250 }}
-    class="z-10 overflow-auto py-4 w-[90vw] absolute left-0 top-[10svh] dark-scrollbar origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
+    class="z-10 overflow-auto pt-4 w-[90vw] absolute left-0 top-[10svh] dark-scrollbar origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
 >
     {#each settings as setting, i}
         <button
@@ -306,7 +321,11 @@
                     <div class="font-medium">{activeSetting.name}</div>
                     <div class="text-(--blackout)/70 text-xs">{activeSetting.options.find(option => option.selected)?.value}</div>
                 </button>
-            <!-- {:else if } -->
+            {:else if activeSetting.type === "dialog"}
+                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => openDialog(activeSetting.snippet)}>
+                    <div class="font-medium">{activeSetting.name}</div>
+                    <div class="text-(--blackout)/70 text-xs">{activeSetting.value}</div>
+                </button>
             {/if}
         {/each}
     </div>
@@ -315,9 +334,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="font-semibold">Created by LadyBeGood</p>
-                <p
-                    class="text-xs text-(--blackout)/70"
-                >
+                <p class="text-xs text-(--blackout)/70">
                     with {sharedSettings.theme === "Dark" ? "🖤" : "🤍"}
                 </p>
             </div>
@@ -335,6 +352,47 @@
         </div>
     </div>
 </div>
+
+
+
+
+<!-------------------------------->
+<!-- Snippets                   -->
+<!-------------------------------->
+
+{#snippet startOfTheWeekSnippet()}
+    <div class="flex flex-col w-full">
+        {#each daysOfWeek as week}
+            <button 
+                class="hover:bg-(--blackout) hover:text-(--luxury-white) h-13 w-full px-4"
+                onclick={event => {
+                    console.log(event.currentTarget.textContent);
+                    sharedSettings.startOfTheWeek = event.currentTarget.textContent;
+                }}
+            >
+                {week}
+            </button>
+        {/each}
+    </div>
+{/snippet}
+
+{#snippet startOfTheDaySnippet()}
+    startOfTheDaySnippet
+{/snippet}
+
+{#snippet breakLengthSnippet()}
+    breakLengthSnippet
+{/snippet}
+
+{#snippet sessionLengthSnippet()}
+    sessionLengthSnippet
+{/snippet}
+
+<!-------------------------------->
+<!-- Dialog                     -->
+<!-------------------------------->
+<Dialog bind:isDialogOpen children={dialogContents}></Dialog>
+
 
 <style>
     .active {
