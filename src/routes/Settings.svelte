@@ -195,7 +195,7 @@
     let settingsMainElement: HTMLDivElement;
 
     /*==============================*/
-    /* Helpers                     */
+    /* Helpers                      */
     /*==============================*/
     function getRotationAngle() {
         const angleInRadians = Math.atan2(
@@ -248,9 +248,7 @@
         };
     });
 
-    $effect(() => {
-        
-    })
+
 </script>
 
 <!-- overlay -->
@@ -272,15 +270,23 @@
 <!-- light beam -->
 <LightBeam origin="right" />
 
-<!-- setting categories -->
+<!-- setting tablist -->
 <div
+    role="tablist" 
+    aria-label="Settings tablist"
     bind:this={settingTypesElement}
     in:slide={{ duration: 250, delay: 250 }}
     out:slide={{ duration: 250 }}
     class="z-10 overflow-auto py-4 w-[90vw] absolute left-0 top-[10svh] dark-scrollbar origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
 >
-    {#each settings as setting}
-        <button class=" font-semibold text-(--blackout)/62 hover:text-(--blackout) transition-colors text-nowrap">
+    {#each settings as setting, i}
+        <button
+            role="tab"
+            aria-selected={setting.isActive}
+            class:active={setting.isActive}
+            class=" font-bold text-(--blackout)/62 hover:text-(--blackout) transition-colors text-nowrap"
+            onclick={() => handleSettingsTabChange(settings, i)}
+        >
             {setting.type.toUpperCase()}
         </button>
     {/each}
@@ -303,17 +309,6 @@
             <!-- {:else if } -->
             {/if}
         {/each}
-        
-
-        <!-- <button style="padding-right: calc(1 * 0.9vw);" class="">
-            <div class="font-medium">Default home page</div>
-            <div class="text-(--blackout)/70 text-xs">Pomodoro</div>
-        </button>
-
-        <button style="padding-right: calc(2 * 0.9vw);" class="">
-            <div class="font-medium">Show notifications</div>
-            <div class="text-(--blackout)/70 text-xs">Yes</div>
-        </button> -->
     </div>
 
     <div class="self-end w-full p-6">
@@ -340,3 +335,9 @@
         </div>
     </div>
 </div>
+
+<style>
+    .active {
+        color: var(--blackout);
+    }
+</style>

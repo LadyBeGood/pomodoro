@@ -146,7 +146,7 @@
  -->
 <div
     role="tablist" 
-    aria-label="White noise categories"
+    aria-label="White noise tabs"
     bind:this={whiteNoiseTypesElement}
     in:slide={{ duration: 250, delay: 250 }}
     out:slide={{ duration: 250 }}
