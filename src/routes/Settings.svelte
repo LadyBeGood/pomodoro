@@ -49,7 +49,15 @@
     /*==============================*/
     /* Constants                    */
     /*==============================*/
-    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const daysOfWeek = [
+        "Sunday", 
+        "Monday", 
+        "Tuesday", 
+        "Wednesday", 
+        "Thursday", 
+        "Friday", 
+        "Saturday"
+    ];
 
     const settings = $state<Array<Setting>>([
         { 
