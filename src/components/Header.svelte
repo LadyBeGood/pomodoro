@@ -26,20 +26,14 @@
 
     {#if isActive("/statistics")}
         {@render slidingText("STATISTICS")}
-    {:else if isActive("/")}
-        {#if settings.defaultHomePage === "Pomodoro"}
-            {#if scrollIndex.value === 1 }
-                {@render slidingText("POMODORO")}
-            {:else if isActive("/") && scrollIndex.value === 2}
-                {@render slidingText("TIMER")}
-            {/if}
-        {:else}
-            {#if scrollIndex.value === 1 }
-                {@render slidingText("TIMER")}
-            {:else if isActive("/") && scrollIndex.value === 2}
-                {@render slidingText("POMODORO")}
-            {/if}
-        {/if}
+    {:else if isActive("/") && settings.defaultHomePage === "Pomodoro" && scrollIndex.value === 1}
+        {@render slidingText("POMODORO")}
+    {:else if isActive("/") && settings.defaultHomePage === "Pomodoro" && scrollIndex.value === 2}
+        {@render slidingText("TIMER")}
+    {:else if isActive("/") && settings.defaultHomePage === "Timer" && scrollIndex.value === 1}
+        {@render slidingText("TIMER")}
+    {:else if isActive("/") && settings.defaultHomePage === "Timer" && scrollIndex.value === 2}
+        {@render slidingText("POMODORO")}
     {:else if isActive("/tasks")}
         {@render slidingText("TASKS")}
     {/if}
