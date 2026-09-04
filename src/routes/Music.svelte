@@ -39,11 +39,7 @@
             data: [
                 { id: 167057, name: "School Canteen", creator: "slag777" },
                 { id: 540299, name: "Coffee shop", creator: "aidansamuel" },
-                {
-                    id: 627079,
-                    name: "Diner in Virginia",
-                    creator: "laggardson",
-                },
+                { id: 627079, name: "Diner in Virginia", creator: "laggardson" },
             ],
         },
         {
@@ -57,8 +53,7 @@
 
     // svelte-ignore state_referenced_locally
     let activeWhiteNoise = $state<WhiteNoise["data"][number]>(
-        JSON.parse(localStorage.getItem("active-white-noise") ?? "null") ??
-            activeWhiteNoises[0],
+        JSON.parse(localStorage.getItem("activeWhiteNoise") ?? "null") ?? activeWhiteNoises[0]
     );
 
     let isPlaying = $state(false);
@@ -113,10 +108,7 @@
     });
 
     $effect(() => {
-        localStorage.setItem(
-            "active-white-noise",
-            JSON.stringify(activeWhiteNoise),
-        );
+        localStorage.setItem("activeWhiteNoise", JSON.stringify(activeWhiteNoise),);
     });
 </script>
 

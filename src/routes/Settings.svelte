@@ -8,6 +8,7 @@
     import LightBeam from "../components/LightBeam.svelte";
     import { settings as sharedSettings } from "../shared/settings.svelte";
     import Dialog from "../components/Dialog.svelte";
+    import Dial from "../components/Dial.svelte";
 
     /*==============================*/
     /* Types                        */
@@ -31,7 +32,6 @@
         name: string,
         key: keyof typeof sharedSettings,
         snippet: Snippet,
-        value: string,
     }
 
     type SettingData =
@@ -125,7 +125,6 @@
                     name: "Session length",
                     key: "sessionLength",
                     snippet: sessionLengthSnippet,
-                    value: sharedSettings.sessionLength
                 },
                 {
                     id: "session-setting-2",
@@ -133,7 +132,6 @@
                     name: "Break length",
                     key: "breakLength",
                     snippet: breakLengthSnippet,
-                    value: sharedSettings.breakLength
                 },
                 {
                     id: "session-setting-3",
@@ -178,7 +176,6 @@
                     type: "dialog",
                     name: "Start of the week",
                     key: "startOfTheWeek",
-                    value: sharedSettings.startOfTheWeek,
                     snippet: startOfTheWeekSnippet,
 
                 },
@@ -187,7 +184,6 @@
                     type: "dialog",
                     name: "Start of the day",
                     key: "startOfTheDay",
-                    value: sharedSettings.startOfTheDay,
                     snippet: startOfTheDaySnippet,
                 },
             ]
@@ -332,7 +328,7 @@
             {:else if activeSetting.type === "dialog"}
                 <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => openDialog(activeSetting.snippet)}>
                     <div class="font-medium">{activeSetting.name}</div>
-                    <div class="text-(--blackout)/70 text-xs">{activeSetting.value}</div>
+                    <div class="text-(--blackout)/70 text-xs">{sharedSettings[activeSetting.key]}</div>
                 </button>
             {/if}
         {/each}
@@ -372,10 +368,11 @@
     <div class="flex flex-col w-full">
         {#each daysOfWeek as week}
             <button 
-                class="hover:bg-(--blackout) hover:text-(--luxury-white) h-13 w-full px-4"
+                class="hover:bg-(--blackout) hover:text-(--luxury-white) h-13 w-full px-16 text-center!"
                 onclick={event => {
                     console.log(event.currentTarget.textContent);
                     sharedSettings.startOfTheWeek = event.currentTarget.textContent;
+                    setTimeout(() => isDialogOpen = false, 100)
                 }}
             >
                 {week}
@@ -385,7 +382,9 @@
 {/snippet}
 
 {#snippet startOfTheDaySnippet()}
-    startOfTheDaySnippet
+    <div class="tabular-nums text-4xl px-8">
+        <Dial />
+    </div>
 {/snippet}
 
 {#snippet breakLengthSnippet()}
