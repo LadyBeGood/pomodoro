@@ -231,11 +231,15 @@
 
     async function resumeSession() {
         if (
-        settings.sendNotifications === "Yes" &&
-        "Notification" in window &&
-        Notification.permission === "default"
+            settings.sendNotifications === "Yes" &&
+            "Notification" in window &&
+            Notification.permission === "default"
         ) {
-            await Notification.requestPermission();
+            const permission = await Notification.requestPermission();
+
+            if (permission === "denied") {
+                settings.sendNotifications = "No";
+            }
         }   
 
         isSessionRunning = true;

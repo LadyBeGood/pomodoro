@@ -57,9 +57,17 @@ export function applyStartOfTheWeek() {
     localStorage.setItem("startOfTheWeek", settings.startOfTheWeek);
 }
 
-// export function apply() {
+export function applySendNotifications() {
+    if (fallback("sendNotifications", ["Yes", "No"], "Yes")) return;
 
-// }
+    /**
+     * Requesting notification permissions requires user interaction;
+     * therefore, the permission logic is placed inside the Notification 
+     * setting's click handler.
+     */
+
+    localStorage.setItem("sendNotifications", settings.sendNotifications);
+}
 
 // export function apply() {
 

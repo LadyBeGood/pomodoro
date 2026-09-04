@@ -24,9 +24,23 @@
         name: string,
         key: keyof typeof sharedSettings,
         options: SettingOption[],
+        userAction?: () => void
     }
-    
+
+    /**
+     * This type is for settings which require user interaction.
+     */
     type ActionSettingData = {
+        id: `${string}-setting-${number}`,
+        type: "action",
+        name: string,
+        key: keyof typeof sharedSettings,
+        options: SettingOption[],
+        action: () => void
+    }
+
+    
+    type SnippetSettingData = {
         id: `${string}-setting-${number}`,
         type: "dialog",
         name: string,
@@ -36,7 +50,8 @@
 
     type SettingData =
         | SelectionSettingData
-        | ActionSettingData;
+        | ActionSettingData
+        | SnippetSettingData;
 
 
     type Setting = {
@@ -98,7 +113,7 @@
                 },
                 {
                     id: "general-setting-3",
-                    type: "loop",
+                    type: "action",
                     name: "Send notifications",
                     key: "sendNotifications",
                     options: [
@@ -111,7 +126,31 @@
                             selected: sharedSettings.sendNotifications === "No"
                         }
                     ],
+                    async action() {
+                        if (    
+                            sharedSettings.sendNotifications === "No" &&
+                            "Notification" in window
+                        ) {
+                            if (Notification.permission === "denied") {
+                                alert("You had previously denied notification permission. Please enable it manually in the browser.");
+                                return;
+                            }
 
+                            if (Notification.permission === "default") {
+                                const permission = await Notification.requestPermission();
+
+                                if (permission !== "granted") return;
+                            } 
+
+                            sharedSettings.sendNotifications = "Yes";
+                            this.options[0].selected = true;
+                            this.options[1].selected = false;
+                        } else {
+                            sharedSettings.sendNotifications = "No";
+                            this.options[0].selected = false;
+                            this.options[1].selected = true;
+                        }
+                    }
                 },
             ]
         },
@@ -321,12 +360,17 @@
     <div class="flex flex-col gap-10 overflow-auto text-right">
         {#each activeSettings as activeSetting (activeSetting.id)}
             {#if activeSetting.type === "loop"}
-                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => handleLoop(activeSetting.options, activeSetting.key)}>
+                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => {handleLoop(activeSetting.options, activeSetting.key); }}>
                     <div class="font-medium">{activeSetting.name}</div>
-                    <div class="text-(--blackout)/70 text-xs">{activeSetting.options.find(option => option.selected)?.value}</div>
+                    <div class="text-(--blackout)/70 text-xs">{sharedSettings[activeSetting.key]}</div>
                 </button>
             {:else if activeSetting.type === "dialog"}
                 <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => openDialog(activeSetting.snippet)}>
+                    <div class="font-medium">{activeSetting.name}</div>
+                    <div class="text-(--blackout)/70 text-xs">{sharedSettings[activeSetting.key]}</div>
+                </button>
+            {:else if activeSetting.type === "action"}
+                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => activeSetting.action()}>
                     <div class="font-medium">{activeSetting.name}</div>
                     <div class="text-(--blackout)/70 text-xs">{sharedSettings[activeSetting.key]}</div>
                 </button>

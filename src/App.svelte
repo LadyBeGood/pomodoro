@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Router } from "sv-router";
     import "./router";
-    import { settings, applyTheme, applyDefaultHomePage, applyStartOfTheWeek } from "./shared/settings.svelte";
+    import { settings, applyTheme, applyDefaultHomePage, applyStartOfTheWeek, applySendNotifications } from "./shared/settings.svelte";
 
     $effect(() => {
         settings.theme;
@@ -16,6 +16,11 @@
     $effect(() => {
         settings.startOfTheWeek;
         applyStartOfTheWeek();
+    })
+
+    $effect(() => {
+        settings.sendNotifications;
+        applySendNotifications();
     })
 </script>
 
