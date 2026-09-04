@@ -2,137 +2,345 @@
     /*==============================*/
     /* Imports                      */
     /*==============================*/
-    import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
     import { scrollIndex } from "../shared/homeTab.svelte";
     import { settings } from "../shared/settings.svelte";
 
     /*==============================*/
+    /* Helpers                      */
+    /*==============================*/
+    function parseDurationToSeconds(str: string): number {
+        const match = str.match(/(\d+)/);
+        if (!match) return 25 * 60;
+        const value = parseInt(match[1], 10);
+        // Assume minutes for now (matches "25 minutes", "5 minutes")
+        return value * 60;
+    }
+
+    function parseStartOfDay(timeStr: string): { hours: number; minutes: number } {
+        // "5:00 AM" or "5:00 PM"
+        const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+        if (!match) return { hours: 5, minutes: 0 };
+
+        let hours = parseInt(match[1], 10);
+        const minutes = parseInt(match[2], 10);
+        const period = match[3].toUpperCase();
+
+        if (period === "PM" && hours !== 12) hours += 12;
+        if (period === "AM" && hours === 12) hours = 0;
+
+        return { hours, minutes };
+    }
+
+    function getDayStartTimestamp(now = new Date()): number {
+        const { hours, minutes } = parseStartOfDay(settings.startOfTheDay);
+        const dayStart = new Date(now);
+        dayStart.setHours(hours, minutes, 0, 0);
+
+        // If current time is before today's startOfTheDay, the "day" started yesterday
+        if (now < dayStart) {
+            dayStart.setDate(dayStart.getDate() - 1);
+        }
+        return dayStart.getTime();
+    }
+
+    function formatTwoDigits(n: number): string {
+        return n.toString().padStart(2, "0");
+    }
+
+    /*==============================*/
     /* Constants                    */
     /*==============================*/
-    const localStorageKey = "pomodoro_timer_data";
-    const focusDurationInSeconds = 25 * 60; // 25 minutes in seconds
+    const FOCUS_DURATION = parseDurationToSeconds(settings.sessionLength);
+    const BREAK_DURATION = parseDurationToSeconds(settings.breakLength);
 
     /*==============================*/
     /* States                       */
     /*==============================*/
-    let savedTime = focusDurationInSeconds;
-
-    const stored = localStorage.getItem(localStorageKey);
-    if (stored !== null) {
-        try {
-            const parsed = JSON.parse(stored);
-            if (parsed.timeLeft) {
-                savedTime = parsed.timeLeft;
-            }
-        } catch (error) {
-            console.error("Failed to parse timer storage", error);
-        }
-    }
-
-    let timeLeft = $state(savedTime);
-    let isRunning = $state(false);
-    let intervalId: number | null = null;
-
-    let minutes = $derived(
-        Math.floor(timeLeft / 60)
-            .toString()
-            .padStart(2, "0"),
-    );
-    let seconds = $derived((timeLeft % 60).toString().padStart(2, "0"));
-    let progressPercent = $derived(
-        ((focusDurationInSeconds - timeLeft) / focusDurationInSeconds) * 100,
+    // Shared total focus time (includes both Timer + Pomodoro focus sessions)
+    let totalFocusDurationInSeconds = $state(
+        Number(localStorage.getItem("totalFocusDurationInSeconds") ?? "0")
     );
 
-    /*==============================*/
-    /* Refs                         */
-    /*==============================*/
-    let homeElement: HTMLDivElement;
+    // Pomodoro state
+    let isFocusSession = $state(
+        localStorage.getItem("isFocusSession") !== "false" // default true
+    );
+    let remainingSessionInSeconds = $state(
+        Number(localStorage.getItem("remainingSessionInSeconds") ?? FOCUS_DURATION)
+    );
+    let isSessionRunning = $state(false);
+
+    // Timer state
+    let isTimerRunning = $state(false);
+
+    // Internal
+    let lastTickTimestamp = $state<number | null>(null);
+    let intervalId: ReturnType<typeof setInterval> | null = null;
 
     /*==============================*/
-    /* Handlers                     */
+    /* Derived                      */
     /*==============================*/
-    function handleScroll() {
-        const currentScroll = homeElement.scrollLeft;
-        const maxScroll = homeElement.scrollWidth - homeElement.clientWidth;
+    const remainingSessionMinutes = $derived(
+        Math.floor(remainingSessionInSeconds / 60)
+    );
+    const remainingSessionSeconds = $derived(
+        formatTwoDigits(remainingSessionInSeconds % 60)
+    );
+    const remainingSessionInPercentage = $derived(
+        isFocusSession
+            ? (remainingSessionInSeconds / FOCUS_DURATION) * 100
+            : (remainingSessionInSeconds / BREAK_DURATION) * 100
+    );
 
-        // Check if it is on the left side
-        if (currentScroll <= maxScroll / 2) {
-            scrollIndex.value = 1;
-        }
+    const totalFocusDurationHoursPadded = $derived(
+        String(Math.floor(totalFocusDurationInSeconds / (60 * 60))).padStart(2, "0")
+    );
+    const totalFocusDurationMinutesPadded = $derived(
+        String(Math.floor(totalFocusDurationInSeconds / 60)).padStart(2, "0")
+    );
+    const totalFocusDurationSecondsPadded = $derived(
+        String(formatTwoDigits(totalFocusDurationInSeconds % 60)).padStart(2, "0")
+    );
 
-        // Check if is on the right side
-        else if (currentScroll >= maxScroll / 2) {
-            scrollIndex.value = 2;
+    /*==============================*/
+    /* Persistence (flat key-value) */
+    /*==============================*/
+    function saveState() {
+        localStorage.setItem("totalFocusDurationInSeconds", String(totalFocusDurationInSeconds));
+        localStorage.setItem("isFocusSession", String(isFocusSession));
+        localStorage.setItem("remainingSessionInSeconds", String(remainingSessionInSeconds));
+        localStorage.setItem("lastDayStartTimestamp", String(getDayStartTimestamp()));
+    }
+
+    /*==============================*/
+    /* Day Reset Logic              */
+    /*==============================*/
+    function checkAndResetDay() {
+        const storedDayStart = Number(localStorage.getItem("lastDayStartTimestamp") ?? "0");
+        const currentDayStart = getDayStartTimestamp();
+
+        if (storedDayStart !== currentDayStart) {
+            // New day → reset total focus time
+            totalFocusDurationInSeconds = 0;
+            localStorage.setItem("totalFocusDurationInSeconds", "0");
+            localStorage.setItem("lastDayStartTimestamp", String(currentDayStart));
         }
     }
 
-    function startTimer() {
-        if (isRunning) return;
-        isRunning = true;
+    /*==============================*/
+    /* Core Ticking Logic           */
+    /*==============================*/
+    function tick() {
+        const now = Date.now();
 
-        intervalId = setInterval(() => {
-            if (timeLeft > 1) {
-                timeLeft--;
-            } else {
-                timeLeft--;
-                setTimeout(() => {
-                    alert("Pomodoro session finished!");
-                    resetTimer();
-                });
+        // Day reset check (cheap)
+        checkAndResetDay();
+
+        if (!lastTickTimestamp) {
+            lastTickTimestamp = now;
+            return;
+        }
+
+        const deltaSeconds = Math.floor((now - lastTickTimestamp) / 1000);
+        if (deltaSeconds <= 0) return;
+
+        lastTickTimestamp = now;
+
+        // === Timer mode (counts up) ===
+        if (isTimerRunning) {
+            totalFocusDurationInSeconds += deltaSeconds;
+        }
+
+        // === Pomodoro mode (counts down) ===
+        if (isSessionRunning) {
+            remainingSessionInSeconds = Math.max(0, remainingSessionInSeconds - deltaSeconds);
+
+            // Only count focus time toward totalFocusDuration
+            if (isFocusSession) {
+                totalFocusDurationInSeconds += deltaSeconds;
             }
-        }, 1000);
+
+            if (remainingSessionInSeconds === 0) {
+                // Session finished
+                isSessionRunning = false;
+
+                // Switch session type
+                isFocusSession = !isFocusSession;
+                remainingSessionInSeconds = isFocusSession ? FOCUS_DURATION : BREAK_DURATION;
+
+                // Auto-start next session if enabled
+                const shouldAutoStart = isFocusSession
+                    ? settings.autoStartSession === "Yes"
+                    : settings.autoStartBreak === "Yes";
+
+                if (shouldAutoStart) {
+                    isSessionRunning = true;
+                    lastTickTimestamp = Date.now();
+                }
+
+                // Send notification
+                if (
+                    settings.sendNotifications === "Yes" && 
+                    "Notification" in window &&
+                    Notification.permission === "granted"
+                ) {
+                    new Notification(isFocusSession ? "Focus time!" : "Break time!");
+                }
+            }
+        }
+
+        saveState();
     }
 
-    function pauseTimer() {
-        isRunning = false;
+    function startTicking() {
+        if (intervalId) return;
+        lastTickTimestamp = Date.now();
+        intervalId = setInterval(tick, 250); // 4x per second for smoothness
+    }
+
+    function stopTicking() {
         if (intervalId) {
             clearInterval(intervalId);
             intervalId = null;
         }
+        lastTickTimestamp = null;
+    }
+
+    /*==============================*/
+    /* Handlers                     */
+    /*==============================*/
+    function resumeTimer() {
+        isTimerRunning = true;
+        // Ensure we don't double-count if pomodoro is also running
+        startTicking();
+    }
+
+    function pauseTimer() {
+        isTimerRunning = false;
+        if (!isSessionRunning) stopTicking();
     }
 
     function toggleTimer() {
-        if (isRunning) {
+        if (isTimerRunning) {
             pauseTimer();
         } else {
-            startTimer();
+            resumeTimer();
         }
     }
 
-    function resetTimer() {
-        pauseTimer();
-        timeLeft = focusDurationInSeconds;
+    async function resumeSession() {
+        if (
+        settings.sendNotifications === "Yes" &&
+        "Notification" in window &&
+        Notification.permission === "default"
+        ) {
+            await Notification.requestPermission();
+        }   
+
+        isSessionRunning = true;
+        startTicking();
+    }
+
+    function pauseSession() {
+        isSessionRunning = false;
+        if (!isTimerRunning) stopTicking();
+    }
+
+    function toggleSession() {
+        if (isSessionRunning) {
+            pauseSession();
+        } else {
+            resumeSession();
+        }
+    }
+
+    // Alias used in the template
+    function togglePomodoro() {
+        toggleSession();
+    }
+
+    function restartSession() {
+        remainingSessionInSeconds = isFocusSession ? FOCUS_DURATION : BREAK_DURATION;
+        isSessionRunning = false;
+        if (!isTimerRunning) stopTicking();
+        saveState();
+    }
+
+    function skipSession() {
+        isSessionRunning = false;
+        isFocusSession = !isFocusSession;
+        remainingSessionInSeconds = isFocusSession ? FOCUS_DURATION : BREAK_DURATION;
+
+        const shouldAutoStart = isFocusSession
+            ? settings.autoStartSession === "Yes"
+            : settings.autoStartBreak === "Yes";
+
+        if (shouldAutoStart) {
+            isSessionRunning = true;
+            startTicking();
+        } else if (!isTimerRunning) {
+            stopTicking();
+        }
+
+        saveState();
+    }
+
+    /*==============================*/
+    /* Scroll handler               */
+    /*==============================*/
+    let homeElement: HTMLDivElement;
+
+    function handleScroll() {
+        const currentScroll = homeElement.scrollLeft;
+        const maxScroll = homeElement.scrollWidth - homeElement.clientWidth;
+
+        if (currentScroll <= maxScroll / 2) {
+            scrollIndex.value = 1;
+        } else {
+            scrollIndex.value = 2;
+        }
     }
 
     /*==============================*/
     /* Life cycles                  */
     /*==============================*/
     onMount(() => {
+        // Restore scroll position
         if (scrollIndex.value === 1) {
             homeElement.scrollTo(0, 0);
         } else {
             homeElement.scrollTo(homeElement.clientWidth, 0);
         }
+
+        // Day reset check on load
+        checkAndResetDay();
+    });
+
+    onDestroy(() => {
+        stopTicking();
+        saveState();
     });
 
     /*==============================*/
     /* Effects                      */
     /*==============================*/
+    // Keep totalFocus in sync when settings change (rare)
     $effect(() => {
-        localStorage.setItem(localStorageKey, JSON.stringify({ timeLeft }));
+        // Re-parse durations if settings change (optional future improvement)
+        saveState();
     });
 </script>
-
 
 {#snippet PomodoroTab()}
     <div class="flex items-center justify-center shrink-0 flex-col gap-4 w-svw h-svh snap-start snap-always">
         <div
             class="text-(--luxury-white) w-48 h-48 rounded-full p-2.5 relative uppercase"
-            style="background: conic-gradient(var(--luxury-white) 0% {100 - progressPercent}%, var(--dravit-grey) 0 100%);"
+            style="background: conic-gradient(var(--luxury-white) 0% {remainingSessionInPercentage}%, var(--dravit-grey) 0 100%);"
         >
-            <div class="h-2.5 w-2.5 absolute bg-(--luxury-white) rounded-full left-1/2 top-0 -translate-x-1/2"></div>
+            <!-- <div class="h-2.5 w-2.5 absolute bg-(--luxury-white) rounded-full left-1/2 top-0 -translate-x-1/2"></div> -->
 
-            <div class="absolute h-full left-1/2 top-0 -translate-x-1/2" style="rotate: calc({100 - progressPercent} * 3.6deg);">
+            <div class="absolute h-full left-1/2 top-0 -translate-x-1/2" style="rotate: calc({remainingSessionInPercentage} * 3.6deg);">
                 <div class="h-5 w-5 bg-(--luxury-white) rounded-full -translate-y-1/4"></div>
             </div>
 
@@ -147,14 +355,14 @@
                      - inline spacing among all other capital letter glyphs 
                      - in Manrope.
                      -->
-                    {minutes}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{seconds}
+                    {remainingSessionMinutes}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{remainingSessionSeconds}
                 </p>
             </div>
         </div>
 
         <div class="relative flex justify-center gap-10">
             <button
-                onclick={resetTimer}
+                onclick={restartSession}
                 title="Restart session"
                 class="p-3 bg-(--luxury-white) text-(--blackout) rounded-full h-min"
             >
@@ -162,11 +370,11 @@
             </button>
 
             <button
-                onclick={toggleTimer}
-                title={isRunning ? "Pause" : "Resume"}
+                onclick={togglePomodoro}
+                title={isSessionRunning ? "Pause" : "Resume"}
                 class="bg-(--luxury-white) text-(--blackout) rounded-full p-3 mt-8 transition-transform"
             >
-                {#if isRunning}
+                {#if isSessionRunning}
                     <svg xmlns="http://www.w3.org/2000/svg" height="42px" viewBox="0 -960 960 960" width="42px" fill="currentColor"><path d="M640-200q-33 0-56.5-23.5T560-280v-400q0-33 23.5-56.5T640-760q33 0 56.5 23.5T720-680v400q0 33-23.5 56.5T640-200Zm-320 0q-33 0-56.5-23.5T240-280v-400q0-33 23.5-56.5T320-760q33 0 56.5 23.5T400-680v400q0 33-23.5 56.5T320-200Z" /></svg>
                 {:else}
                     <svg xmlns="http://www.w3.org/2000/svg" height="42px" viewBox="0 -960 960 960" width="42px" fill="currentColor"><path d="M320-273v-414q0-17 12-28.5t28-11.5q5 0 10.5 1.5T381-721l326 207q9 6 13.5 15t4.5 19q0 10-4.5 19T707-446L381-239q-5 3-10.5 4.5T360-233q-16 0-28-11.5T320-273Z" /></svg>
@@ -174,7 +382,8 @@
             </button>
 
             <button
-                title="Next session"
+                onclick={skipSession}
+                title="Skip session"
                 class="p-3 bg-(--luxury-white) text-(--blackout) rounded-full h-min transition-transform"
             >
                 <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.9665 15.3696V5.63041C16.9665 5.30826 16.8537 5.03453 16.6283 4.80922C16.403 4.58376 16.1292 4.47103 15.8071 4.47103C15.4849 4.47103 15.2112 4.58376 14.9859 4.80922C14.7604 5.03453 14.6477 5.30826 14.6477 5.63041V15.3696C14.6477 15.6917 14.7604 15.9655 14.9859 16.1908C15.2112 16.4162 15.4849 16.529 15.8071 16.529C16.1292 16.529 16.403 16.4162 16.6283 16.1908C16.8537 15.9655 16.9665 15.6917 16.9665 15.3696ZM5.83494 15.3352L11.6309 11.4568C11.8033 11.3445 11.9327 11.2038 12.019 11.0346C12.1052 10.8653 12.1483 10.6871 12.1483 10.5C12.1483 10.3129 12.1052 10.1347 12.019 9.96537C11.9327 9.79621 11.8033 9.65548 11.6309 9.54319L5.83494 5.66475C5.73723 5.5981 5.6323 5.55129 5.52016 5.52431C5.40786 5.49733 5.29878 5.48384 5.19291 5.48384C4.88534 5.48384 4.61526 5.59088 4.38266 5.80497C4.14991 6.01891 4.03353 6.2984 4.03353 6.64344V14.3566C4.03353 14.7016 4.14991 14.9811 4.38266 15.195C4.61526 15.4091 4.88534 15.5162 5.19291 15.5162C5.29878 15.5162 5.40786 15.5027 5.52016 15.4757C5.6323 15.4487 5.73723 15.4019 5.83494 15.3352Z" fill="currentColor" /></svg>
@@ -185,26 +394,33 @@
 
 {#snippet TimerTab()}
     <button
-        aria-label="Click to start or pause."
+        aria-label={
+            isTimerRunning 
+                ? totalFocusDurationInSeconds === 0
+                    ? "Click to start timer" 
+                    : "Click to resume timer"
+                : "Click to pause timer"
+        }
         onclick={toggleTimer}
         class="flex items-center justify-center shrink-0 flex-col gap-4 w-svw h-svh snap-start snap-always select-none"
     >
         <div class="text-(--luxury-white) rounded-full p-2.5 relative tabular-nums">
             <div class="h-full w-full rounded-full bg-(--blackout) grid place-items-center text-9xl leading-none">
-                <p>{minutes}</p>
-                <p>{seconds}</p>
+                {#if totalFocusDurationHoursPadded !== "00"}
+                    <p>{totalFocusDurationHoursPadded}</p>
+                {/if}
+                <p>{totalFocusDurationMinutesPadded}</p>
+                <p>{totalFocusDurationSecondsPadded}</p>
             </div>
         </div>
     </button>
 {/snippet}
-
 
 <div
     bind:this={homeElement}
     onscroll={handleScroll}
     class="flex overflow-auto w-svw no-scrollbar snap-x snap-mandatory"
 >
-
     {#if settings.defaultHomePage === "Pomodoro"}
         {@render PomodoroTab()}
         {@render TimerTab()}
@@ -212,7 +428,6 @@
         {@render TimerTab()}
         {@render PomodoroTab()}
     {/if}
-
 </div>
 
 <style>
