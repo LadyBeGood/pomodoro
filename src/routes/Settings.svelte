@@ -9,7 +9,6 @@
     import { settings as sharedSettings } from "../shared/settings.svelte";
     import Dialog from "../components/Dialog.svelte";
     import Dial from "../components/Dial.svelte";
-    import Dial2 from "../components/Dial2.svelte";
 
 
     /*==============================*/

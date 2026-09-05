@@ -19,7 +19,6 @@
         const seconds = secondsMatch ? parseInt(secondsMatch[1], 10) : 0;
 
         const total = hours * 3600 + minutes * 60 + seconds;
-        console.log(total);
         return total > 0 ? total : 25 * 60;
     }
 
@@ -54,6 +53,11 @@
         return String(Math.floor(n)).padStart(2, '0');
     }
 
+    function readStoredTimestamp(key: string): number | null {
+        const raw = localStorage.getItem(key);
+        return raw ? Number(raw) : null;
+    }
+
     /*==============================*/
     /* Constants                    */
     /*==============================*/
@@ -75,13 +79,22 @@
     let remainingSessionInSeconds = $state(
         Number(localStorage.getItem("remainingSessionInSeconds") ?? FOCUS_DURATION)
     );
-    let isSessionRunning = $state(false);
+    let isSessionRunning = $state(
+        localStorage.getItem("wasPomodoroRunning") === "true"
+    );
+    let pomodoroStartedAt = $state<number | null>(
+        readStoredTimestamp("pomodoroStartedAt")
+    );
 
     // Timer state
-    let isTimerRunning = $state(false);
+    let isTimerRunning = $state(
+        localStorage.getItem("wasTimerRunning") === "true"
+    );
+    let timerStartedAt = $state<number | null>(
+        readStoredTimestamp("timerStartedAt")
+    );
 
     // Internal
-    let lastTickTimestamp = $state<number | null>(null);
     let intervalId: ReturnType<typeof setInterval> | null = null;
 
     /*==============================*/
@@ -119,18 +132,30 @@
         localStorage.setItem("totalFocusDurationInSeconds", String(totalFocusDurationInSeconds));
         localStorage.setItem("isFocusSession", String(isFocusSession));
         localStorage.setItem("remainingSessionInSeconds", String(remainingSessionInSeconds));
+
+        localStorage.setItem("wasTimerRunning", String(isTimerRunning));
+        timerStartedAt !== null
+            ? localStorage.setItem("timerStartedAt", String(timerStartedAt))
+            : localStorage.removeItem("timerStartedAt");
+
+        localStorage.setItem("wasPomodoroRunning", String(isSessionRunning));
+        pomodoroStartedAt !== null
+            ? localStorage.setItem("pomodoroStartedAt", String(pomodoroStartedAt))
+            : localStorage.removeItem("pomodoroStartedAt");
+
         localStorage.setItem("lastDayStartTimestamp", String(getDayStartTimestamp()));
     }
 
     /*==============================*/
     /* Day Reset Logic              */
     /*==============================*/
+    // Checked once per mount only, not watched continuously.
     function checkAndResetDay() {
         const storedDayStart = Number(localStorage.getItem("lastDayStartTimestamp") ?? "0");
         const currentDayStart = getDayStartTimestamp();
 
         if (storedDayStart !== currentDayStart) {
-            // New day → reset total focus time
+            // New day => reset total focus time
             totalFocusDurationInSeconds = 0;
             localStorage.setItem("totalFocusDurationInSeconds", "0");
             localStorage.setItem("lastDayStartTimestamp", String(currentDayStart));
@@ -138,75 +163,84 @@
     }
 
     /*==============================*/
-    /* Core Ticking Logic           */
+    /* Catch-up / flush logic       */
     /*==============================*/
-    function tick() {
-        console.log(remainingSessionHours);
-        const now = Date.now();
+    // Folds whatever time has passed since timerStartedAt into the committed
+    // total, then re-anchors timerStartedAt to now. Safe to call after any
+    // gap in time, including one caused by unmounting/closing the app.
+    function catchUpTimer(now: number) {
+        if (!isTimerRunning || timerStartedAt === null) return;
 
-        // Day reset check (cheap)
-        checkAndResetDay();
+        const elapsed = (now - timerStartedAt) / 1000;
+        totalFocusDurationInSeconds += elapsed;
+        timerStartedAt = now;
+    }
 
-        if (!lastTickTimestamp) {
-            lastTickTimestamp = now;
-            return;
-        }
+    // Same idea for the pomodoro, but a session can fully complete (or
+    // several can, after a long gap) while we were away, so this walks
+    // forward through as many session-flips as the elapsed time covers.
+    function catchUpPomodoro(now: number, { notify = false } = {}) {
+        if (!isSessionRunning || pomodoroStartedAt === null) return;
 
-        const deltaSeconds = Math.floor((now - lastTickTimestamp) / 1000);
-        if (deltaSeconds <= 0) return;
+        let elapsed = (now - pomodoroStartedAt) / 1000;
 
-        lastTickTimestamp = now;
-
-        // === Timer mode (counts up) ===
-        if (isTimerRunning) {
-            totalFocusDurationInSeconds += deltaSeconds;
-        }
-
-        // === Pomodoro mode (counts down) ===
-        if (isSessionRunning) {
-            remainingSessionInSeconds = Math.max(0, remainingSessionInSeconds - deltaSeconds);
+        while (elapsed > 0) {
+            const consumed = Math.min(elapsed, remainingSessionInSeconds);
+            remainingSessionInSeconds -= consumed;
+            elapsed -= consumed;
 
             // Only count focus time toward totalFocusDuration
             if (isFocusSession) {
-                totalFocusDurationInSeconds += deltaSeconds;
+                totalFocusDurationInSeconds += consumed;
             }
 
             if (remainingSessionInSeconds === 0) {
                 // Session finished
-                isSessionRunning = false;
-
                 // Switch session type
                 isFocusSession = !isFocusSession;
                 remainingSessionInSeconds = isFocusSession ? FOCUS_DURATION : BREAK_DURATION;
 
-                // Auto-start next session if enabled
-                const shouldAutoStart = isFocusSession
-                    ? settings.autoStartSession === "Yes"
-                    : settings.autoStartBreak === "Yes";
-
-                if (shouldAutoStart) {
-                    isSessionRunning = true;
-                    lastTickTimestamp = Date.now();
-                }
-
-                // Send notification
                 if (
-                    settings.sendNotifications === "Yes" && 
+                    notify &&
+                    settings.sendNotifications === "Yes" &&
                     "Notification" in window &&
                     Notification.permission === "granted"
                 ) {
                     new Notification(isFocusSession ? "Focus time!" : "Break time!");
                 }
+            
+            // Auto-start next session if enabled
+            const shouldAutoStart = isFocusSession
+                    ? settings.autoStartSession === "Yes"
+                    : settings.autoStartBreak === "Yes";
+
+                if (!shouldAutoStart) {
+                    isSessionRunning = false;
+                    break;
+                }
+                
             }
+            // else: keep looping, consuming any remaining elapsed into the new session
         }
 
+        pomodoroStartedAt = isSessionRunning ? now : null;
+    }
+
+    /*==============================*/
+    /* Core Ticking Logic           */
+    /*==============================*/
+    // Called on an interval while mounted (for live display + persistence),
+    // and once on mount (to catch up on time missed while unmounted).
+    function tick(options: { notify?: boolean } = {}) {
+        const now = Date.now();
+        catchUpTimer(now);
+        catchUpPomodoro(now, options);
         saveState();
     }
 
     function startTicking() {
         if (intervalId) return;
-        lastTickTimestamp = Date.now();
-        intervalId = setInterval(tick, 250); // 4x per second for smoothness
+        intervalId = setInterval(() => tick({ notify: true }), 250); // 4x per second for smoothness
     }
 
     function stopTicking() {
@@ -214,7 +248,6 @@
             clearInterval(intervalId);
             intervalId = null;
         }
-        lastTickTimestamp = null;
     }
 
     /*==============================*/
@@ -223,12 +256,17 @@
     function resumeTimer() {
         isTimerRunning = true;
         // Ensure we don't double-count if pomodoro is also running
+        timerStartedAt = Date.now();
         startTicking();
+        saveState();
     }
 
     function pauseTimer() {
+        catchUpTimer(Date.now()); // flush whatever ran so far
         isTimerRunning = false;
+        timerStartedAt = null;
         if (!isSessionRunning) stopTicking();
+        saveState();
     }
 
     function toggleTimer() {
@@ -250,15 +288,20 @@
             if (permission === "denied") {
                 settings.sendNotifications = "No";
             }
-        }   
+        }
 
         isSessionRunning = true;
+        pomodoroStartedAt = Date.now();
         startTicking();
+        saveState();
     }
 
     function pauseSession() {
+        catchUpPomodoro(Date.now()); // flush whatever ran so far, no notify
         isSessionRunning = false;
+        pomodoroStartedAt = null;
         if (!isTimerRunning) stopTicking();
+        saveState();
     }
 
     function toggleSession() {
@@ -277,12 +320,14 @@
     function restartSession() {
         remainingSessionInSeconds = isFocusSession ? FOCUS_DURATION : BREAK_DURATION;
         isSessionRunning = false;
+        pomodoroStartedAt = null;
         if (!isTimerRunning) stopTicking();
         saveState();
     }
 
     function skipSession() {
         isSessionRunning = false;
+        pomodoroStartedAt = null;
         isFocusSession = !isFocusSession;
         remainingSessionInSeconds = isFocusSession ? FOCUS_DURATION : BREAK_DURATION;
 
@@ -292,6 +337,7 @@
 
         if (shouldAutoStart) {
             isSessionRunning = true;
+            pomodoroStartedAt = Date.now();
             startTicking();
         } else if (!isTimerRunning) {
             stopTicking();
@@ -327,21 +373,22 @@
             homeElement.scrollTo(homeElement.clientWidth, 0);
         }
 
-        // Day reset check on load
+        // Day reset check happens exactly once per mount, not on a watcher.
         checkAndResetDay();
+
+        // Catch up on whatever happened while this component was unmounted
+        // (navigated away, or the app was fully closed). No notification for
+        // sessions that completed in the background.
+        tick({ notify: false });
+
+        // Resume the live interval if either mode was running when we left.
+        if (isTimerRunning || isSessionRunning) {
+            startTicking();
+        }
     });
 
     onDestroy(() => {
         stopTicking();
-        saveState();
-    });
-
-    /*==============================*/
-    /* Effects                      */
-    /*==============================*/
-    // Keep totalFocus in sync when settings change (rare)
-    $effect(() => {
-        // Re-parse durations if settings change (optional future improvement)
         saveState();
     });
 </script>
