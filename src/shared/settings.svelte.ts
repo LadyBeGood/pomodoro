@@ -69,6 +69,16 @@ export function applySendNotifications() {
     localStorage.setItem("sendNotifications", settings.sendNotifications);
 }
 
+export function applySessionOrBreakLength(key: "sessionLength" | "breakLength") {
+
+
+    localStorage.setItem(key, settings[key]);
+}
+
+// export function apply() {
+
+// }
+
 // export function apply() {
 
 // }

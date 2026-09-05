@@ -9,6 +9,8 @@
     import { settings as sharedSettings } from "../shared/settings.svelte";
     import Dialog from "../components/Dialog.svelte";
     import Dial from "../components/Dial.svelte";
+    import Dial2 from "../components/Dial2.svelte";
+
 
     /*==============================*/
     /* Types                        */
@@ -237,8 +239,15 @@
     /* State                        */
     /*==============================*/
     let activeSettings = $state(settings[0].data);
+    let activeSettingKey = $state<null | keyof typeof sharedSettings>(null);
     let isDialogOpen = $state(false);
     let dialogContents = $state<Snippet | null>(null);
+    let showBackdropOverlay = $derived(() => {
+        if (isDialogOpen && activeSettingKey !== null && ["startOfTheDay", "sessionLength", "breakLength"].includes(activeSettingKey)) {
+            return true;
+        }
+        return false;
+    })
 
     /*==============================*/
     /* Refs                         */
@@ -305,7 +314,6 @@
         };
     });
 
-
 </script>
 
 
@@ -365,7 +373,10 @@
                     <div class="text-(--blackout)/70 text-xs">{sharedSettings[activeSetting.key]}</div>
                 </button>
             {:else if activeSetting.type === "dialog"}
-                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => openDialog(activeSetting.snippet)}>
+                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => {
+                    activeSettingKey = activeSetting.key;
+                    openDialog(activeSetting.snippet);
+                }}>
                     <div class="font-medium">{activeSetting.name}</div>
                     <div class="text-(--blackout)/70 text-xs">{sharedSettings[activeSetting.key]}</div>
                 </button>
@@ -425,18 +436,26 @@
     </div>
 {/snippet}
 
+
 {#snippet startOfTheDaySnippet()}
-    <div class="tabular-nums text-4xl px-8">
-        <Dial />
-    </div>
+    <Dial type="startOfTheDay" initialValue={sharedSettings.startOfTheDay} onConfirm={(value) => {
+        sharedSettings.startOfTheDay = value;
+        setTimeout(() => isDialogOpen = false, 100);
+    }}/>
 {/snippet}
 
 {#snippet breakLengthSnippet()}
-    breakLengthSnippet
+    <Dial type="breakLength" initialValue={sharedSettings.breakLength} onConfirm={(value) => {
+        sharedSettings.breakLength = value;
+        setTimeout(() => isDialogOpen = false, 100);
+    }}/>
 {/snippet}
 
 {#snippet sessionLengthSnippet()}
-    sessionLengthSnippet
+    <Dial type="sessionLength" initialValue={sharedSettings.sessionLength} onConfirm={(value) => { 
+        sharedSettings.sessionLength = value;
+        setTimeout(() => isDialogOpen = false, 100);
+    }}/>
 {/snippet}
 
 <!-------------------------------->
@@ -444,6 +463,19 @@
 <!-------------------------------->
 <Dialog bind:isDialogOpen children={dialogContents}></Dialog>
 
+
+<!--  
+- The backdrop uses a custom filter to turn --luxury-white into --blackout and vice versa.
+- It was so frustrating to get right.
+-->
+<div
+    class="pointer-events-none fixed inset-1/2 -translate-1/2 h-12 w-60 z-100 flex items-center justify-center transition-opacity duration-250"
+    class:opacity-100={showBackdropOverlay()}
+    class:delay-200={showBackdropOverlay()}
+    class:opacity-0={!showBackdropOverlay()}
+    style="backdrop-filter: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='luxury-blackout' x='0' y='0' width='2000%25' height='2000%25' color-interpolation-filters='sRGB'%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='-1' intercept='1.102'/%3E%3CfeFuncG type='linear' slope='-1' intercept='1.102'/%3E%3CfeFuncB type='linear' slope='-1' intercept='1.102'/%3E%3CfeFuncA type='identity'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3C/svg%3E#luxury-blackout&quot;);"
+>
+</div>
 
 <style>
     .active {

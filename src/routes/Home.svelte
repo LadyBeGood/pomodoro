@@ -10,11 +10,17 @@
     /* Helpers                      */
     /*==============================*/
     function parseDurationToSeconds(str: string): number {
-        const match = str.match(/(\d+)/);
-        if (!match) return 25 * 60;
-        const value = parseInt(match[1], 10);
-        // Assume minutes for now (matches "25 minutes", "5 minutes")
-        return value * 60;
+        const hoursMatch = str.match(/(\d+)\s*hours?/i);
+        const minutesMatch = str.match(/(\d+)\s*minutes?/i);
+        const secondsMatch = str.match(/(\d+)\s*seconds?/i);
+
+        const hours = hoursMatch ? parseInt(hoursMatch[1], 10) : 0;
+        const minutes = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
+        const seconds = secondsMatch ? parseInt(secondsMatch[1], 10) : 0;
+
+        const total = hours * 3600 + minutes * 60 + seconds;
+        console.log(total);
+        return total > 0 ? total : 25 * 60;
     }
 
     function parseStartOfDay(timeStr: string): { hours: number; minutes: number } {
@@ -45,7 +51,7 @@
     }
 
     function formatTwoDigits(n: number): string {
-        return n.toString().padStart(2, "0");
+        return String(Math.floor(n)).padStart(2, '0');
     }
 
     /*==============================*/
@@ -81,8 +87,11 @@
     /*==============================*/
     /* Derived                      */
     /*==============================*/
+    const remainingSessionHours = $derived(
+        formatTwoDigits(remainingSessionInSeconds / 3600)
+    );
     const remainingSessionMinutes = $derived(
-        Math.floor(remainingSessionInSeconds / 60)
+        formatTwoDigits((remainingSessionInSeconds % 3600) / 60)
     );
     const remainingSessionSeconds = $derived(
         formatTwoDigits(remainingSessionInSeconds % 60)
@@ -132,6 +141,7 @@
     /* Core Ticking Logic           */
     /*==============================*/
     function tick() {
+        console.log(remainingSessionHours);
         const now = Date.now();
 
         // Day reset check (cheap)
@@ -348,7 +358,10 @@
                 <div class="h-5 w-5 bg-(--luxury-white) rounded-full -translate-y-1/4"></div>
             </div>
 
-            <div class="h-full w-full rounded-full bg-(--blackout) grid place-items-center text-4xl">
+            <div 
+                class="h-full w-full rounded-full bg-(--blackout) grid place-items-center text-4xl"
+                style={remainingSessionHours !== "00" ? "font-size: 30px" : ""}
+            >
                 <p class="tabular-nums font-features-['calt']">
                     <!-- 
                      - This is a hack; `calt` font feature in Manrope font 
@@ -359,7 +372,8 @@
                      - inline spacing among all other capital letter glyphs 
                      - in Manrope.
                      -->
-                    {remainingSessionMinutes}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{remainingSessionSeconds}
+                    {#if remainingSessionHours !== "00"}
+                        {remainingSessionHours}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{/if}{remainingSessionMinutes}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{remainingSessionSeconds}
                 </p>
             </div>
         </div>

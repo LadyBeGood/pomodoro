@@ -2,7 +2,7 @@
     import { untrack } from "svelte";
     import { Router } from "sv-router";
     import "./router";
-    import { settings, applyTheme, applyDefaultHomePage, applyStartOfTheWeek, applySendNotifications } from "./shared/settings.svelte";
+    import { settings, applyTheme, applyDefaultHomePage, applyStartOfTheWeek, applySendNotifications, applySessionOrBreakLength } from "./shared/settings.svelte";
     import { audio, music } from "./shared/music.svelte";
 
     $effect(() => {
@@ -23,6 +23,16 @@
     $effect(() => {
         settings.sendNotifications;
         applySendNotifications();
+    })
+
+    $effect(() => {
+        settings.sessionLength;
+        applySessionOrBreakLength("sessionLength");
+    })
+
+    $effect(() => {
+        settings.breakLength;
+        applySessionOrBreakLength("breakLength");
     })
 
 
