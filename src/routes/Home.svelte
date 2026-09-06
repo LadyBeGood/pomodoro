@@ -116,13 +116,13 @@
     );
 
     const totalFocusDurationHoursPadded = $derived(
-        String(Math.floor(totalFocusDurationInSeconds / (60 * 60))).padStart(2, "0")
+        formatTwoDigits(totalFocusDurationInSeconds / 3600)
     );
     const totalFocusDurationMinutesPadded = $derived(
-        String(Math.floor(totalFocusDurationInSeconds / 60)).padStart(2, "0")
+        formatTwoDigits((totalFocusDurationInSeconds % 3600) / 60)
     );
     const totalFocusDurationSecondsPadded = $derived(
-        String(formatTwoDigits(totalFocusDurationInSeconds % 60)).padStart(2, "0")
+        formatTwoDigits(totalFocusDurationInSeconds % 60)
     );
 
     /*==============================*/
