@@ -1,20 +1,5 @@
 
 
-<!-- <div align="center">
-
-# Pomodoro
-
-<img src="./public/favicons/icon-192x192.png" />
-
-[![Svelte](https://img.shields.io/badge/-20232A?logo=svelte)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/-20232A?logo=typescript&logoColor=3178C6)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/-20232A?logo=tailwind-css&logoColor=06B6D4)](https://tailwindcss.com/)
-[![Vite](https://img.shields.io/badge/-20232A?logo=vite&logoColor=646CFF)](https://vitejs.dev/)
-[![PWA](https://img.shields.io/badge/-20232A?logo=PWA)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
-
-</div> -->
-
-
 # Pomodoro
 
 A responsive, offline-capable PWA featuring customizable Pomodoro and timer modes, task management, ambient background audio, productivity statistics, dynamic light/dark themes and buttery smooth animations.
@@ -69,12 +54,39 @@ A responsive, offline-capable PWA featuring customizable Pomodoro and timer mode
     └── themes/          
 ```
 
+## Installation
 
-## Non Issues
-These are some issues related to tooling that do not affect the build.
+### Prerequisites
+
+Make sure you have [Node.js](https://nodejs.org/) installed (v18 or higher recommended).
+
+### Steps
+
+Clone the repository and enter the directory
+
+```bash
+git clone https://github.com/LadyBeGood/pomodoro.git
+cd pomodoro
+```
+
+Install dependencies using npm
+
+```bash
+npm install
+```
+
+Start the development server
+```bash
+npm run host
+```
+
+
+### Troubleshooting
+
+These are some harmless issues related to tooling that do not affect the build:
 
 - 
-    In VS Code (atleast), CSS files that use TailwindCSS specific *at rules* may give a warning such as: `Unknown at rule @theme in style.css`.
+    In VS Code (at least), CSS files that use TailwindCSS specific *at rules* may give a warning such as: `Unknown at rule @theme in style.css`.
     
     If you want to remove those yellow squiggly lines:
     1. Make sure you've installed `Tailwind CSS IntelliSense` extension
