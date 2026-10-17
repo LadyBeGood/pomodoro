@@ -2,7 +2,7 @@
     /*==============================*/
     /* Imports                      */
     /*==============================*/
-    import type { Snippet } from "svelte";
+    import { tick, type Snippet } from "svelte";
     import { fade, slide } from "svelte/transition";
     import { navigate } from "../router";
     import LightBeam from "../components/LightBeam.svelte";
@@ -87,22 +87,6 @@
             type: "general",
             isActive: true,
             data: [
-                {
-                    id: "general-setting-1",
-                    type: "loop",
-                    name: "Mode",
-                    key: "mode",
-                    options: [
-                        {
-                            value: "Dark",
-                            selected: sharedSettings.mode === "Dark",
-                        },
-                        {
-                            value: "Light",
-                            selected: sharedSettings.mode === "Light",
-                        },
-                    ],
-                },
                 {
                     id: "general-setting-2",
                     type: "dialog",
@@ -444,7 +428,7 @@
             <div>
                 <p class="font-semibold">Created by LadyBeGood</p>
                 <p class="text-xs text-(--blackout)/70">
-                    with {sharedSettings.mode === "Dark" ? "🖤" : "🤍"}
+                    with 🖤
                 </p>
             </div>
 
@@ -476,42 +460,19 @@
 <!-------------------------------->
 
 {#snippet themeSnippet()}
-    <div class="flex flex-col justify-center w-full h-svh overflow-hidden">
-        <div class="flex flex-col w-full shrink-0">
-            <!-- Filler cells -->
-            {#each themeColors.filter((_, index) => index > 1) as themeColor}
-                <div
-                    role="presentation"
-                    class="h-13 w-full px-16 text-center!"
-                    style={(sharedSettings.mode === "Light" && themeColor[0] === "OLED" ? "display: none; " : "") + `background-color: ${themeColor[1]}; ` + `color: var(--${sharedSettings.mode === "Dark" ? "luxury-white" : "blackout" });`}
-                >
-                </div>
-            {/each}
-
-            {#each themeColors as themeColor}
-                <button
-                    class="h-13 w-full px-16 text-center!"
-                    style={(sharedSettings.mode === "Light" && themeColor[0] === "OLED" ? "display: none; " : "") + `background-color: ${themeColor[1]}; ` + `color: var(--${sharedSettings.mode === "Dark" ? "luxury-white" : "blackout" });`}
-                    onclick={(event) => {
-                        console.log(event.currentTarget.textContent);
-                        sharedSettings.theme = event.currentTarget.textContent;
-                        setTimeout(() => (isDialogOpen = false), 100);
-                    }}
-                >
-                    {themeColor[0]}
-                </button>
-            {/each}
-
-            <!-- Filler cells -->
-            {#each themeColors.filter((_, index) => index > 1) as themeColor}
-                <div
-                    role="presentation"
-                    class="h-13 w-full px-16 text-center!"
-                    style={(sharedSettings.mode === "Light" && themeColor[0] === "OLED" ? "display: none; " : "") + `background-color: ${themeColor[1]}; ` + `color: var(--${sharedSettings.mode === "Dark" ? "luxury-white" : "blackout" });`}
-                >
-                </div>
-            {/each}
-        </div>
+    <div class="flex flex-col w-full">
+        {#each themeColors as themeColor}
+            <button
+                class="h-13 w-full px-16 text-center! text-(--luxury-white)"
+                style={`background-color: ${themeColor[1]};`}
+                onclick={(event) => {
+                    sharedSettings.theme = event.currentTarget.textContent;
+                    setTimeout(() => (isDialogOpen = false), 100);
+                }}
+            >
+                {themeColor[0]}
+            </button>
+        {/each}
     </div>
 {/snippet}
 
@@ -521,7 +482,6 @@
             <button
                 class="hover:bg-(--blackout) hover:text-(--luxury-white) h-13 w-full px-16 text-center!"
                 onclick={(event) => {
-                    console.log(event.currentTarget.textContent);
                     sharedSettings.startOfTheWeek =
                         event.currentTarget.textContent;
                     setTimeout(() => (isDialogOpen = false), 100);
@@ -550,7 +510,7 @@
         initialValue={sharedSettings.breakLength}
         onConfirm={(value) => {
             sharedSettings.breakLength = value;
-            setTimeout(() => (isDialogOpen = false), 100);
+            setTimeout(() => isDialogOpen = false, 100);
         }}
     />
 {/snippet}

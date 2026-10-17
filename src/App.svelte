@@ -13,12 +13,9 @@
     import { audio, music } from "./shared/music.svelte";
 
     $effect(() => {
-        settings.mode;
         settings.theme;
         applyTheme();
     });
-
-        applyTheme();
 
     $effect(() => {
         settings.defaultHomePage;

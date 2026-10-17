@@ -1,28 +1,16 @@
 
-const themes: Record<typeof settings.mode, Record<string, () => Promise<typeof import("*?raw")>>> = {
-    Dark: {
-        Classic: () => import("../themes/dark/classic.css?raw"),
-        OLED: () => import("../themes/dark/OLED.css?raw"),
-        Sapphire: () => import("../themes/dark/sapphire.css?raw"),
-        Ocean: () => import("../themes/dark/ocean.css?raw"),
-        Forest: () => import("../themes/dark/forest.css?raw"),
-        Coffee: () => import("../themes/dark/coffee.css?raw"),
-        Berry: () => import("../themes/dark/berry.css?raw"),
-        Lavender: () => import("../themes/dark/lavender.css?raw"),
-    },
-    Light: {
-        Classic: () => import("../themes/light/classic.css?raw"),
-        Sapphire: () => import("../themes/light/sapphire.css?raw"),
-        Ocean: () => import("../themes/light/ocean.css?raw"),
-        Forest: () => import("../themes/light/forest.css?raw"),
-        Coffee: () => import("../themes/light/coffee.css?raw"),
-        Berry: () => import("../themes/light/berry.css?raw"),
-        Lavender: () => import("../themes/light/lavender.css?raw"),
-    },
+const themes: Record<string, () => Promise<typeof import("*?raw")>> = {
+    Classic: () => import("../themes/classic.css?raw"),
+    OLED: () => import("../themes/OLED.css?raw"),
+    Sapphire: () => import("../themes/sapphire.css?raw"),
+    Ocean: () => import("../themes/ocean.css?raw"),
+    Forest: () => import("../themes/forest.css?raw"),
+    Coffee: () => import("../themes/coffee.css?raw"),
+    Berry: () => import("../themes/berry.css?raw"),
+    Lavender: () => import("../themes/lavender.css?raw"),
 };
 
 export const settings = $state({
-    mode: localStorage.getItem("mode") ?? "Dark",
     theme: localStorage.getItem("theme") ?? "Classic",
     defaultHomePage: localStorage.getItem("defaultHomePage") ?? "Pomodoro",
     sendNotifications: localStorage.getItem("sendNotifications") ?? "Yes",
@@ -47,7 +35,6 @@ function fallback(key: keyof typeof settings, validValues: string[], defaultValu
 }
 
 export async function applyTheme() {
-    if (fallback("mode", ["Dark", "Light"], "Dark")) return;
     if (fallback("theme", [
         "Classic",
         "OLED",
@@ -67,11 +54,10 @@ export async function applyTheme() {
     }
 
 
-    const load = themes[settings.mode]?.[settings.theme] ?? themes.Light.Classic;
+    const load = themes[settings.theme] ?? themes.Classic;
     const css = (await load()).default;
     themeStyleElement.textContent = css;
 
-    localStorage.setItem("mode", settings.mode);
     localStorage.setItem("theme", settings.theme);
     document.head.appendChild(themeStyleElement)
 }
