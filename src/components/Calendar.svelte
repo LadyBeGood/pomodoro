@@ -117,7 +117,8 @@
         </button>
 
         <div class="flex text-(--blackout) text-sm items-center gap-2 font-medium ml-auto mr-auto">
-            <div>{months[currMonth]}, {currYear}</div>
+            <!-- <div>{months[currMonth]}, {currYear}</div> -->
+            Weekly
         </div>
 
         <button
@@ -125,7 +126,9 @@
             title="Next month"
             class="bg-(--luxury-white) rounded-full p-1.5 hover:bg-(--blackout) hover:text-(--luxury-white) transition-colors"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6" />
+            </svg>
         </button>
     </div>
 
@@ -163,4 +166,6 @@
             {/each}
         </div>
     </div>
+
+    <div class="text-(--luxury-white)">{months[currMonth]}, {currYear}</div>
 </div>

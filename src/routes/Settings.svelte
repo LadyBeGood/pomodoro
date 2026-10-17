@@ -10,138 +10,158 @@
     import Dialog from "../components/Dialog.svelte";
     import Dial from "../components/Dial.svelte";
 
-
     /*==============================*/
     /* Types                        */
     /*==============================*/
-    type SettingOption = { 
-        value: string,
-        selected: boolean 
-    }
+    type SettingOption = {
+        value: string;
+        selected: boolean;
+    };
 
     type SelectionSettingData = {
-        id: `${string}-setting-${number}`,
-        type: "loop",
-        name: string,
-        key: keyof typeof sharedSettings,
-        options: SettingOption[],
-        userAction?: () => void
-    }
+        id: `${string}-setting-${number}`;
+        type: "loop";
+        name: string;
+        key: keyof typeof sharedSettings;
+        options: SettingOption[];
+        userAction?: () => void;
+    };
 
     /**
      * This type is for settings which require user interaction.
      */
     type ActionSettingData = {
-        id: `${string}-setting-${number}`,
-        type: "action",
-        name: string,
-        key: keyof typeof sharedSettings,
-        options: SettingOption[],
-        action: () => void
-    }
+        id: `${string}-setting-${number}`;
+        type: "action";
+        name: string;
+        key: keyof typeof sharedSettings;
+        options: SettingOption[];
+        action: () => void;
+    };
 
-    
     type SnippetSettingData = {
-        id: `${string}-setting-${number}`,
-        type: "dialog",
-        name: string,
-        key: keyof typeof sharedSettings,
-        snippet: Snippet,
-    }
+        id: `${string}-setting-${number}`;
+        type: "dialog";
+        name: string;
+        key: keyof typeof sharedSettings;
+        snippet: Snippet;
+    };
 
     type SettingData =
         | SelectionSettingData
         | ActionSettingData
         | SnippetSettingData;
 
-
     type Setting = {
-        type: string,
-        isActive: boolean,
-        data: SettingData[]
-    }
+        type: string;
+        isActive: boolean;
+        data: SettingData[];
+    };
 
-            
     /*==============================*/
     /* Constants                    */
     /*==============================*/
     const daysOfWeek = [
-        "Sunday", 
-        "Monday", 
-        "Tuesday", 
-        "Wednesday", 
-        "Thursday", 
-        "Friday", 
-        "Saturday"
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+    ];
+
+    const themeColors = [
+        ["Classic",  "#2E2C2A"],  
+        ["OLED",     "#000000"],     
+        ["Sapphire", "#26405F"], 
+        ["Ocean",    "#1F4A4F"], 
+        ["Forest",   "#2F4A3A"], 
+        ["Coffee",   "#4B352A"],  
+        ["Lavender", "#433E64"], 
+        ["Berry",    "#572B40"], 
     ];
 
     const settings = $state<Array<Setting>>([
-        { 
-            type: "general", 
+        {
+            type: "general",
             isActive: true,
             data: [
                 {
                     id: "general-setting-1",
                     type: "loop",
-                    name: "Theme",
-                    key: "theme",
+                    name: "Mode",
+                    key: "mode",
                     options: [
                         {
                             value: "Dark",
-                            selected: sharedSettings.theme === "Dark"
+                            selected: sharedSettings.mode === "Dark",
                         },
                         {
                             value: "Light",
-                            selected: sharedSettings.theme === "Light"
-                        }
+                            selected: sharedSettings.mode === "Light",
+                        },
                     ],
                 },
                 {
                     id: "general-setting-2",
+                    type: "dialog",
+                    name: "Theme",
+                    key: "theme",
+                    snippet: themeSnippet,
+                },
+                {
+                    id: "general-setting-3",
                     type: "loop",
                     name: "Default home page",
                     key: "defaultHomePage",
                     options: [
                         {
                             value: "Pomodoro",
-                            selected: sharedSettings.defaultHomePage === "Pomodoro"
+                            selected:
+                                sharedSettings.defaultHomePage === "Pomodoro",
                         },
                         {
                             value: "Timer",
-                            selected: sharedSettings.defaultHomePage === "Timer"
-                        }
+                            selected:
+                                sharedSettings.defaultHomePage === "Timer",
+                        },
                     ],
                 },
                 {
-                    id: "general-setting-3",
+                    id: "general-setting-4",
                     type: "action",
                     name: "Send notifications",
                     key: "sendNotifications",
                     options: [
                         {
                             value: "Yes",
-                            selected: sharedSettings.sendNotifications === "Yes"
+                            selected:
+                                sharedSettings.sendNotifications === "Yes",
                         },
                         {
                             value: "No",
-                            selected: sharedSettings.sendNotifications === "No"
-                        }
+                            selected: sharedSettings.sendNotifications === "No",
+                        },
                     ],
                     async action() {
-                        if (    
+                        if (
                             sharedSettings.sendNotifications === "No" &&
                             "Notification" in window
                         ) {
                             if (Notification.permission === "denied") {
-                                alert("You had previously denied notification permission. Please enable it manually in the browser.");
+                                alert(
+                                    "You had previously denied notification permission. Please enable it manually in the browser.",
+                                );
                                 return;
                             }
 
                             if (Notification.permission === "default") {
-                                const permission = await Notification.requestPermission();
+                                const permission =
+                                    await Notification.requestPermission();
 
                                 if (permission !== "granted") return;
-                            } 
+                            }
 
                             sharedSettings.sendNotifications = "Yes";
                             this.options[0].selected = true;
@@ -151,9 +171,9 @@
                             this.options[0].selected = false;
                             this.options[1].selected = true;
                         }
-                    }
+                    },
                 },
-            ]
+            ],
         },
         {
             type: "session",
@@ -186,7 +206,7 @@
                         {
                             value: "No",
                             selected: sharedSettings.autoStartSession === "No",
-                        }
+                        },
                     ],
                 },
                 {
@@ -202,10 +222,10 @@
                         {
                             value: "No",
                             selected: sharedSettings.autoStartBreak === "No",
-                        }
+                        },
                     ],
                 },
-            ]
+            ],
         },
         {
             type: "clock",
@@ -217,7 +237,6 @@
                     name: "Start of the week",
                     key: "startOfTheWeek",
                     snippet: startOfTheWeekSnippet,
-
                 },
                 {
                     id: "date-and-time-setting-2",
@@ -226,13 +245,9 @@
                     key: "startOfTheDay",
                     snippet: startOfTheDaySnippet,
                 },
-            ]
+            ],
         },
     ]);
-
-
-
-
 
     /*==============================*/
     /* State                        */
@@ -242,11 +257,17 @@
     let isDialogOpen = $state(false);
     let dialogContents = $state<Snippet | null>(null);
     let showBackdropOverlay = $derived(() => {
-        if (isDialogOpen && activeSettingKey !== null && ["startOfTheDay", "sessionLength", "breakLength"].includes(activeSettingKey)) {
+        if (
+            isDialogOpen &&
+            activeSettingKey !== null &&
+            ["startOfTheDay", "sessionLength", "breakLength"].includes(
+                activeSettingKey,
+            )
+        ) {
             return true;
         }
         return false;
-    })
+    });
 
     /*==============================*/
     /* Refs                         */
@@ -281,7 +302,10 @@
         activeSettings = settings[i].data;
     }
 
-    function handleLoop(options: SettingOption[], name: keyof typeof sharedSettings) {
+    function handleLoop(
+        options: SettingOption[],
+        name: keyof typeof sharedSettings,
+    ) {
         let nextSelectedIndex = -1;
 
         for (let i = 0; i < options.length; i++) {
@@ -299,7 +323,7 @@
         dialogContents = contents;
         isDialogOpen = true;
     }
-    
+
     /*==============================*/
     /* Effects                      */
     /*==============================*/
@@ -312,9 +336,7 @@
             window.removeEventListener("resize", updateLayout);
         };
     });
-
 </script>
-
 
 <!-- overlay -->
 <div
@@ -329,7 +351,16 @@
     class="absolute left-5 top-5 z-20 text-(--luxury-white)"
     transition:fade={{ duration: 250 }}
 >
-    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="currentColor"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" /></svg>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="28px"
+        viewBox="0 -960 960 960"
+        width="28px"
+        fill="currentColor"
+        ><path
+            d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"
+        /></svg
+    >
 </button>
 
 <!-- light beam -->
@@ -337,7 +368,7 @@
 
 <!-- setting tablist -->
 <div
-    role="tablist" 
+    role="tablist"
     aria-label="Settings tablist"
     bind:this={settingTypesElement}
     in:slide={{ duration: 250, delay: 250 }}
@@ -367,22 +398,42 @@
     <div class="flex flex-col gap-10 overflow-auto text-right">
         {#each activeSettings as activeSetting (activeSetting.id)}
             {#if activeSetting.type === "loop"}
-                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => {handleLoop(activeSetting.options, activeSetting.key); }}>
+                <button
+                    style="padding-right: calc(0 * 0.9vw);"
+                    class=""
+                    onclick={() => {
+                        handleLoop(activeSetting.options, activeSetting.key);
+                    }}
+                >
                     <div class="font-medium">{activeSetting.name}</div>
-                    <div class="text-(--blackout)/70 text-xs">{sharedSettings[activeSetting.key]}</div>
+                    <div class="text-(--blackout)/70 text-xs">
+                        {sharedSettings[activeSetting.key]}
+                    </div>
                 </button>
             {:else if activeSetting.type === "dialog"}
-                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => {
-                    activeSettingKey = activeSetting.key;
-                    openDialog(activeSetting.snippet);
-                }}>
+                <button
+                    style="padding-right: calc(0 * 0.9vw);"
+                    class=""
+                    onclick={() => {
+                        activeSettingKey = activeSetting.key;
+                        openDialog(activeSetting.snippet);
+                    }}
+                >
                     <div class="font-medium">{activeSetting.name}</div>
-                    <div class="text-(--blackout)/70 text-xs">{sharedSettings[activeSetting.key]}</div>
+                    <div class="text-(--blackout)/70 text-xs">
+                        {sharedSettings[activeSetting.key]}
+                    </div>
                 </button>
             {:else if activeSetting.type === "action"}
-                <button style="padding-right: calc(0 * 0.9vw);" class="" onclick={() => activeSetting.action()}>
+                <button
+                    style="padding-right: calc(0 * 0.9vw);"
+                    class=""
+                    onclick={() => activeSetting.action()}
+                >
                     <div class="font-medium">{activeSetting.name}</div>
-                    <div class="text-(--blackout)/70 text-xs">{sharedSettings[activeSetting.key]}</div>
+                    <div class="text-(--blackout)/70 text-xs">
+                        {sharedSettings[activeSetting.key]}
+                    </div>
                 </button>
             {/if}
         {/each}
@@ -393,7 +444,7 @@
             <div>
                 <p class="font-semibold">Created by LadyBeGood</p>
                 <p class="text-xs text-(--blackout)/70">
-                    with {sharedSettings.theme === "Dark" ? "🖤" : "🤍"}
+                    with {sharedSettings.mode === "Dark" ? "🖤" : "🤍"}
                 </p>
             </div>
 
@@ -404,29 +455,76 @@
                     href="https://github.com/LadyBeGood/pomodoro"
                     class="w-12 h-12 flex items-center justify-center rounded-full bg-(--blackout) text-(--luxury-white) font-bold shadow-lg focus-visible:outline-(--blackout) focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none" /><path fill="currentColor" d="M12.001 2c-5.525 0-10 4.475-10 10a9.99 9.99 0 0 0 6.837 9.488c.5.087.688-.213.688-.476c0-.237-.013-1.024-.013-1.862c-2.512.463-3.162-.612-3.362-1.175c-.113-.288-.6-1.175-1.025-1.413c-.35-.187-.85-.65-.013-.662c.788-.013 1.35.725 1.538 1.025c.9 1.512 2.337 1.087 2.912.825c.088-.65.35-1.087.638-1.337c-2.225-.25-4.55-1.113-4.55-4.938c0-1.088.387-1.987 1.025-2.687c-.1-.25-.45-1.275.1-2.65c0 0 .837-.263 2.75 1.024a9.3 9.3 0 0 1 2.5-.337c.85 0 1.7.112 2.5.337c1.913-1.3 2.75-1.024 2.75-1.024c.55 1.375.2 2.4.1 2.65c.637.7 1.025 1.587 1.025 2.687c0 3.838-2.337 4.688-4.562 4.938c.362.312.675.912.675 1.85c0 1.337-.013 2.412-.013 2.75c0 .262.188.574.688.474A10.02 10.02 0 0 0 22 12c0-5.525-4.475-10-10-10" /></svg>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        ><path d="M0 0h24v24H0z" fill="none" /><path
+                            fill="currentColor"
+                            d="M12.001 2c-5.525 0-10 4.475-10 10a9.99 9.99 0 0 0 6.837 9.488c.5.087.688-.213.688-.476c0-.237-.013-1.024-.013-1.862c-2.512.463-3.162-.612-3.362-1.175c-.113-.288-.6-1.175-1.025-1.413c-.35-.187-.85-.65-.013-.662c.788-.013 1.35.725 1.538 1.025c.9 1.512 2.337 1.087 2.912.825c.088-.65.35-1.087.638-1.337c-2.225-.25-4.55-1.113-4.55-4.938c0-1.088.387-1.987 1.025-2.687c-.1-.25-.45-1.275.1-2.65c0 0 .837-.263 2.75 1.024a9.3 9.3 0 0 1 2.5-.337c.85 0 1.7.112 2.5.337c1.913-1.3 2.75-1.024 2.75-1.024c.55 1.375.2 2.4.1 2.65c.637.7 1.025 1.587 1.025 2.687c0 3.838-2.337 4.688-4.562 4.938c.362.312.675.912.675 1.85c0 1.337-.013 2.412-.013 2.75c0 .262.188.574.688.474A10.02 10.02 0 0 0 22 12c0-5.525-4.475-10-10-10"
+                        /></svg
+                    >
                 </a>
             </div>
         </div>
     </div>
 </div>
 
-
-
-
 <!-------------------------------->
 <!-- Snippets                   -->
 <!-------------------------------->
 
+{#snippet themeSnippet()}
+    <div class="flex flex-col justify-center w-full h-svh overflow-hidden">
+        <div class="flex flex-col w-full shrink-0">
+            <!-- Filler cells -->
+            {#each themeColors.filter((_, index) => index > 1) as themeColor}
+                <div
+                    role="presentation"
+                    class="h-13 w-full px-16 text-center!"
+                    style={(sharedSettings.mode === "Light" && themeColor[0] === "OLED" ? "display: none; " : "") + `background-color: ${themeColor[1]}; ` + `color: var(--${sharedSettings.mode === "Dark" ? "luxury-white" : "blackout" });`}
+                >
+                </div>
+            {/each}
+
+            {#each themeColors as themeColor}
+                <button
+                    class="h-13 w-full px-16 text-center!"
+                    style={(sharedSettings.mode === "Light" && themeColor[0] === "OLED" ? "display: none; " : "") + `background-color: ${themeColor[1]}; ` + `color: var(--${sharedSettings.mode === "Dark" ? "luxury-white" : "blackout" });`}
+                    onclick={(event) => {
+                        console.log(event.currentTarget.textContent);
+                        sharedSettings.theme = event.currentTarget.textContent;
+                        setTimeout(() => (isDialogOpen = false), 100);
+                    }}
+                >
+                    {themeColor[0]}
+                </button>
+            {/each}
+
+            <!-- Filler cells -->
+            {#each themeColors.filter((_, index) => index > 1) as themeColor}
+                <div
+                    role="presentation"
+                    class="h-13 w-full px-16 text-center!"
+                    style={(sharedSettings.mode === "Light" && themeColor[0] === "OLED" ? "display: none; " : "") + `background-color: ${themeColor[1]}; ` + `color: var(--${sharedSettings.mode === "Dark" ? "luxury-white" : "blackout" });`}
+                >
+                </div>
+            {/each}
+        </div>
+    </div>
+{/snippet}
+
 {#snippet startOfTheWeekSnippet()}
     <div class="flex flex-col w-full">
         {#each daysOfWeek as week}
-            <button 
+            <button
                 class="hover:bg-(--blackout) hover:text-(--luxury-white) h-13 w-full px-16 text-center!"
-                onclick={event => {
+                onclick={(event) => {
                     console.log(event.currentTarget.textContent);
-                    sharedSettings.startOfTheWeek = event.currentTarget.textContent;
-                    setTimeout(() => isDialogOpen = false, 100)
+                    sharedSettings.startOfTheWeek =
+                        event.currentTarget.textContent;
+                    setTimeout(() => (isDialogOpen = false), 100);
                 }}
             >
                 {week}
@@ -435,33 +533,43 @@
     </div>
 {/snippet}
 
-
 {#snippet startOfTheDaySnippet()}
-    <Dial type="startOfTheDay" initialValue={sharedSettings.startOfTheDay} onConfirm={(value) => {
-        sharedSettings.startOfTheDay = value;
-        setTimeout(() => isDialogOpen = false, 100);
-    }}/>
+    <Dial
+        type="startOfTheDay"
+        initialValue={sharedSettings.startOfTheDay}
+        onConfirm={(value) => {
+            sharedSettings.startOfTheDay = value;
+            setTimeout(() => (isDialogOpen = false), 100);
+        }}
+    />
 {/snippet}
 
 {#snippet breakLengthSnippet()}
-    <Dial type="breakLength" initialValue={sharedSettings.breakLength} onConfirm={(value) => {
-        sharedSettings.breakLength = value;
-        setTimeout(() => isDialogOpen = false, 100);
-    }}/>
+    <Dial
+        type="breakLength"
+        initialValue={sharedSettings.breakLength}
+        onConfirm={(value) => {
+            sharedSettings.breakLength = value;
+            setTimeout(() => (isDialogOpen = false), 100);
+        }}
+    />
 {/snippet}
 
 {#snippet sessionLengthSnippet()}
-    <Dial type="sessionLength" initialValue={sharedSettings.sessionLength} onConfirm={(value) => { 
-        sharedSettings.sessionLength = value;
-        setTimeout(() => isDialogOpen = false, 100);
-    }}/>
+    <Dial
+        type="sessionLength"
+        initialValue={sharedSettings.sessionLength}
+        onConfirm={(value) => {
+            sharedSettings.sessionLength = value;
+            setTimeout(() => (isDialogOpen = false), 100);
+        }}
+    />
 {/snippet}
 
 <!-------------------------------->
 <!-- Dialog                     -->
 <!-------------------------------->
 <Dialog bind:isDialogOpen children={dialogContents}></Dialog>
-
 
 <!--  
 - The backdrop uses a custom filter to turn --luxury-white into --blackout and vice versa.
@@ -473,8 +581,7 @@
     class:delay-200={showBackdropOverlay()}
     class:opacity-0={!showBackdropOverlay()}
     style="backdrop-filter: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='luxury-blackout' x='0' y='0' width='2000%25' height='2000%25' color-interpolation-filters='sRGB'%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='-1' intercept='1.102'/%3E%3CfeFuncG type='linear' slope='-1' intercept='1.102'/%3E%3CfeFuncB type='linear' slope='-1' intercept='1.102'/%3E%3CfeFuncA type='identity'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3C/svg%3E#luxury-blackout&quot;);"
->
-</div>
+></div>
 
 <style>
     .active {

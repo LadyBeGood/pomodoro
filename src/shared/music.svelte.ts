@@ -62,17 +62,17 @@ export const audio = new Audio();
 /*==============================*/
 /* Handlers                     */
 /*==============================*/
-export function handleWhiteNoiseTabChange(i: number) {
+export function handleWhiteNoiseTabChange(index: number) {
     for (let j = 0; j < music.whiteNoises.length; j++) {
         music.whiteNoises[j].isActive = false;
     }
-    music.whiteNoises[i].isActive = true;
-    music.activeWhiteNoises = music.whiteNoises[i].data;
+    music.whiteNoises[index].isActive = true;
+    music.activeWhiteNoises = music.whiteNoises[index].data;
 }
 
 export function playAdjacent(offset: number) {
-    const i = music.activeWhiteNoises.indexOf(music.activeWhiteNoise);
-    music.activeWhiteNoise = music.activeWhiteNoises[(i + offset + music.activeWhiteNoises.length) % music.activeWhiteNoises.length];
+    const index = music.activeWhiteNoises.indexOf(music.activeWhiteNoise);
+    music.activeWhiteNoise = music.activeWhiteNoises[(index + offset + music.activeWhiteNoises.length) % music.activeWhiteNoises.length];
 }
 
 export function changeActiveWhiteNoise(whiteNoise: WhiteNoise["data"][number]) {

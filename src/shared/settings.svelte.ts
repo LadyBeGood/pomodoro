@@ -1,8 +1,29 @@
-import dark from "../themes/dark.css?inline";
-import light from "../themes/light.css?inline";
+
+const themes: Record<typeof settings.mode, Record<string, () => Promise<typeof import("*?raw")>>> = {
+    Dark: {
+        Classic: () => import("../themes/dark/classic.css?raw"),
+        OLED: () => import("../themes/dark/OLED.css?raw"),
+        Sapphire: () => import("../themes/dark/sapphire.css?raw"),
+        Ocean: () => import("../themes/dark/ocean.css?raw"),
+        Forest: () => import("../themes/dark/forest.css?raw"),
+        Coffee: () => import("../themes/dark/coffee.css?raw"),
+        Berry: () => import("../themes/dark/berry.css?raw"),
+        Lavender: () => import("../themes/dark/lavender.css?raw"),
+    },
+    Light: {
+        Classic: () => import("../themes/light/classic.css?raw"),
+        Sapphire: () => import("../themes/light/sapphire.css?raw"),
+        Ocean: () => import("../themes/light/ocean.css?raw"),
+        Forest: () => import("../themes/light/forest.css?raw"),
+        Coffee: () => import("../themes/light/coffee.css?raw"),
+        Berry: () => import("../themes/light/berry.css?raw"),
+        Lavender: () => import("../themes/light/lavender.css?raw"),
+    },
+};
 
 export const settings = $state({
-    theme: localStorage.getItem("theme") ?? "Dark",
+    mode: localStorage.getItem("mode") ?? "Dark",
+    theme: localStorage.getItem("theme") ?? "Classic",
     defaultHomePage: localStorage.getItem("defaultHomePage") ?? "Pomodoro",
     sendNotifications: localStorage.getItem("sendNotifications") ?? "Yes",
     autoStartSession: localStorage.getItem("autoStartSession") ?? "No",
@@ -25,8 +46,18 @@ function fallback(key: keyof typeof settings, validValues: string[], defaultValu
     return false;
 }
 
-export function applyTheme() {
-    if (fallback("theme", ["Dark", "Light"], "Dark")) return;
+export async function applyTheme() {
+    if (fallback("mode", ["Dark", "Light"], "Dark")) return;
+    if (fallback("theme", [
+        "Classic",
+        "OLED",
+        "Sapphire",
+        "Ocean",
+        "Forest",
+        "Coffee",
+        "Berry",
+        "Lavender",
+    ], "Classic")) return;
 
     let themeStyleElement = document.querySelector("#theme-style");
 
@@ -35,12 +66,12 @@ export function applyTheme() {
         themeStyleElement.id = "theme-style"
     }
 
-    if (settings.theme === "Dark") {
-        themeStyleElement.innerHTML = dark
-    } else if (settings.theme === "Light") {
-        themeStyleElement.innerHTML = light
-    }
 
+    const load = themes[settings.mode]?.[settings.theme] ?? themes.Light.Classic;
+    const css = (await load()).default;
+    themeStyleElement.textContent = css;
+
+    localStorage.setItem("mode", settings.mode);
     localStorage.setItem("theme", settings.theme);
     document.head.appendChild(themeStyleElement)
 }

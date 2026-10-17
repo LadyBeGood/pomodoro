@@ -419,8 +419,7 @@
                      - inline spacing among all other capital letter glyphs 
                      - in Manrope.
                      -->
-                    {#if remainingSessionHours !== "00"}
-                        {remainingSessionHours}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{/if}{remainingSessionMinutes}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{remainingSessionSeconds}
+                    {#if remainingSessionHours !== "00"}{remainingSessionHours}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{/if}{remainingSessionMinutes}<span aria-hidden="true" class="text-transparent -ml-[1ch]">P</span>:{remainingSessionSeconds}
                 </p>
             </div>
         </div>
