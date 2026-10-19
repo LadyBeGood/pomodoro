@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { daysOfWeek, months } from "../shared/date.svelte";
+    
     /*==============================*/
     /* Types                        */
     /*==============================*/
@@ -12,22 +14,6 @@
     /*==============================*/
     /* Constants                    */
     /*==============================*/
-    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-    const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
 
     const opacities = ["10", "30", "70", "100"];
 
@@ -107,7 +93,7 @@
 
 <div class="h-full w-full rounded-3xl">
     <!-- Header Navigation Section -->
-    <div class="flex gap-2 bg-(--luxury-white) rounded-full px-1 py-1">
+    <!-- <div class="flex gap-2 bg-(--luxury-white) rounded-full px-1 py-1">
         <button
             onclick={prevMonth}
             title="Previous month"
@@ -117,30 +103,29 @@
         </button>
 
         <div class="flex text-(--blackout) text-sm items-center gap-2 font-medium ml-auto mr-auto">
-            <!-- <div>{months[currMonth]}, {currYear}</div> -->
-            Weekly
+            <div>{months[currMonth]}, {currYear}</div>
         </div>
 
         <button
             onclick={nextMonth}
             title="Next month"
-            class="bg-(--luxury-white) rounded-full p-1.5 hover:bg-(--blackout) hover:text-(--luxury-white) transition-colors"
+            class="bg-(--luxury-white) text-(--blackout) rounded-full p-1.5 hover:bg-(--blackout) hover:text-(--luxury-white) transition-colors"
         >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m9 18 6-6-6-6" />
             </svg>
         </button>
-    </div>
+    </div> -->
 
     <!-- Calendar Grid Body -->
     <div>
-        <div class="grid grid-cols-7 my-2">
+        <!-- <div class="grid grid-cols-7 my-2">
             {#each daysOfWeek as day}
-                <div class="text-center text-xs font-semibold text-(--luxury-white) tracking-wider py-2">
+                <div class="text-center text-xs font-semibold text-(--luxury-white)/63 tracking-wider py-2">
                     {day}
                 </div>
             {/each}
-        </div>
+        </div> -->
 
         <div class="grid grid-cols-7 gap-1 tabular-nums bg-(--blackout) text-(--luxury-white) rounded-b-2xl">
             {#each allDays as item}
@@ -167,5 +152,4 @@
         </div>
     </div>
 
-    <div class="text-(--luxury-white)">{months[currMonth]}, {currYear}</div>
 </div>

@@ -1,14 +1,4 @@
-
-const themes: Record<string, () => Promise<typeof import("*?raw")>> = {
-    Classic: () => import("../themes/classic.css?raw"),
-    OLED: () => import("../themes/OLED.css?raw"),
-    Sapphire: () => import("../themes/sapphire.css?raw"),
-    Ocean: () => import("../themes/ocean.css?raw"),
-    Forest: () => import("../themes/forest.css?raw"),
-    Coffee: () => import("../themes/coffee.css?raw"),
-    Berry: () => import("../themes/berry.css?raw"),
-    Lavender: () => import("../themes/lavender.css?raw"),
-};
+import { defaultTheme, themeNames, loadThemes } from "./themes.svelte";
 
 export const settings = $state({
     theme: localStorage.getItem("theme") ?? "Classic",
@@ -35,16 +25,7 @@ function fallback(key: keyof typeof settings, validValues: string[], defaultValu
 }
 
 export async function applyTheme() {
-    if (fallback("theme", [
-        "Classic",
-        "OLED",
-        "Sapphire",
-        "Ocean",
-        "Forest",
-        "Coffee",
-        "Berry",
-        "Lavender",
-    ], "Classic")) return;
+    if (fallback("theme", themeNames, defaultTheme)) return;
 
     let themeStyleElement = document.querySelector("#theme-style");
 
@@ -53,10 +34,9 @@ export async function applyTheme() {
         themeStyleElement.id = "theme-style"
     }
 
-
-    const load = themes[settings.theme] ?? themes.Classic;
-    const css = (await load()).default;
-    themeStyleElement.textContent = css;
+    const loadTheme = loadThemes[settings.theme] ?? loadThemes.Classic;
+    const CSSText = (await loadTheme()).default;
+    themeStyleElement.textContent = CSSText;
 
     localStorage.setItem("theme", settings.theme);
     document.head.appendChild(themeStyleElement)
