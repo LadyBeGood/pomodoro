@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { daysOfWeek, months } from "../shared/date.svelte";
-    
+    import { weekShortNames, monthNames } from "../shared/date.svelte";
+
     /*==============================*/
     /* Types                        */
     /*==============================*/
@@ -151,5 +151,4 @@
             {/each}
         </div>
     </div>
-
 </div>

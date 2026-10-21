@@ -1,4 +1,5 @@
 import { defaultTheme, themeNames, loadThemes } from "./themes.svelte";
+import { weekNames } from "./date.svelte";
 
 export const settings = $state({
     theme: localStorage.getItem("theme") ?? "Classic",
@@ -49,7 +50,7 @@ export function applyDefaultHomePage() {
 }
 
 export function applyStartOfTheWeek() {
-    // if (fallback("defaultHomePage", ["Pomodoro", "Timer"], "Pomodoro")) return;
+    if (fallback("startOfTheWeek", weekNames, "Monday")) return;
 
     localStorage.setItem("startOfTheWeek", settings.startOfTheWeek);
 }
@@ -66,16 +67,12 @@ export function applySendNotifications() {
     localStorage.setItem("sendNotifications", settings.sendNotifications);
 }
 
-export function applySessionOrBreakLength(key: "sessionLength" | "breakLength") {
-
-
+export function applySetting(key: "sessionLength" | "breakLength" | "startOfTheDay") {
     localStorage.setItem(key, settings[key]);
 }
 
-// export function apply() {
-
-// }
-
-// export function apply() {
-
-// }
+export function applyBooleanSetting(key: "autoStartSession" | "autoStartBreak", value = "No") {
+    if (fallback(key, ["Yes", "No"], value)) return;
+    
+    localStorage.setItem(key, settings[key]);
+}

@@ -17,9 +17,19 @@ export const themeNames = [
     "Ocean",
     "Forest",
     "Coffee",
-    "Berry",
     "Lavender",
+    "Berry",
 ];
 
 export const defaultTheme = "Classic";
 
+export const themeSelectorBackground = [
+    "#2E2C2A",
+    "#000000",
+    "#26405F",
+    "#1F4A4F",
+    "#2F4A3A",
+    "#4B352A",
+    "#433E64",
+    "#572B40",
+];

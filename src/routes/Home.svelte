@@ -50,7 +50,7 @@
     }
 
     function formatTwoDigits(n: number): string {
-        return String(Math.floor(n)).padStart(2, '0');
+        return String(Math.floor(n)).padStart(2, "0");
     }
 
     function readStoredTimestamp(key: string): number | null {
@@ -68,31 +68,17 @@
     /* States                       */
     /*==============================*/
     // Shared total focus time (includes both Timer + Pomodoro focus sessions)
-    let totalFocusDurationInSeconds = $state(
-        Number(localStorage.getItem("totalFocusDurationInSeconds") ?? "0")
-    );
+    let totalFocusDurationInSeconds = $state(Number(localStorage.getItem("totalFocusDurationInSeconds") ?? "0"));
 
     // Pomodoro state
-    let isFocusSession = $state(
-        localStorage.getItem("isFocusSession") !== "false" // default true
-    );
-    let remainingSessionInSeconds = $state(
-        Number(localStorage.getItem("remainingSessionInSeconds") ?? FOCUS_DURATION)
-    );
-    let isSessionRunning = $state(
-        localStorage.getItem("wasPomodoroRunning") === "true"
-    );
-    let pomodoroStartedAt = $state<number | null>(
-        readStoredTimestamp("pomodoroStartedAt")
-    );
+    let isFocusSession = $state(localStorage.getItem("isFocusSession") !== "false");  // default true
+    let remainingSessionInSeconds = $state(FOCUS_DURATION);
+    let isSessionRunning = $state(localStorage.getItem("wasPomodoroRunning") === "true");
+    let pomodoroStartedAt = $state<number | null>(readStoredTimestamp("pomodoroStartedAt"));
 
     // Timer state
-    let isTimerRunning = $state(
-        localStorage.getItem("wasTimerRunning") === "true"
-    );
-    let timerStartedAt = $state<number | null>(
-        readStoredTimestamp("timerStartedAt")
-    );
+    let isTimerRunning = $state(localStorage.getItem("wasTimerRunning") === "true");
+    let timerStartedAt = $state<number | null>(readStoredTimestamp("timerStartedAt"));
 
     // Internal
     let intervalId: ReturnType<typeof setInterval> | null = null;
@@ -100,33 +86,21 @@
     /*==============================*/
     /* Derived                      */
     /*==============================*/
-    const remainingSessionHours = $derived(
-        formatTwoDigits(remainingSessionInSeconds / 3600)
-    );
-    const remainingSessionMinutes = $derived(
-        formatTwoDigits((remainingSessionInSeconds % 3600) / 60)
-    );
-    const remainingSessionSeconds = $derived(
-        formatTwoDigits(remainingSessionInSeconds % 60)
-    );
+    const remainingSessionHours = $derived(formatTwoDigits(remainingSessionInSeconds / 3600));
+    const remainingSessionMinutes = $derived(formatTwoDigits((remainingSessionInSeconds % 3600) / 60));
+    const remainingSessionSeconds = $derived(formatTwoDigits(remainingSessionInSeconds % 60));
     const remainingSessionInPercentage = $derived(
         isFocusSession
             ? (remainingSessionInSeconds / FOCUS_DURATION) * 100
             : (remainingSessionInSeconds / BREAK_DURATION) * 100
     );
 
-    const totalFocusDurationHoursPadded = $derived(
-        formatTwoDigits(totalFocusDurationInSeconds / 3600)
-    );
-    const totalFocusDurationMinutesPadded = $derived(
-        formatTwoDigits((totalFocusDurationInSeconds % 3600) / 60)
-    );
-    const totalFocusDurationSecondsPadded = $derived(
-        formatTwoDigits(totalFocusDurationInSeconds % 60)
-    );
+    const totalFocusDurationHoursPadded = $derived(formatTwoDigits(totalFocusDurationInSeconds / 3600));
+    const totalFocusDurationMinutesPadded = $derived(formatTwoDigits((totalFocusDurationInSeconds % 3600) / 60));
+    const totalFocusDurationSecondsPadded = $derived(formatTwoDigits(totalFocusDurationInSeconds % 60));
 
     /*==============================*/
-    /* Persistence (flat key-value) */
+    /* Persistence                  */
     /*==============================*/
     function saveState() {
         localStorage.setItem("totalFocusDurationInSeconds", String(totalFocusDurationInSeconds));
@@ -163,7 +137,7 @@
     }
 
     /*==============================*/
-    /* Catch-up / flush logic       */
+    /* Catch-up logic               */
     /*==============================*/
     // Folds whatever time has passed since timerStartedAt into the committed
     // total, then re-anchors timerStartedAt to now. Safe to call after any

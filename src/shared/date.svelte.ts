@@ -1,6 +1,5 @@
-export const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export const months = [
+export const monthNames = [
     "January",
     "February",
     "March",
@@ -13,4 +12,25 @@ export const months = [
     "October",
     "November",
     "December",
+];
+
+export const weekNames = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+];
+
+
+export const weekShortNames = [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
 ];
