@@ -45,13 +45,13 @@
                             titleAlign: "center",
                             bodyColor: white,
                             cornerRadius: 10,
-                            caretSize: 10,
+                            caretSize: 0,
                             padding: 10,
                             backgroundColor: black,
                             borderWidth: 1.5,
                             borderColor: grey,
                         },
-                    },
+                    },      
                     scales: {
                         x: { grid: { display: false }, border: { display: false } },
                         y: { display: false, beginAtZero: true },
@@ -83,7 +83,7 @@
         </button>
 
         <div class="flex text-(--blackout) text-sm items-center gap-2 font-medium ml-auto mr-auto">
-            <div>20 - 24</div>
+            <div>21 - 28 Oct</div>
         </div>
 
         <button

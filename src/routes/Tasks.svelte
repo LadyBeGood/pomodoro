@@ -24,10 +24,14 @@
         },
         {
             index: 2,
-            task: "Master Svelte 5 snippets and runes",
+            task: "Explain my stack without crying",
             completed: false,
         },
-        { index: 3, task: "Complete the project", completed: false },
+        { 
+            index: 3, 
+            task: "Complete this project", 
+            completed: false 
+        },
         {
             index: 4,
             task: "Polish portfolio and GitHub README",
@@ -35,7 +39,7 @@
         },
         {
             index: 5,
-            task: "Network with 3 industry professionals",
+            task: "Never gonna give you up",
             completed: false,
         },
     ]);
@@ -95,23 +99,17 @@
     });
 </script>
 
-<div
-    class="bg-(--blackout) w-full text-(--luxury-white) overflow-y-auto px-8 pt-24 pb-36 select-none light-scrollbar h-full grid place-items-center"
->
+<div class="bg-(--blackout) w-full text-(--luxury-white) overflow-y-auto px-8 pt-24 pb-36 select-none light-scrollbar h-full grid place-items-center">
     <div class="max-w-83.25 mx-auto flex flex-col relative">
         {#each tasks as task (task.index)}
-            <div
-                class="w-full overflow-x-auto flex no-scrollbar snap-x snap-mandatory items-center"
-            >
+            <div class="w-full overflow-x-auto flex no-scrollbar snap-x snap-mandatory items-center">
                 <button
                     onclick={() => toggleTask(task.index)}
                     class="flex w-full shrink-0 gap-6 text-left items-start py-4 relative active:opacity-70 transition-opacity snap-start snap-always"
                 >
                     <p
                         class="text-lg font-medium leading-snug flex-1 transition-all
-                        {task.completed
-                            ? 'styled-line-through text-(--dravit-grey)'
-                            : 'text-(--luxury-white)'}"
+                        {task.completed ? "styled-line-through text-(--dravit-grey)" : "text-(--luxury-white)"}"
                     >
                         {task.task}
                     </p>

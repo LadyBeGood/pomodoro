@@ -29,6 +29,7 @@
                     labels: data.map((row) => row.hour),
                     datasets: [
                         {
+                            label: "Hours",
                             data: data.map((row) => row.count),
                             backgroundColor: white,
                             borderColor: white,
@@ -47,7 +48,7 @@
                             titleAlign: "center",
                             bodyColor: white,
                             cornerRadius: 10,
-                            caretSize: 10,
+                            caretSize: 0,
                             padding: 10,
                             backgroundColor: black,
                             borderWidth: 1.5,
@@ -72,9 +73,31 @@
     });
 </script>
 
-<div class="h-svh snap-start snap-always py-24 px-8 flex flex-col justify-center gap-12">
+<div class="h-svh snap-start snap-always py-24 px-8 flex flex-col justify-center gap-6">
     <div class="relative h-[30svh] shrink-0">
         <canvas bind:this={canvas}></canvas>
+    </div>
+
+    <div class="flex gap-2 bg-(--luxury-white) rounded-full px-1 py-1">
+        <button
+            title="Previous month"
+            class="hover:bg-(--blackout) hover:text-(--luxury-white) text-(--blackout) rounded-full p-1.5 transition-colors"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+
+        <div class="flex text-(--blackout) text-sm items-center gap-2 font-medium ml-auto mr-auto">
+            <div>28 Oct</div>
+        </div>
+
+        <button
+            title="Next month"
+            class="bg-(--luxury-white) text-(--blackout) rounded-full p-1.5 hover:bg-(--blackout) hover:text-(--luxury-white) transition-colors"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6" />
+            </svg>
+        </button>
     </div>
 
     <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
