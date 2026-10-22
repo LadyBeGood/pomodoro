@@ -73,7 +73,7 @@
     });
 </script>
 
-<div class="h-svh snap-start snap-always py-24 px-8 flex flex-col justify-center gap-6">
+<div class="h-svh snap-start snap-always  pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
     <div class="relative h-[30svh] shrink-0">
         <canvas bind:this={canvas}></canvas>
     </div>
@@ -101,13 +101,13 @@
     </div>
 
     <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
-        <p class="text-right text-(--luxury-white)/60">Focus time</p>
+        <p class="text-right text-(--luxury-white)/60">Time focused</p>
         <p>4h 30m</p>
         <p class="text-right text-(--luxury-white)/60">Break time</p>
         <p>38m</p>
-        <p class="text-right text-(--luxury-white)/60">Focus sessions</p>
+        <p class="text-right text-(--luxury-white)/60">Sessions</p>
         <p>9</p>
-        <p class="text-right text-(--luxury-white)/60">Break sessions</p>
+        <p class="text-right text-(--luxury-white)/60">Breaks</p>
         <p>8</p>
     </div>
 </div>

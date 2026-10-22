@@ -117,9 +117,9 @@
 
                 <button
                     onclick={() => removeTask(task.index)}
-                    class="snap-end px-8 h-full flex items-center justify-center text-xs font-bold tracking-widest text-red-400 uppercase cursor-pointer border-none shrink-0 active:text-red-500"
+                    class="snap-end px-8 h-full flex items-center justify-center text-xs font-bold tracking-wides uppercase cursor-pointer border-none shrink-0"
                 >
-                    Clear
+                    Delete
                 </button>
             </div>
         {/each}

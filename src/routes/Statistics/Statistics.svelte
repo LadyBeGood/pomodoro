@@ -9,5 +9,5 @@
     <Daily />
     <Weekly />
     <Monthly />
-    <Yearly />
+    <!-- <Yearly /> -->
 </div>

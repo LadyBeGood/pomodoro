@@ -27,19 +27,43 @@
                     datasets: [
                         {
                             label: "Hours",
-                            data: [3.2, 4.5, 2.1, 5, 3.8, undefined, undefined],
+                            data: [3.2, 4.5, 2.1, 7, 3.8, undefined, undefined],
                             backgroundColor: white,
                             borderRadius: Infinity,
                             borderSkipped: false,
-                            barThickness: 35,
-                        }
+                            barThickness: 30,
+                        },
+                        {
+                            label: "Start time",
+                            type: "line",
+                            data: [0.5, 1, 0.8, 1.2, 0.6, undefined, undefined],
+                            borderColor: grey,
+                            backgroundColor: black,
+                            order: -1,
+                        },
+                        {
+                            label: "End time",
+                            type: "line",
+                            data: [5.6, 5.1, 3.5, 6.3, 5, undefined, undefined],
+                            borderColor: grey,
+                            backgroundColor: white,
+                            order: -1,
+                        },
                     ],
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { display: false },
+                        legend: { 
+                            display: true,
+                            labels: {
+                                filter: (item) => item.text !== "Hours",
+                                boxHeight: 16,
+                                boxWidth: 16,
+                                borderRadius: 100
+                            },
+                        },
                         tooltip: {
                             displayColors: false,
                             titleAlign: "center",
@@ -68,7 +92,7 @@
     });
 </script>
 
-<div class="h-svh snap-start snap-always py-24 px-8 flex flex-col justify-center gap-6">
+<div class="h-svh snap-start snap-always pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
     <div class="relative h-[30svh] shrink-0">
         <canvas bind:this={canvas}></canvas>
     </div>

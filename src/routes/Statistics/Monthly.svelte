@@ -2,7 +2,7 @@
     import Calendar from "../../components/Calendar.svelte";
 </script>
 
-<div class="h-svh snap-start snap-always py-24 px-8 flex flex-col justify-center gap-12">
+<div class="h-svh snap-start snap-always  pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
     <div class="min-h-[30svh] shrink-0 flex items-center">
         <div class="w-full">
             <Calendar />
@@ -18,9 +18,5 @@
         <p>22 of 31</p>
         <p class="text-right text-(--luxury-white)/60">Best day</p>
         <p>Oct 9</p>
-        <p class="text-right text-(--luxury-white)/60">Current streak</p>
-        <p>6 days</p>
-        <p class="text-right text-(--luxury-white)/60">Longest streak</p>
-        <p>19 days</p>
     </div>
 </div>

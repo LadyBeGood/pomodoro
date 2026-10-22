@@ -92,40 +92,15 @@
 </script>
 
 <div class="h-full w-full rounded-3xl">
-    <!-- Header Navigation Section -->
-    <!-- <div class="flex gap-2 bg-(--luxury-white) rounded-full px-1 py-1">
-        <button
-            onclick={prevMonth}
-            title="Previous month"
-            class="hover:bg-(--blackout) hover:text-(--luxury-white) text-(--blackout) rounded-full p-1.5 transition-colors"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
-        </button>
-
-        <div class="flex text-(--blackout) text-sm items-center gap-2 font-medium ml-auto mr-auto">
-            <div>{months[currMonth]}, {currYear}</div>
-        </div>
-
-        <button
-            onclick={nextMonth}
-            title="Next month"
-            class="bg-(--luxury-white) text-(--blackout) rounded-full p-1.5 hover:bg-(--blackout) hover:text-(--luxury-white) transition-colors"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6" />
-            </svg>
-        </button>
-    </div> -->
-
     <!-- Calendar Grid Body -->
     <div>
-        <!-- <div class="grid grid-cols-7 my-2">
-            {#each daysOfWeek as day}
+        <div class="grid grid-cols-7 my-2">
+            {#each weekShortNames as day}
                 <div class="text-center text-xs font-semibold text-(--luxury-white)/63 tracking-wider py-2">
                     {day}
                 </div>
             {/each}
-        </div> -->
+        </div>
 
         <div class="grid grid-cols-7 gap-1 tabular-nums bg-(--blackout) text-(--luxury-white) rounded-b-2xl">
             {#each allDays as item}
@@ -150,5 +125,29 @@
                 </div>
             {/each}
         </div>
+    </div>
+
+    <div class="flex gap-2 bg-(--luxury-white) rounded-full px-1 py-1 mt-6">
+        <button
+            onclick={prevMonth}
+            title="Previous month"
+            class="hover:bg-(--blackout) hover:text-(--luxury-white) text-(--blackout) rounded-full p-1.5 transition-colors"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+
+        <div class="flex text-(--blackout) text-sm items-center gap-2 font-medium ml-auto mr-auto">
+            <div>{monthNames[currMonth]}, {currYear}</div>
+        </div>
+
+        <button
+            onclick={nextMonth}
+            title="Next month"
+            class="bg-(--luxury-white) text-(--blackout) rounded-full p-1.5 hover:bg-(--blackout) hover:text-(--luxury-white) transition-colors"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6" />
+            </svg>
+        </button>
     </div>
 </div>

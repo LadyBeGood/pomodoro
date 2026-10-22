@@ -69,16 +69,13 @@
     });
 
     $effect(() => {
-        audio.src = `/white-noises/${music.activeWhiteNoise.file}`;
+        audio.src = `./white-noises/${music.activeWhiteNoise.file}`;
         audio.loop = true;
         if (untrack(() => music.isPlaying)) audio.play();
     });
 
     $effect(() => {
-        localStorage.setItem(
-            "activeWhiteNoise",
-            JSON.stringify(music.activeWhiteNoise),
-        );
+        localStorage.setItem("activeWhiteNoise", JSON.stringify(music.activeWhiteNoise));
     });
 
     $effect(() => {
