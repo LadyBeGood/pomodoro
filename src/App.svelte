@@ -13,6 +13,8 @@
     } from "./shared/settings.svelte";
     import { audio, music } from "./shared/music.svelte";
 
+    const base = import.meta.env.BASE_URL;
+
     $effect(() => {
         settings.theme;
         applyTheme();
@@ -69,7 +71,7 @@
     });
 
     $effect(() => {
-        audio.src = `./white-noises/${music.activeWhiteNoise.file}`;
+        audio.src = `${base}white-noises/${music.activeWhiteNoise.file}`;
         audio.loop = true;
         if (untrack(() => music.isPlaying)) audio.play();
     });
