@@ -5,7 +5,7 @@
     import Yearly from "./Yearly.svelte";
 </script>
 
-<div class="overflow-auto h-svh w-svw no-scrollbar snap-y snap-mandatory text-(--luxury-white)!">
+<div class="overflow-auto h-svh no-scrollbar snap-y snap-mandatory text-(--luxury-white)!">
     <Daily />
     <Weekly />
     <Monthly />
