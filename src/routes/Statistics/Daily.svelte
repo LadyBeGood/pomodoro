@@ -73,7 +73,7 @@
     });
 </script>
 
-<div class="h-full max-w-100 mx-auto snap-start snap-always pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
+<div class="h-full max-w-100 mx-auto snap-start snap-always pt-24 pb-28 px-8 flex flex-col justify-center gap-6">
     <div class="relative h-[40%] shrink-0">
         <canvas bind:this={canvas}></canvas>
     </div>
@@ -100,14 +100,28 @@
         </button>
     </div>
 
-    <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
-        <p class="text-right text-(--luxury-white)/60">Time focused</p>
-        <p>4h 30m</p>
-        <p class="text-right text-(--luxury-white)/60">Break time</p>
-        <p>38m</p>
-        <p class="text-right text-(--luxury-white)/60">Sessions</p>
-        <p>9</p>
-        <p class="text-right text-(--luxury-white)/60">Breaks</p>
-        <p>8</p>
+    <div>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
+            <div class="text-right">
+                <p class="text-right text-(--luxury-white)/70">Total focus time</p>
+                <p>4h 30m</p>
+            </div>
+            <div class="text-left">
+                <p class="text-(--luxury-white)/70">Max focus time</p>
+                <p>38m</p>
+            </div>
+            <div class="text-right">
+                <p class="text-right text-(--luxury-white)/70">Start time</p>
+                <p>2:07 AM</p>
+            </div>
+            <div class="text-left">
+                <p class="text-(--luxury-white)/70">End time</p>
+                <p>10:08 PM</p>
+            </div>
+        </div>
+        <div class="text-sm mx-auto text-center mt-4">
+            <p class="text-(--luxury-white)/70">Sessions</p>
+            <p>4 pomodoro · 12 timer</p>
+        </div>
     </div>
 </div>

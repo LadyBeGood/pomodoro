@@ -31,14 +31,14 @@
                             backgroundColor: white,
                             borderRadius: Infinity,
                             borderSkipped: false,
-                            barThickness: 30,
+                            barThickness: 32,
                         },
                         {
                             label: "Start time",
                             type: "line",
                             data: [0.5, 1, 0.8, 1.2, 0.6, undefined, undefined],
                             borderColor: grey,
-                            backgroundColor: black,
+                            backgroundColor: white,
                             order: -1,
                         },
                         {
@@ -56,13 +56,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { 
-                            display: true,
-                            labels: {
-                                filter: (item) => item.text !== "Hours",
-                                boxHeight: 16,
-                                boxWidth: 16,
-                                borderRadius: 100
-                            },
+                            display: false
                         },
                         tooltip: {
                             displayColors: false,
@@ -93,7 +87,7 @@
 </script>
 
 <div class="h-full max-w-100 mx-auto snap-start snap-always pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
-    <div class="relative h-[40%] shrink-0">
+    <div class="relative h-[50%] shrink-0">
         <canvas bind:this={canvas}></canvas>
     </div>
 
@@ -121,18 +115,28 @@
     </div>
 
 
-    <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
-        <p class="text-right text-(--luxury-white)/60">Time focused</p>
-        <p>21h 34m</p>
-        <p class="text-right text-(--luxury-white)/60">Sessions</p>
-        <p>63</p>
-        <p class="text-right text-(--luxury-white)/60">Daily average</p>
-        <p>3h 05m</p>
-        <p class="text-right text-(--luxury-white)/60">Best day</p>
-        <p>Thursday</p>
-        <p class="text-right text-(--luxury-white)/60">Current streak</p>
-        <p>6 days</p>
-        <p class="text-right text-(--luxury-white)/60">Vs last week</p>
-        <p>+12%</p>
+
+    <div>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
+            <div class="text-right">
+                <p class="text-right text-(--luxury-white)/60">Total focus time</p>
+                <p>21h 34m</p>
+            </div>
+            <div class="text-left">
+                <p class="text-(--luxury-white)/60">Daily average</p>
+                <p>3h 05m</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4 text-sm mt-4">
+            <div class="text-right">
+                <p class="text-right text-(--luxury-white)/60">Active days</p>
+                <p>6 of 7</p>
+            </div>
+            <div class="text-sm text-left">
+                <p class="text-(--luxury-white)/70">Best day</p>
+                <p>Friday</p>
+            </div>
+        </div>
     </div>
 </div>
