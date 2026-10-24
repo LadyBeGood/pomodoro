@@ -13,7 +13,7 @@
         in:fade={{ duration: 250 }}
         out:fade={{ delay: 250, duration: 250 }}
         aria-hidden="true" 
-        class="z-99 bg-(--blackout)/92 w-full h-full fixed" 
+        class="z-99 bg-(--blackout)/92 w-full h-full absolute" 
         onclick={closeDialog}
     ></div>
     

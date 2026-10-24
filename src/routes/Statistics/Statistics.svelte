@@ -4,7 +4,7 @@
     import Monthly from "./Monthly.svelte";
 </script>
 
-<div class="overflow-auto h-full w-90 no-scrollbar snap-y snap-mandatory text-(--luxury-white)!">
+<div class="overflow-auto h-full w-full no-scrollbar snap-y snap-mandatory text-(--luxury-white)!">
     <Daily />
     <Weekly />
     <Monthly />
