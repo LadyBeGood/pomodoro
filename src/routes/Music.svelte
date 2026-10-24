@@ -6,17 +6,20 @@
     import { navigate } from "../router";
     import LightBeam from "../components/LightBeam.svelte";
     import { music, handleWhiteNoiseTabChange, playAdjacent, changeActiveWhiteNoise, handlePlayPause } from "../shared/music.svelte";
-
-
+    import { appElement } from "../shared/app.svelte";
+    
     let whiteNoiseTypesElement: HTMLDivElement;
 
     /*==============================*/
     /* Helpers                      */
     /*==============================*/
     function getRotationAngle() {
+        const appHeight = appElement.offsetHeight;
+        const appWidth = appElement.offsetWidth;
+
         const angleInRadians = Math.atan2(
-            window.innerWidth,
-            window.innerHeight * 0.1,
+            appWidth,
+            appHeight * 0.1,
         );
         const angleInDegrees = angleInRadians * (180 / Math.PI);
         return 90 - angleInDegrees;
@@ -75,7 +78,7 @@
     bind:this={whiteNoiseTypesElement}
     in:slide={{ duration: 250, delay: 250 }}
     out:slide={{ duration: 250 }}
-    class="overflow-auto z-10 pt-4 w-[90%] bg-red-200 absolute right-0 top-[10%] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
+    class="overflow-auto z-10 pt-4 w-[90%] absolute right-0 top-[10%] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
 >
     {#each music.whiteNoises as whiteNoise, i}
         <button
@@ -92,14 +95,14 @@
 </div>
 
 <div
-    class="absolute bg-green-500 right-0 bottom-0 z-10 w-[90%] h-[82%] grid"
+    class="absolute right-0 bottom-0 z-10 w-[90%] h-[82%] grid"
     in:slide={{ duration: 250, delay: 250 }}
     out:slide={{ duration: 250 }}
 >
     <div class="flex flex-col gap-6 overflow-auto no-scrollbar">
         {#each music.activeWhiteNoises as whiteNoise, i}
             <button
-                style="padding-left: calc({i} * 0.9vw);"
+                style="padding-left: {i}%;"
                 onclick={() => changeActiveWhiteNoise(whiteNoise)}
             >
                 <div

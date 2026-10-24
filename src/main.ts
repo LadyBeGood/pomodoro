@@ -1,6 +1,7 @@
 import { mount } from "svelte"
 import App from "./App.svelte"
+import { appElement } from "./shared/app.svelte"
 
-mount(App, { target: document.getElementById("app")! })
+mount(App, { target: appElement })
 
 

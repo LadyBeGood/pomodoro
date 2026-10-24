@@ -73,7 +73,7 @@
     });
 </script>
 
-<div class="h-full bg-amber-900 snap-start snap-always pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
+<div class="h-full snap-start snap-always pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
     <div class="relative h-[40%] shrink-0">
         <canvas bind:this={canvas}></canvas>
     </div>
