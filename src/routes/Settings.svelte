@@ -332,7 +332,7 @@
     bind:this={settingTypesElement}
     in:slide={{ duration: 250, delay: 250 }}
     out:slide={{ duration: 250 }}
-    class="z-10 overflow-auto pt-4 w-[90vw] absolute left-0 top-[10svh] dark-scrollbar origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
+    class="z-10 overflow-auto pt-4 w-[90%] bg-orange-200 absolute left-0 top-[10%] dark-scrollbar origin-top-left flex gap-8 justify-start pl-8 text-sm tracking-widest"
 >
     {#each settings as setting, i}
         <button
@@ -352,7 +352,7 @@
     bind:this={settingsMainElement}
     in:slide={{ duration: 250, delay: 250 }}
     out:slide={{ duration: 250 }}
-    class="z-10 absolute left-0 bottom-0 w-[90vw] h-[82svh] grid"
+    class="z-10 absolute left-0 bottom-0 bg-indigo-300 w-[90%] h-[82%] grid"
 >
     <div class="flex flex-col gap-10 overflow-auto text-right">
         {#each activeSettings as activeSetting (activeSetting.id)}

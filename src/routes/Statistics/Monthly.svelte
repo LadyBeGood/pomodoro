@@ -2,8 +2,8 @@
     import Calendar from "../../components/Calendar.svelte";
 </script>
 
-<div class="h-svh snap-start snap-always  pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
-    <div class="min-h-[30svh] shrink-0 flex items-center">
+<div class="h-full snap-start snap-always pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
+    <div class="min-h-[40%] shrink-0 flex items-center">
         <div class="w-full">
             <Calendar />
         </div>

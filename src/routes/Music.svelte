@@ -46,7 +46,7 @@
 
 <!-- overlay -->
 <div
-    class="fixed z-10 top-0 left-0 w-svw h-svh bg-(--blackout)/95"
+    class="fixed z-10 top-0 left-0 w-full h-full bg-(--blackout)/95"
     out:fade={{ duration: 250, delay: 250 }}
 ></div>
 
@@ -75,7 +75,7 @@
     bind:this={whiteNoiseTypesElement}
     in:slide={{ duration: 250, delay: 250 }}
     out:slide={{ duration: 250 }}
-    class="overflow-auto z-10 pt-4 w-[90vw] absolute right-0 top-[10svh] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
+    class="overflow-auto z-10 pt-4 w-[90%] bg-red-200 absolute right-0 top-[10%] origin-top-right flex gap-10 pr-8 text-sm tracking-widest"
 >
     {#each music.whiteNoises as whiteNoise, i}
         <button
@@ -92,7 +92,7 @@
 </div>
 
 <div
-    class="absolute right-0 bottom-0 z-10 w-[90vw] h-[82svh] grid"
+    class="absolute bg-green-500 right-0 bottom-0 z-10 w-[90%] h-[82%] grid"
     in:slide={{ duration: 250, delay: 250 }}
     out:slide={{ duration: 250 }}
 >

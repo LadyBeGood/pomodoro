@@ -73,12 +73,12 @@
     });
 </script>
 
-<div class="h-svh snap-start snap-always  pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
-    <div class="relative h-[30svh] shrink-0">
+<div class="h-full bg-amber-900 snap-start snap-always pt-24 pb-36 px-8 flex flex-col justify-center gap-6">
+    <div class="relative h-[40%] shrink-0">
         <canvas bind:this={canvas}></canvas>
     </div>
 
-    <div class="flex gap-2 bg-(--luxury-white) rounded-full px-1 py-1">
+    <div class="flex gap-2 bg-(--luxury-white) rounded-full p-1">
         <button
             title="Previous month"
             class="hover:bg-(--blackout) hover:text-(--luxury-white) text-(--blackout) rounded-full p-1.5 transition-colors"
@@ -86,7 +86,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
         </button>
 
-        <div class="flex text-(--blackout) text-sm items-center gap-2 font-medium ml-auto mr-auto">
+        <div class="flex text-(--blackout) text-sm items-center gap-2 font-medium mx-auto">
             <div>28 Oct</div>
         </div>
 

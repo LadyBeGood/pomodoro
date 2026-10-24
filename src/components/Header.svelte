@@ -13,7 +13,7 @@
     >
 {/snippet}
 
-<div class="fixed left-0 right-0 top-0 flex justify-between mx-5 my-5 items-center text-(--luxury-white) z-1">
+<div class="absolute left-0 right-0 top-0 flex justify-between mx-5 my-5 items-center text-(--luxury-white) z-1">
     <a
         aria-label="Music"
         href={p("/music")}

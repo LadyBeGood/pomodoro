@@ -368,7 +368,7 @@
 </script>
 
 {#snippet PomodoroTab()}
-    <div class="flex items-center justify-center shrink-0 flex-col gap-4 w-svw h-svh snap-start snap-always">
+    <div class="flex items-center justify-center shrink-0 flex-col gap-4 w-full h-full snap-start snap-always">
         <div
             class="text-(--luxury-white) w-48 h-48 rounded-full p-2.5 relative uppercase"
             style="background: conic-gradient(var(--luxury-white) 0% {remainingSessionInPercentage}%, var(--dravit-grey) 0 100%);"
@@ -440,7 +440,7 @@
                 : "Click to pause timer"
         }
         onclick={toggleTimer}
-        class="flex items-center justify-center shrink-0 flex-col gap-4 w-svw h-svh snap-start snap-always select-none"
+        class="flex items-center justify-center shrink-0 flex-col gap-4 w-full h-full snap-start snap-always select-none"
     >
         <div class="text-(--luxury-white) rounded-full p-2.5 relative tabular-nums">
             <div class="h-full w-full rounded-full bg-(--blackout) grid place-items-center text-9xl leading-none">
@@ -457,7 +457,7 @@
 <div
     bind:this={homeElement}
     onscroll={handleScroll}
-    class="flex overflow-auto w-svw no-scrollbar snap-x snap-mandatory"
+    class="flex overflow-auto w-full h-full no-scrollbar snap-x snap-mandatory"
 >
     {#if settings.defaultHomePage === "Pomodoro"}
         {@render PomodoroTab()}
