@@ -2,17 +2,13 @@
 
 # Pomodoro
 
-A responsive, offline-capable PWA featuring customizable Pomodoro and timer modes, task management, ambient background audio, productivity statistics, dynamic light/dark themes and buttery smooth animations.
+[![Svelte](https://img.shields.io/badge/Svelte-20232A?logo=svelte)](https://svelte.dev/)
+[![TypeScript](https://img.shields.io/badge/Typescript-20232A?logo=typescript&logoColor=3178C6)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-20232A?logo=tailwind-css&logoColor=06B6D4)](https://tailwindcss.com/)
+[![Vite](https://img.shields.io/badge/Vite-20232A?logo=vite&logoColor=646CFF)](https://vitejs.dev/)
+[![PWA](https://img.shields.io/badge/Progressive_Web_App-20232A?logo=PWA)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 
-
-## Features
-
-* **Dual Timer Modes:** Classic Pomodoro technique intervals and standard countdown timer.
-* **Integrated Task Management:** To-do list tailored for focus sessions.
-* **Ambient Sound Player:** Built-in ambient white noise selection (rain, diner, coffee shop, nature) using lightweight `.opus` audio format.
-* **Visual Productivity Stats:** Interactive charts and calendars tracking completed focus time.
-* **PWA & Offline First:** Installable as a progressive web app with custom shortcuts and maskable icon assets.
-* **Customizable Settings & Themes:** Adjustable work/rest cycles with seamlessly toggled light/dark themes.
+A responsive, offline first PWA featuring customizable pomodoro and timer modes, task management, white noise player, statistics and colourful themes with smooth animations and persistent storage.
 
 
 ## Screenshots
@@ -21,38 +17,7 @@ A responsive, offline-capable PWA featuring customizable Pomodoro and timer mode
 
 
 
-## Tech Stack
 
-[![Svelte](https://img.shields.io/badge/Svelte-20232A?logo=svelte)](https://svelte.dev/)
-[![TypeScript](https://img.shields.io/badge/Typescript-20232A?logo=typescript&logoColor=3178C6)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-20232A?logo=tailwind-css&logoColor=06B6D4)](https://tailwindcss.com/)
-[![Vite](https://img.shields.io/badge/Vite-20232A?logo=vite&logoColor=646CFF)](https://vitejs.dev/)
-[![PWA](https://img.shields.io/badge/Progressive_Web_App-20232A?logo=PWA)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
-
-
-* **Framework:** [Svelte](https://svelte.dev/)
-* **Language:** [TypeScript](https://www.typescriptlang.org/)
-* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-* **Build tool:** [Vite](https://vitejs.dev/)
-* **Others:** PWA, sv-router
-
-
-
-
-## Project Structure
-
-```text
-├── public/
-│   ├── favicons/        # PWA maskable/monochrome icons
-│   ├── screenshots/     
-│   ├── shortcuts/       # Shortcut icons for PWA
-│   └── white-noises/    
-└── src/
-    ├── components/      
-    ├── routes/          
-    ├── shared/          # Reactive Svelte stores (.svelte.ts)
-    └── themes/          
-```
 
 ## Installation
 
